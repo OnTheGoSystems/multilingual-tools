@@ -8,10 +8,10 @@
  */
 class Modify_Duplicate_Strings{
 
-	private $settings = array();
+	private $filter = array();
 
-	public function __construct($settings = array()){
-		$this->settings = $settings;
+	public function __construct( $filter = array() ){
+		$this->filter = $filter;
 		add_filter( 'icl_duplicate_generic_string', array($this, 'icl_duplicate_generic_string'), 10, 3 );
 	}
 
@@ -19,9 +19,13 @@ class Modify_Duplicate_Strings{
 	 *
 	 * Add information about language to string based on context
 	 *
-	 * @param $string - string to modify
-	 * @param $lang - language code
-	 * @param $context - array (context, attribute, key)
+	 * @param $string  - string to modify
+	 * @param $lang    - language code
+	 * @param $context - array(
+	 *							'context'   => 'post' or 'custom_field' or 'taxonomy',
+	 *							'attribute' => 'title' or 'content' (for a post), 'value' (for a custom field), '{taxonomy_name}' (for a taxonomy),
+	 *							'key'       => '{post_id}' | '{meta_key}' | '{term_id}',
+	 *							);
 	 *
 	 * @return string
 	 */
@@ -29,6 +33,24 @@ class Modify_Duplicate_Strings{
 
 		//check context
 		$filter_context = isset( $context['context'] )?$context['context']:'';
+		$attribute = isset( $context['attribute'] )?$context['attribute']:'';
+
+		if ( isset($this->filter[$filter_context])){
+			//special case for taxonomy
+			if ( in_array( $filter_context, array('taxonomy', 'taxonomy_slug'))){
+				if ( !isset($this->filter[$filter_context]['all']) ){
+					if ( !isset($this->filter[$filter_context][$attribute]) ){
+						return $string;
+					}
+				}
+
+			}elseif (!isset($this->filter[$filter_context][$attribute])){
+				return $string;
+			}
+		}
+		else{
+			return $string;
+		}
 
 		//based on context
 		switch( $filter_context ) {

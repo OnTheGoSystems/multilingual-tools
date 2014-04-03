@@ -8,60 +8,97 @@ class WPML_Compatibility_Test_Tools {
 
 		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
 		add_action( 'init', array( $this, 'process_request' ) );
-		add_action( 'init', array( $this, 'apply_settings' ) );
+		add_action( 'init', array( $this, 'modify_wpml_behaviour' ) );
 
 	}
 
 	/**
-	 * Apply various settings based on saved configuration
-	 */
-	public function apply_settings() {
-
-		$wpml_ctt_auto_duplicate = get_option( 'wpml_ctt_auto_duplicate' );
-
-		if ( ! empty( $wpml_ctt_auto_duplicate ) ) {
-			new Modify_Duplicate_Strings( $wpml_ctt_auto_duplicate );
-		}
-
-	}
-
-	/**
-	 * Process administration page request
+	 * Process request
 	 *
 	 * @return bool
 	 */
 	public function process_request() {
 
-		if ( isset( $_POST['strings_auto_translate_action_translate'] ) ) {
-			$context   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : null;
-			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : null;
-			$prefix    = ( isset( $_POST['strings_auto_translate_prefix'] ) ) ? $_POST['strings_auto_translate_prefix'] : null;
+		$this->process_strings_auto_translate_action_translate();
+		$this->process_save_duplicate_strings_to_translate();
 
-			if ( ! $languages ) {
-				add_action( 'admin_notices', array( $this, 'no_selected_language_notice' ) );
-			}
+		return true;
+	}
 
-			if ( ! $prefix ) {
-				add_action( 'admin_notices', array( $this, 'no_prefix_notice' ) );
-			}
-
-			if ( ! $languages || ! $prefix ) {
-				return false;
-			}
-
-			update_option( 'wpml_ctt_auto_translate_prefix', $prefix );
-
-			$this->translate_strings( $context, $languages, $prefix );
-			add_action( 'admin_notices', array( $this, 'strings_translated_notice' ) );
-		}
+	/**
+	 * Process action save_duplicate_strings_to_translate
+	 */
+	private function process_save_duplicate_strings_to_translate(){
 
 		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
 			$settings = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
 
 			update_option( 'wpml_ctt_auto_duplicate', $settings );
 			add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
+
 		}
 
+		return true;
+
+	}
+
+	/**
+	 * Process action strings_auto_translate_action_translate
+	 *
+	 * @return bool
+	 */
+	private function process_strings_auto_translate_action_translate(){
+
+		if ( isset( $_POST['strings_auto_translate_action_translate'] ) ) {
+
+			$error = false;
+
+			$context   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : null;
+			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : null;
+			$prefix    = ( isset( $_POST['strings_auto_translate_prefix'] ) ) ? $_POST['strings_auto_translate_prefix'] : null;
+
+			if ( empty( $languages ) ) {
+				add_action( 'admin_notices', array( $this, 'no_selected_language_notice' ) );
+				$error = true;
+			}
+
+			if ( empty( $context ) ) {
+				add_action( 'admin_notices', array( $this, 'no_context_notice' ) );
+				$error = true;
+			}
+
+			if ( empty( $prefix ) ) {
+				add_action( 'admin_notices', array( $this, 'no_prefix_notice' ) );
+				$error = true;
+			}else{
+				//update prefix if it is not null
+				update_option( 'wpml_ctt_auto_translate_prefix', $prefix );
+			}
+
+
+			if ( $error ) {
+				return false;
+			}
+
+			$this->translate_strings( $context, $languages, $prefix );
+			add_action( 'admin_notices', array( $this, 'strings_translated_notice' ) );
+
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Modify WPML behaviour based on selected settings
+	 */
+	public function modify_wpml_behaviour() {
+
+		//Enable adding language information for duplicated posts
+		$wpml_ctt_auto_duplicate = get_option( 'wpml_ctt_auto_duplicate' );
+		if ( ! empty( $wpml_ctt_auto_duplicate ) ) {
+			new Modify_Duplicate_Strings( $wpml_ctt_auto_duplicate );
+		}
 
 	}
 
@@ -74,9 +111,15 @@ class WPML_Compatibility_Test_Tools {
 
 			return false;
 		}
+
+		return true;
 	}
 
+	/**
+	 * Save initial configuration to database
+	 */
 	public function install() {
+
 		if ( get_option( 'wpml_ctt_plugin ' ) === false ) {
 			add_option( 'wpml_ctt_plugin', '1' );
 
@@ -84,7 +127,10 @@ class WPML_Compatibility_Test_Tools {
 				add_option( 'wpml_ctt_auto_translate_prefix', '[%language_name] ' );
 			}
 		}
+
+		return true;
 	}
+
 
 	public function no_wpml_notice() {
 	?>
@@ -99,6 +145,12 @@ class WPML_Compatibility_Test_Tools {
 	public function no_selected_language_for_pages_notice() {
 		echo '<div class="message error"><p>' . __( 'At least one language should be selected in order to create pages with dummy content.', 'wpml-compatibility-test-tools' ) . '</p></div>';
 	}
+
+
+	public function no_context_notice() {
+		echo '<div class="message error"><p>' . __( 'Please select context.', 'wpml-compatibility-test-tools' ) . '</p></div>';
+	}
+
 
 	public function no_prefix_notice() {
 		echo '<div class="message error"><p>' . __( 'Template is required.', 'wpml-compatibility-test-tools' ) . '</p></div>';
