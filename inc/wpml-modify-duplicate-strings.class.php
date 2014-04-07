@@ -9,9 +9,11 @@
 class Modify_Duplicate_Strings{
 
 	private $filter = array();
+	private $template = '';
 
-	public function __construct( $filter = array() ){
+	public function __construct( $filter = array(), $template = '[%language_name%] %original_string%' ){
 		$this->filter = $filter;
+		$this->template = $template;
 		add_filter( 'icl_duplicate_generic_string', array($this, 'icl_duplicate_generic_string'), 10, 3 );
 	}
 
@@ -35,6 +37,7 @@ class Modify_Duplicate_Strings{
 		$filter_context = isset( $context['context'] )?$context['context']:'';
 		$attribute = isset( $context['attribute'] )?$context['attribute']:'';
 
+		//check if user required to filter given string type
 		if ( isset($this->filter[$filter_context])){
 			//special case for taxonomy
 			if ( in_array( $filter_context, array('taxonomy', 'taxonomy_slug'))){
@@ -55,10 +58,10 @@ class Modify_Duplicate_Strings{
 		//based on context
 		switch( $filter_context ) {
 			case 'post':
-				$string = $this->add_language_name_to_string($string, $lang);
+				$string = wpml_ctt_prepare_string($this->template, $string, $lang);
 				break;
 			case 'taxonomy':
-				$string = $this->add_language_name_to_string($string, $lang);
+				$string = wpml_ctt_prepare_string($this->template, $string, $lang);
 				break;
 			case 'taxonomy_slug' :
 				$string = $this->add_language_name_to_slug($string, $lang);
@@ -94,25 +97,6 @@ class Modify_Duplicate_Strings{
 
 	}
 
-	/**
-	 * Add language name to string
-	 *
-	 * @param $string
-	 * @param $lang
-	 *
-	 * @return string
-	 */
-	private function add_language_name_to_string( $string, $lang ){
-
-		global $sitepress;
-		$language_details = $sitepress->get_language_details($lang);
-		if ( isset( $language_details['english_name'] ) ){
-			return '['.strtoupper($language_details['english_name']).'] '.$string;
-		}
-
-		return  $string;
-
-	}
 
 	/**
 	 *
@@ -138,7 +122,7 @@ class Modify_Duplicate_Strings{
 				//if custom field is set to translate (id = 2)
 				if ( $custom_fields_translation[$context['key']] == 2  ){
 					//add language information
-					return $this->add_language_name_to_string($string, $lang);
+					return wpml_ctt_prepare_string($this->template, $string, $lang);
 				}
 			}
 		}

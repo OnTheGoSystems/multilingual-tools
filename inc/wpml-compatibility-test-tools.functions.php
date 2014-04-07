@@ -1,6 +1,41 @@
 <?php
 
 /**
+ * Prepare string based on template
+ *
+ * @param $template
+ * @param $string
+ * @param $lang
+ *
+ * @return mixed
+ */
+function wpml_ctt_prepare_string( $template, $string, $lang ) {
+
+	global $sitepress;
+
+	$template = str_replace( '%original_string%', $string, $template );
+
+	$language_details = $sitepress->get_language_details( $lang );
+
+	if ( isset( $language_details['english_name'] ) ) {
+		$template = str_replace( '%language_name%', $language_details['english_name'], $template );
+	}
+
+	if ( isset( $language_details['code'] ) ) {
+		$template = str_replace( '%language_code%', $language_details['code'], $template );
+	}
+
+	if ( isset( $language_details['display_name'] ) ) {
+		$template = str_replace( '%language_native_name%', $language_details['display_name'], $template );
+	}
+
+
+	return $template;
+
+}
+
+
+/**
  *
  * Return list of contexts for string translation
  *

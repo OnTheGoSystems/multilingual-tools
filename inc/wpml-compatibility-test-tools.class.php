@@ -44,6 +44,39 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		return true;
 	}
 
+
+	/**
+	 * Process action save_duplicate_strings_to_translate
+	 */
+	private function process_save_duplicate_strings_to_translate(){
+
+		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
+
+			$error = false;
+
+			$strings = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
+			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? $_POST['duplicate_strings_template'] : '';
+
+			if ( empty( $template ) ) {
+				add_action( 'admin_notices', array( $this, 'no_template_notice' ) );
+				$error = true;
+			}
+
+			if ( $error ) {
+				return false;
+			}
+
+			self::update_option('duplicate_strings', $strings);
+			self::update_option('duplicate_strings_template', $template);
+			add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
+
+		}
+
+		return true;
+
+	}
+
+
 	/**
 	 * Process action strings_auto_translate_action_translate
 	 *
@@ -125,7 +158,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		//for each string add information
 		foreach ( $strings as $v ) {
 			foreach ( $languages as $lang ) {
-				icl_add_string_translation( $v->id, $lang, $this->prepare_string($template, $v->value, $lang), TRUE );
+				icl_add_string_translation( $v->id, $lang, wpml_ctt_prepare_string($template, $v->value, $lang), TRUE );
 				icl_update_string_status( $v->id );
 			}
 
@@ -133,55 +166,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	}
 
-	/**
-	 * Prepare string based on template
-	 *
-	 * @param $template
-	 * @param $string
-	 * @param $lang
-	 *
-	 * @return mixed
-	 */
-	private function prepare_string( $template, $string, $lang ) {
-
-		global $sitepress;
-
-		$template = str_replace( '%original_string%', $string, $template );
-
-		$language_details = $sitepress->get_language_details( $lang );
-
-		if ( isset( $language_details['english_name'] ) ) {
-			$template = str_replace( '%language_name%', $language_details['english_name'], $template );
-		}
-
-		if ( isset( $language_details['code'] ) ) {
-			$template = str_replace( '%language_code%', $language_details['code'], $template );
-		}
-
-		if ( isset( $language_details['display_name'] ) ) {
-			$template = str_replace( '%language_native_name%', $language_details['display_name'], $template );
-		}
-
-
-		return $template;
-
-	}
-
-	/**
-	 * Process action save_duplicate_strings_to_translate
-	 */
-	private function process_save_duplicate_strings_to_translate(){
-
-		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
-			$settings = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
-			self::update_option('duplicate_strings', $settings);
-			add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
-
-		}
-
-		return true;
-
-	}
 
 	/**
 	 * Modify WPML behaviour based on selected settings
@@ -190,8 +174,9 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		//Enable adding language information for duplicated posts
 		$duplicate_strings = self::get_option('duplicate_strings');;
-		if ( ! empty( $duplicate_strings ) ) {
-			new Modify_Duplicate_Strings( $duplicate_strings );
+		$duplicate_strings_template = self::get_option('duplicate_strings_template');;
+		if ( ! empty( $duplicate_strings ) && ! empty( $duplicate_strings_template ) ) {
+			new Modify_Duplicate_Strings( $duplicate_strings, $duplicate_strings_template);
 		}
 
 	}

@@ -40,7 +40,7 @@
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Template:', 'wpml-compatibility-test-tools'); ?></label>
 				<input style="width:400px" type="text" id="strings_auto_translate_template" name="strings_auto_translate_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_template'); ?>" />
 				<select id="string_auto_translate_predefined_templates" name="string_auto_translate_predefined_templates">
-					<option value="0">--Select predefined template--</option>
+					<option value="0"> -= Select predefined template =- </option>
 					<option value="1">[%language_code%] %original_string%</option>
 					<option value="2">%original_string% [%language_code%]</option>
 					<option value="3">[%language_native_name%] %original_string%</option>

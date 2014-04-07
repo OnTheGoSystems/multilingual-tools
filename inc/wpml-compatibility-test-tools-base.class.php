@@ -14,6 +14,7 @@ class WPML_Compatibility_Test_Tools_Base {
 
 		if ( get_option( self::OPTIONS_NAME ) === false ) {
 			$options[ 'string_auto_translate_template' ] = '[%language_name%] %original_string%';
+			$options[ 'duplicate_strings_template' ] = '[%language_name%] %original_string%';
 			add_option( self::OPTIONS_NAME, $options );
 		}
 
@@ -24,7 +25,8 @@ class WPML_Compatibility_Test_Tools_Base {
 	/**
 	 * Return plugin option
 	 *
-	 * @param $option_name
+	 * @param      $option_name
+	 * @param null $default
 	 *
 	 * @return null
 	 */

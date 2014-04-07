@@ -24,6 +24,21 @@
 
 				<br /><br />
 
+				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Template:', 'wpml-compatibility-test-tools'); ?></label>
+				<input style="width:400px" type="text" id="duplicate_strings_template" name="duplicate_strings_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings_template'); ?>" />
+				<select id="duplicate_strings_predefined_templates" name="duplicate_strings_predefined_templates">
+					<option value="0"> -= Select predefined template =- </option>
+					<option value="1">[%language_code%] %original_string%</option>
+					<option value="2">%original_string% [%language_code%]</option>
+					<option value="3">[%language_native_name%] %original_string%</option>
+					<option value="4">%original_string% [%language_native_name%]</option>
+					<option value="5">[%language_name%] %original_string%</option>
+					<option value="6">%original_string% [%language_name%]</option>
+				</select>
+				<br/>
+				<small style="margin-left: 235px; float: left;">You can use following, special tags: %original_string%, %language_name%, %language_code%, %language_native_name% </small>
+				<br /><br />
+
 				<input type="submit" name="save_duplicate_strings_to_translate" value="<?php _e('Save', 'wpml-compatibility-test-tools'); ?>" class="button-secondary" />
 			</form>
 			</p>
