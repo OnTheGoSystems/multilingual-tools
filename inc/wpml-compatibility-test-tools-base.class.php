@@ -1,0 +1,62 @@
+<?php
+
+class WPML_Compatibility_Test_Tools_Base {
+
+	const OPTIONS_NAME = 'wpml_ctt_settings';
+	static $options = array();
+
+
+	/**
+	 * Save initial configuration to database
+	 */
+	public static function install() {
+
+
+		if ( get_option( self::OPTIONS_NAME ) === false ) {
+			$options[ 'string_auto_translate_template' ] = '[%language_name%] %original_string%';
+			add_option( self::OPTIONS_NAME, $options );
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * Return plugin option
+	 *
+	 * @param $option_name
+	 *
+	 * @return null
+	 */
+	public static function get_option($option_name, $default = null){
+
+		if (empty(self::$options)){
+			self::$options = get_option(self::OPTIONS_NAME);
+		}
+
+		if (isset(self::$options[$option_name])){
+			return self::$options[$option_name];
+		}
+
+		return $default;
+
+	}
+
+	public static function update_option($option_name, $option_value){
+
+		$options = get_option(self::OPTIONS_NAME);
+		$options[$option_name] = $option_value;
+		$result = update_option( self::OPTIONS_NAME, $options );
+
+		if ($result){
+			self::refresh_options();
+		}
+
+		return $result;
+	}
+
+	public static function refresh_options(){
+		self::$options = get_option(self::OPTIONS_NAME);
+	}
+
+}
