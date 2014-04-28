@@ -55,6 +55,8 @@ function wpml_ctt_st_contexts(){
  */
 function wpml_ctt_active_languages_output( $selected_languages = array() ){
 
+//	if(!is_array($selected_languages)) return false;
+
     global $sitepress;
 							
     $active_langs = $sitepress->get_active_languages();
