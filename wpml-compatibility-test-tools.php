@@ -8,7 +8,7 @@ Author URI: http://wpml.org
 Version: 0.1.0
 */
 
-define('WPML_CTT_VERSION', '0.0.2');
+define('WPML_CTT_VERSION', '0.1.0');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_PLUGIN_URL', plugins_url( basename(dirname(__FILE__)) ) );
 

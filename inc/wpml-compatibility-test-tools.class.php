@@ -6,20 +6,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function __construct() {
 
-		self::install();
-
-		$this->admin_notices();
-
-		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
-		add_action( 'admin_print_scripts', array( $this, 'add_scripts' ) );
-
-		add_action( 'init', array( $this, 'process_request' ) );
-		add_action( 'init', array( $this, 'modify_wpml_behaviour' ) );
-
-
-	}
-
-	public function admin_notices() {
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) || ICL_PLUGIN_INACTIVE ) {
 			if ( ! function_exists( 'is_multisite' ) || ! is_multisite() ) {
 				add_action( 'admin_notices', array( $this, 'no_wpml_notice' ) );
@@ -28,8 +14,23 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			return false;
 		}
 
-		return true;
+		global $sitepress;
+		if(!isset($sitepress) || (method_exists($sitepress,'get_setting') && !$sitepress->get_setting( 'setup_complete' ))){
+			add_action( 'admin_notices', array( $this, 'no_wpml_notice' ) );
+			return false;
+		}
+
+
+		self::install();
+
+		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
+		add_action( 'admin_print_scripts', array( $this, 'add_scripts' ) );
+
+		add_action( 'init', array( $this, 'process_request' ) );
+		add_action( 'init', array( $this, 'modify_wpml_behaviour' ) );
+
 	}
+
 
 	/**
 	 * Process request
@@ -147,7 +148,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	private function translate_strings( $context, $languages, $template ) {
 		global $wpdb;
 
-
 		//get all not translated strings (status <> 1)
 		if ( 0 === strcmp( $context, 'all_contexts' ) ) {
 			$strings = $wpdb->get_results( "SELECT id, language, context, value FROM {$wpdb->prefix}icl_strings" );
@@ -183,7 +183,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function no_wpml_notice() {
 	?>
-	<div class="message error"><p><?php printf( __( 'WPML Compatibility Test Tools is enabled but not effective. It requires <a href="%s">WPML</a> in order to work.', 'wpml-string-translation' ), 'https://wpml.org/' ); ?></p></div>
+	<div class="message error"><p><?php printf( __( 'WPML Compatibility Test Tools is enabled but not effective. It requires configured <a href="%s">WPML</a> in order to work.', 'wpml-compatibility-test-tools' ), 'https://wpml.org/' ); ?></p></div>
 	<?php
 	}
 
