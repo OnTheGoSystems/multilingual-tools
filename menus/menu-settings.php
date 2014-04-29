@@ -6,11 +6,11 @@
 	<?php
 	//include strings auto translate box only when String Translations plugin is available
 	if ( defined( 'WPML_ST_VERSION' )  ) {
-		include_once(WPML_CTT_PATH.'/menus/wpml-compatibility-test-tools.menu.settings.auto.translate.strings.php');
+		include_once( WPML_CTT_PATH.'/menus/menu-settings-auto-translate-strings.php' );
 	}
 
 	//include duplicate auto translate box
-	include_once(WPML_CTT_PATH.'/menus/wpml-compatibility-test-tools.menu.settings.auto.translate.duplicate.php');
+	include_once( WPML_CTT_PATH.'/menus/menu-settings-auto-translate-duplicate.php' );
 	?>
 	
 

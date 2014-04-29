@@ -216,7 +216,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	public function administration_page() {
-		include( WPML_CTT_PATH . '/menus/wpml-compatibility-test-tools.menu.settings.php' );
+		include( WPML_CTT_PATH . '/menus/menu-settings.php' );
 	}
 
 	public function add_scripts(){
