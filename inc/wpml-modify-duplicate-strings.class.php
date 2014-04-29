@@ -25,7 +25,7 @@ class Modify_Duplicate_Strings{
 	 * @param $lang    - language code
 	 * @param $context - array(
 	 *							'context'   => 'post' or 'custom_field' or 'taxonomy',
-	 *							'attribute' => 'title' or 'content' (for a post), 'value' (for a custom field), '{taxonomy_name}' (for a taxonomy),
+	 *							'attribute' => 'title' or 'content' or 'excerpt' (for a post), 'value' (for a custom field), '{taxonomy_name}' (for a taxonomy),
 	 *							'key'       => '{post_id}' | '{meta_key}' | '{term_id}',
 	 *							);
 	 *

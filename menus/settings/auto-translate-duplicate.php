@@ -16,11 +16,12 @@
 
 				<?php $duplicate_strings = WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings', array() );?>
 
-				<input type="checkbox" name="duplicate_strings_to_translate[post][title]" value="1" <?php checked(isset($duplicate_strings['post']['title']))?>  /> <?php _e('Posts title', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[post][content]" value="1" <?php checked(isset($duplicate_strings['post']['content']))?> /> <?php _e('Posts content', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" name="duplicate_strings_to_translate[post][title]" value="1" <?php checked(isset($duplicate_strings['post']['title']))?>  /> <?php _e('Post title', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" name="duplicate_strings_to_translate[post][content]" value="1" <?php checked(isset($duplicate_strings['post']['content']))?> /> <?php _e('Post content', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" name="duplicate_strings_to_translate[post][excerpt]" value="1" <?php checked(isset($duplicate_strings['post']['excerpt']))?> /> <?php _e('Post excerpt', 'wpml-compatibility-test-tools' );?> <br/>
 				<input type="checkbox" name="duplicate_strings_to_translate[custom_fields][value]" value="1" <?php checked(isset($duplicate_strings['custom_fields']['value']))?> /> <?php _e('Custom fields', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy']['all']))?> /> <?php _e('Terms name', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy_slug][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy_slug']['all']))?> /> <?php _e('Terms slug', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy']['all']))?> /> <?php _e('Term name', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy_slug][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy_slug']['all']))?> /> <?php _e('Term slug', 'wpml-compatibility-test-tools' );?> <br/>
 
 				<br /><br />
 
