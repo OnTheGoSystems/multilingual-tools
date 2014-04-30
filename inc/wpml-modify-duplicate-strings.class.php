@@ -58,6 +58,12 @@ class Modify_Duplicate_Strings{
 		//based on context
 		switch( $filter_context ) {
 			case 'post':
+
+				//exception for empty excerpt field
+				if ( ( 0 === strcmp($attribute, 'excerpt') ) && ( empty( $string ) ) ){
+					break;
+				}
+
 				$string = wpml_ctt_prepare_string($this->template, $string, $lang);
 				break;
 			case 'taxonomy':
