@@ -10,7 +10,7 @@
 		<td>
 			<p>
 
-			<?php _e('Select strings to which you want to add language information. Language information will be applied during duplicate creation.', 'wpml-compatibility-test-tools'); ?><br /><br />
+			<?php _e('Select strings to which you want to add language information. Language information will be applied during creation of post duplicate.', 'wpml-compatibility-test-tools'); ?><br /><br />
 
 			<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 

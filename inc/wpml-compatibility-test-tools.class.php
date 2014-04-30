@@ -196,7 +196,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	public function no_context_notice() {
-		echo '<div class="message error"><p>' . __( 'Please select context.', 'wpml-compatibility-test-tools' ) . '</p></div>';
+		echo '<div class="message error"><p>' . __( 'Please select the context.', 'wpml-compatibility-test-tools' ) . '</p></div>';
 	}
 
 	public function no_template_notice() {

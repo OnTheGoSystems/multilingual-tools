@@ -1,7 +1,7 @@
 <table class="widefat general_options_table" style="margin-top: 20px;">
 	<thead>
 	<tr>
-		<th><?php _e('Auto strings translation', 'wpml-compatibility-test-tools') ?></th>
+		<th><?php _e('Auto generate strings translations', 'wpml-compatibility-test-tools') ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -52,8 +52,8 @@
 				<small style="margin-left: 235px; float: left;">You can use following, special tags: %original_string%, %language_name%, %language_code%, %language_native_name% </small>
 				<br /><br />
 
-				<input type="submit" name="strings_auto_translate_action_translate" value="<?php _e('Add translations', 'wpml-compatibility-test-tools'); ?>" class="button-secondary" />
-				<input type="submit" name="strings_auto_translate_action_save" value="<?php _e('Save settings', 'wpml-compatibility-test-tools'); ?>" class="button-secondary" />
+				<input type="submit" id="strings_auto_translate_action_translate" name="strings_auto_translate_action_translate" value="<?php _e('Generate strings translations', 'wpml-compatibility-test-tools'); ?>" class="button-primary" />
+				<input type="submit" id="strings_auto_translate_action_save" name="strings_auto_translate_action_save" value="<?php _e('Save settings', 'wpml-compatibility-test-tools'); ?>" class="button-secondary" />
 			</form>
 
 		</td>
