@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: WPML Compatibility Test Tools
-Plugin URI: http://www.wpml.org
+Plugin URI: http://wpml.org
 Description: Tools to test theme and plugin compatibility.
-Author: ICanLocalize
+Author: WPML Development Team
 Author URI: http://wpml.org
-Version: 0.1.0
+Version: 0.9
 */
 
-define('WPML_CTT_VERSION', '0.1.0');
+define('WPML_CTT_VERSION', '0.9');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_PLUGIN_URL', plugins_url( basename(dirname(__FILE__)) ) );
 
