@@ -183,7 +183,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function no_wpml_notice() {
 	?>
-	<div class="message error"><p><?php printf( __( 'WPML Compatibility Test Tools is enabled but not effective. It requires configured <a href="%s">WPML</a> in order to work.', 'wpml-compatibility-test-tools' ), 'https://wpml.org/' ); ?></p></div>
+	<div class="message error"><p><?php printf( __( 'WPML Compatibility Test Tools requires <a href="%s">WPML</a> plugin to work. You will need to install the base WPML plugin, Translation Management and String Translation.', 'wpml-compatibility-test-tools' ), 'http://wpml.org/' ); ?></p></div>
 	<?php
 	}
 
