@@ -18,5 +18,8 @@ require WPML_CTT_PATH . '/inc/wpml-compatibility-test-tools-base.class.php';
 require WPML_CTT_PATH . '/inc/wpml-compatibility-test-tools.class.php';
 require WPML_CTT_PATH . '/inc/wpml-modify-duplicate-strings.class.php';
 
+if ( !defined( 'ICL_DONT_PROMOTE' ) ){
+	define('ICL_DONT_PROMOTE', true );
+}
 
 $WPML_Compatibility_Test_Tools = new WPML_Compatibility_Test_Tools();

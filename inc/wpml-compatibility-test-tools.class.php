@@ -213,9 +213,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	//Messages
 
-
-
-
 	/**
 	 * Register settings page
 	 */
