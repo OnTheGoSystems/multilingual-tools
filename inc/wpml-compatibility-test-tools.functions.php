@@ -75,4 +75,3 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
     return $theme_lang_inputs;
 							    
 }
-

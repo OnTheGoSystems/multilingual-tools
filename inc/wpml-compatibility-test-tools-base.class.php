@@ -4,7 +4,11 @@ class WPML_Compatibility_Test_Tools_Base {
 
 	const OPTIONS_NAME = 'wpml_ctt_settings';
 	static $options = array();
+	public $messages;
 
+	public function __construct() {
+		$this->messages = new WPML_Compatibility_Test_Tools_Messages();
+	}
 
 	/**
 	 * Save initial configuration to database
