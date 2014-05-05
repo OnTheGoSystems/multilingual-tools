@@ -5,10 +5,10 @@ Plugin URI: http://wpml.org
 Description: Tools to test theme and plugin compatibility.
 Author: WPML Development Team
 Author URI: http://wpml.org
-Version: 0.9
+Version: 0.9.1
 */
 
-define('WPML_CTT_VERSION', '0.9');
+define('WPML_CTT_VERSION', '0.9.1');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_PLUGIN_URL', plugins_url( basename(dirname(__FILE__)) ) );
 

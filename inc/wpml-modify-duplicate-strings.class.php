@@ -64,7 +64,7 @@ class Modify_Duplicate_Strings {
 					break;
 				}
 
-				//check if user want to add language information also for images in content
+				//check if user want to add language information also for images alt and title tags in content
 				if ( 0 === strcmp( $attribute, 'content' ) && isset( $this->filter[$filter_context]['image-tags'] ) ) {
 					$string = $this->add_language_name_to_images( $this->template, $string, $lang );
 				}

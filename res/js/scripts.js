@@ -13,6 +13,22 @@ jQuery(document).ready(function(){
 		return confirm(question);
 	});
 
+	jQuery('#duplicate_strings_to_translate_toggle_all').click(function(event) {
+			event.preventDefault();
+			var checkBoxes = jQuery("input[type='checkbox'][name^='duplicate_strings_to_translate']");
+			checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+	});
+
+	jQuery('#translate_strings_active_languages_toggle_all').click(function(event) {
+		event.preventDefault();
+		var checkBoxes = jQuery("input[type='checkbox'][name^='active_languages']");
+		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+	});
+
+
+
+
+
 
 
 });

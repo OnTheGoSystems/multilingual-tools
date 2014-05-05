@@ -24,7 +24,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		self::install();
 
 		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
-		add_action( 'admin_print_scripts', array( $this, 'add_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 
 		add_action( 'init', array( $this, 'process_request' ) );
 		add_action( 'init', array( $this, 'modify_wpml_behaviour' ) );
@@ -220,7 +220,14 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	public function add_scripts(){
-		wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
+
+		$screen = get_current_screen();
+
+		if ( in_array( $screen->id, array( 'toplevel_page_wpml-compatibility-test-tools') ) )
+		{
+			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
+		}
+
 	}
 
 

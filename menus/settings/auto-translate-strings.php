@@ -35,6 +35,7 @@
 
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Translate languages:', 'wpml-compatibility-test-tools'); ?></label>
 				<?php echo wpml_ctt_active_languages_output( WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_languages', array()) ); ?>
+				<a style="margin-left: 20px;" id="translate_strings_active_languages_toggle_all" href="#">Toggle all</a>
 				<br /><br />
 
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Template:', 'wpml-compatibility-test-tools'); ?></label>
