@@ -4,6 +4,7 @@
 	
 	
 	<?php
+
 	//include strings auto translate box only when String Translations plugin is available
 	if ( defined( 'WPML_ST_VERSION' )  ) {
 		include_once( WPML_CTT_PATH . '/menus/settings/auto-translate-strings.php' );

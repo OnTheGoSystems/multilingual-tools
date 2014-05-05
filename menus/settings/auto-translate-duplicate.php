@@ -10,7 +10,7 @@
 		<td>
 			<p>
 
-			<?php _e('Select strings to which you want to add language information. Language information will be applied during creation of post duplicate.', 'wpml-compatibility-test-tools'); ?><br /><br />
+			<?php printf(__("Select which elements in posts to auto-translate. Once you've saved your selection, go to the %s and duplicate the site's content.", 'wpml-compatibility-test-tools'), "<a href=\"".admin_url('admin.php?page='.basename(WPML_TM_PATH). '/menu/main.php')."\">".__('Translation Dashboard','wpml-compatibility-test-tools')."</a>" ); ?><br /><br />
 
 			<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 

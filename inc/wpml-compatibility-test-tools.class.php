@@ -45,39 +45,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		return true;
 	}
 
-
-	/**
-	 * Process action save_duplicate_strings_to_translate
-	 */
-	private function process_save_duplicate_strings_to_translate(){
-
-		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
-
-			$error = false;
-
-			$strings = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
-			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? $_POST['duplicate_strings_template'] : '';
-
-			if ( empty( $template ) ) {
-				add_action( 'admin_notices', array( $this, 'no_template_notice' ) );
-				$error = true;
-			}
-
-			if ( $error ) {
-				return false;
-			}
-
-			self::update_option('duplicate_strings', $strings);
-			self::update_option('duplicate_strings_template', $template);
-			add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
-
-		}
-
-		return true;
-
-	}
-
-
 	/**
 	 * Process action strings_auto_translate_action_translate
 	 *
@@ -92,6 +59,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$context   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
 			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : array();
 			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? $_POST['strings_auto_translate_template'] : '';
+
+			if ( empty( $template ) ) {
+				add_action( 'admin_notices', array( $this, 'no_template_notice' ) );
+				$error = true;
+			}
+
+			if ( $error ) {
+				return false;
+			}
 
 			self::update_option('string_auto_translate_context', $context);
 			self::update_option('string_auto_translate_languages', $languages);
@@ -120,7 +96,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 					add_action( 'admin_notices', array( $this, 'no_template_notice' ) );
 					$error = true;
 				}
-
 
 				if ( $error ) {
 					return false;
@@ -166,6 +141,42 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	}
 
+	/**
+	 * Process action save_duplicate_strings_to_translate
+	 */
+	private function process_save_duplicate_strings_to_translate(){
+
+		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
+
+			$error = false;
+
+			$strings = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
+			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? $_POST['duplicate_strings_template'] : '';
+
+			if ( empty( $template ) ) {
+				add_action( 'admin_notices', array( $this, 'no_template_notice' ) );
+				$error = true;
+			}
+
+			if ( $error ) {
+				return false;
+			}
+
+			self::update_option('duplicate_strings', $strings);
+			self::update_option('duplicate_strings_template', $template);
+
+			if ( !empty( $strings ) ){
+				add_action( 'admin_notices', array( $this, 'duplicate_strings_available' ) );
+			}
+			else{
+				add_action( 'admin_notices', array( $this, 'settings_updated_notice' ) );
+			}
+
+		}
+
+		return true;
+
+	}
 
 	/**
 	 * Modify WPML behaviour based on selected settings
@@ -210,6 +221,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function settings_updated_notice() {
 		echo '<div class="updated message fade"><p>' . __( 'Settings updated.', 'wpml-compatibility-test-tools' ) . '</p></div>';
 	}
+
+	public function duplicate_strings_available() {
+		$message = sprintf( __("Your settings have been updated.<br/>Now, continue to the %s screen, select all the site's content, select <strong>Duplicate all</strong> and click on <strong>Send documents</strong>. %s.", 'wpml-compatibility-test-tools'), "<a href=\"".admin_url('admin.php?page='.basename(WPML_TM_PATH). '/menu/main.php')."\">".__('Translation Dashboard','wpml-compatibility-test-tools')."</a>", "<a target=\"_blank\" href=\"#\">Help</a>" );
+		echo '<div class="updated message fade"><p>' . $message . '</p></div>';
+	}
+
+
+
+
 
 	public function register_administration_page() {
 		add_menu_page( __( 'WPML CTT', 'wpml-compatibility-test-tools' ), __( 'WPML CTT', 'wpml-compatibility-test-tools' ), 'manage_options', 'wpml-compatibility-test-tools', array( $this, 'administration_page' ), ICL_PLUGIN_URL . '/res/img/icon16.png' );
