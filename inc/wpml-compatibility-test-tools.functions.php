@@ -75,3 +75,18 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
     return $theme_lang_inputs;
 							    
 }
+
+
+/**
+ *
+ * Return names of all custom fields
+ *
+ * @return mixed
+ */
+function wpml_get_custom_fields(  ){
+	global $wpdb;
+
+
+	return $wpdb->get_results( "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta" );
+
+}

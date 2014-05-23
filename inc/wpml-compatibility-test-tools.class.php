@@ -228,15 +228,13 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
-		add_menu_page( __( 'WPML CTT', 'wpml-compatibility-test-tools' ), __( 'WPML CTT', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG , array( $this, 'administration_page' ), ICL_PLUGIN_URL . '/res/img/icon16.png' );
+		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML CTT', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG , null, ICL_PLUGIN_URL . '/res/img/icon16.png' );
+		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG );
+		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Info', 'wpml-compatibility-test-tools' ), __( 'Info', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/info.php' );
+
+
 	}
 
-	/**
-	 * Settings page
-	 */
-	public function administration_page() {
-		include( WPML_CTT_PATH . '/menus/settings/settings.php' );
-	}
 
 	/**
 	 * Add scripts only for plugin's settings page
@@ -245,7 +243,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		$screen = get_current_screen();
 
-		if ( in_array( $screen->id, array( 'toplevel_page_wpml-compatibility-test-tools/menus/settings/settings') ) )
+		if ( in_array( $screen->id, array( 'wpml-compatibility-test-tools/menus/settings/settings') ) )
 		{
 			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
 		}

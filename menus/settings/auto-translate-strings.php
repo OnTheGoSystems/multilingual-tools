@@ -24,7 +24,7 @@
 					<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Select strings within context to translate:', 'wpml-compatibility-test-tools'); ?></label>
 					<select name="strings_auto_translate_context">
 						<option value=""><?php _e('Select context', 'wpml-compatibility-test-tools'); ?></option>
-						<option <?php selected('all_contexts', self::get_option( 'string_auto_translate_context')) ?> value="all_contexts" ><?php _e('All contexts', 'wpml-compatibility-test-tools'); ?></option>
+						<option <?php selected('all_contexts', WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> value="all_contexts" ><?php _e('All contexts', 'wpml-compatibility-test-tools'); ?></option>
 
 						<?php foreach( $stt_context as $v ){ ?>
 							<option <?php selected(htmlspecialchars($v->context), WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> value="<?php echo htmlspecialchars( $v->context ); ?>"><?php echo $v->context . ' ('. $v->c .')'; ?></option>
