@@ -6,7 +6,12 @@ class WPML_Compatibility_Test_Tools_Messages {
 	{
 		switch($name){
 			case 'no_wpml_notice' :
-				$message = __( 'WPML Compatibility Test Tools requires %s plugin to work. You will need to install the base WPML plugin, Translation Management and String Translation.', 'wpml-compatibility-test-tools' );
+				$message = __( 'WPML Compatibility Test Tools plugin is enabled but not effective. It requires %s plugin in order to work.', 'wpml-compatibility-test-tools' );
+				echo '<div class="message error"><p>'.sprintf($message, '<a href="http://wpml.org/">WPML</a>').'</p></div>';
+				break;
+
+			case 'not_finished_wpml_setup' :
+				$message = __( 'WPML Compatibility Test Tools is enabled but not effective. You have to finish WPML setup.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>'.sprintf($message, '<a href="http://wpml.org/">WPML</a>').'</p></div>';
 				break;
 

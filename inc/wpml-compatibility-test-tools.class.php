@@ -35,8 +35,13 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		//WPML setup has to be finished
 		global $sitepress;
-		if(!isset($sitepress) || (method_exists($sitepress,'get_setting') && !$sitepress->get_setting( 'setup_complete' ))){
+		if( !isset( $sitepress ) ){
 			add_action( 'admin_notices', array( $this->messages, 'no_wpml_notice' ) );
+			return false;
+		}
+
+		if( method_exists( $sitepress, 'get_setting' ) && !$sitepress->get_setting( 'setup_complete' ) ) {
+			add_action( 'admin_notices', array( $this->messages, 'not_finished_wpml_setup' ) );
 			return false;
 		}
 
