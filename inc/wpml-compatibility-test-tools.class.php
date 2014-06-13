@@ -243,7 +243,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		$screen = get_current_screen();
 
-		if ( in_array( $screen->id, array( WPML_CTT_FOLDER + '/menus/settings/settings') ) )
+		if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings') ) )
 		{
 			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
 		}
