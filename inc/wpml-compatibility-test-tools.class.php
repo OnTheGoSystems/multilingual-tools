@@ -230,7 +230,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function register_administration_page() {
 		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML CTT', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG , null, ICL_PLUGIN_URL . '/res/img/icon16.png' );
 		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG );
-		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Info', 'wpml-compatibility-test-tools' ), __( 'Info', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/info.php' );
+		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Custom objects', 'wpml-compatibility-test-tools' ), __( 'Custom objects', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/info.php' );
 
 
 	}
