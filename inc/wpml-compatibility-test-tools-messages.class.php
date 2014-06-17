@@ -50,7 +50,7 @@ class WPML_Compatibility_Test_Tools_Messages {
 				break;
 
 			case 'duplicate_strings_available' :
-				$message = sprintf( __("Your settings have been updated.<br/>Now, continue to the %s screen, select all the site's content, select <strong>Duplicate all</strong> and click on <strong>Send documents</strong>. %s.", 'wpml-compatibility-test-tools'), "<a href=\"".admin_url('admin.php?page='.basename(WPML_TM_PATH). '/menu/main.php')."\">".__('Translation Dashboard','wpml-compatibility-test-tools')."</a>", "<a target=\"_blank\" href=\"#\">Help</a>" );
+				$message = sprintf( __("Your settings have been updated.<br/>Now, continue to the %s screen, select all the site's content, select <strong>Duplicate all</strong> and click on <strong>Send documents</strong>. %s.", 'wpml-compatibility-test-tools'), "<a href=\"".admin_url('admin.php?page='.basename(WPML_TM_PATH). '/menu/main.php')."\">".__('Translation Dashboard','wpml-compatibility-test-tools')."</a>", "<a target=\"_blank\" href=\"http://wpml.org/documentation/related-projects/wpml-compatibility-test-tools-plugin/\">Help</a>" );
 				echo '<div class="updated message fade"><p>' . $message . '</p></div>';
 				break;
 

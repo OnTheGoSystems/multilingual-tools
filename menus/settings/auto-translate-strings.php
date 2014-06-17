@@ -8,7 +8,7 @@
 	<tr>
 		<td>
 			<p>
-				<?php printf( __('Before you start make sure that your theme/plugin is already <a href="%s">scanned for strings</a>.', 'wpml-compatibility-test-tools'), admin_url( 'admin.php?page=sitepress-multilingual-cms/menu/theme-localization.php' ) )  ; ?>
+				<?php printf( __('Before you start make sure that your theme/plugin is already <a href="%s">scanned for strings</a>.', 'wpml-compatibility-test-tools'), admin_url( 'admin.php?page='.ICL_PLUGIN_FOLDER.'/menu/theme-localization.php' ) )  ; ?>
 			</p>
 		</td>
 	</tr>
