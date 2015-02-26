@@ -159,7 +159,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		//for each string add information
 		foreach ( $strings as $v ) {
 			foreach ( $languages as $lang ) {
-				icl_add_string_translation( $v->id, $lang, wpml_ctt_prepare_string($template, $v->value, $lang), TRUE );
+				icl_add_string_translation( $v->id, $lang, wpml_ctt_prepare_string($template, $v->value, $lang), 10 );
 				icl_update_string_status( $v->id );
 			}
 
