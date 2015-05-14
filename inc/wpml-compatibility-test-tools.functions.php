@@ -29,11 +29,9 @@ function wpml_ctt_prepare_string( $template, $string, $lang ) {
 		$template = str_replace( '%language_native_name%', $language_details['display_name'], $template );
 	}
 
-
 	return $template;
 
 }
-
 
 /**
  *
@@ -55,8 +53,6 @@ function wpml_ctt_st_contexts(){
  */
 function wpml_ctt_active_languages_output( $selected_languages = array() ){
 
-//	if(!is_array($selected_languages)) return false;
-
     global $sitepress;
 							
     $active_langs = $sitepress->get_active_languages();
@@ -76,16 +72,14 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
 							    
 }
 
-
 /**
  *
  * Return names of all custom fields
  *
  * @return mixed
  */
-function wpml_get_custom_fields(  ){
+function wpml_get_custom_fields(){
 	global $wpdb;
-
 
 	return $wpdb->get_results( "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta" );
 

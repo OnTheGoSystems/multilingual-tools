@@ -1,0 +1,3 @@
+.ctt tr:nth-child(even) {background: #FAFAFA}
+.ctt tr:nth-child(odd) {background: #FFF}
+.ctt tr:hover {background: #E6F1F6}

@@ -13,6 +13,6 @@
 	//include duplicate auto translate box
 	include_once( WPML_CTT_PATH . '/menus/settings/auto-translate-duplicate.php' );
 	?>
-	
+
 
 </div>

@@ -7,11 +7,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		parent::__construct();
 
 		add_action( 'init', array( $this, 'init' ) );
-
 	}
 
-
 	public function init(){
+
+        //generate XML
+        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit'])) {
+            add_action('wp_loaded', array($this, 'generate_xml'));
+        }
+
 
 		//check for WPML
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) || ICL_PLUGIN_INACTIVE ) {
@@ -49,6 +53,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
+        add_action( 'admin_enqueue_scripts', array( $this, 'add_styles'  ) );
 
 		//handle admin settings page
 		$this->process_request();
@@ -131,7 +136,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
 
 			}
-
 
 		}
 
@@ -228,10 +232,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
+
 		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML CTT', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG , null, ICL_PLUGIN_URL . '/res/img/icon16.png' );
 		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG );
-		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Custom objects', 'wpml-compatibility-test-tools' ), __( 'Custom objects', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/info.php' );
-
+		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/generator.php' );
 
 	}
 
@@ -241,14 +245,175 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 */
 	public function add_scripts(){
 
-		$screen = get_current_screen();
-
-		if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings') ) )
-		{
 			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
-		}
 
 	}
+
+    /**
+     * Add styles only for Configuration Generator settings page
+     */
+    public function add_styles() {
+
+        $screen = get_current_screen();
+
+        if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/generator') ) ){
+            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/ctt_style.css', WPML_CTT_VERSION );
+
+            wp_enqueue_style( 'wctt-generator-style' );
+        }
+    }
+
+    /**
+     * Generate XML file
+     */
+    public function generate_xml() {
+
+        $dom = new DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+
+        $root = $dom->createElement('wpml-config');
+        $root = $dom->appendChild($root);
+
+        $args = array(
+            '_builtin' => false
+        );
+
+        $post_types = get_post_types( $args, 'names' );
+        if ($post_types) {
+
+            //	Create xml node <custom-types>
+            if(isset($_POST['cpt'])){
+
+                $cpts = $dom->createElement('custom-types');
+                $cpts = $root->appendChild($cpts);
+
+            }
+
+            foreach ( $post_types as $post_type ){
+
+                if(isset($_POST['cpt'][$post_type])){
+
+                    $cpt = $dom->createElement('custom-type', $post_type);
+                    $cpt = $cpts->appendChild($cpt);
+                    $cptatr = $dom->createAttribute('translate');
+                    $cptatr->value = $_POST['radio_cpt'][$post_type];
+                    $cpt->appendChild($cptatr);
+
+                }
+            }
+        }
+
+        $taxonomies = get_taxonomies( $args );
+        if ($taxonomies) {
+
+            //	Create xml node <taxonomies>
+            if(isset($_POST['tax'])){
+
+                $taxs = $dom->createElement('taxonomies');
+                $taxs = $root->appendChild($taxs);
+
+            }
+
+            foreach ( $taxonomies as $taxonomy ){
+
+                if(isset($_POST['tax'][$taxonomy])){
+
+                    $tax = $dom->createElement('taxonomy', $taxonomy);
+                    $tax = $taxs->appendChild($tax);
+                    $taxatr = $dom->createAttribute('translate');
+                    $taxatr->value = $_POST['radio_tax'][$taxonomy];
+                    $tax->appendChild($taxatr);
+
+                }
+            }
+        }
+
+        $custom_fields = wpml_get_custom_fields();
+        if ($custom_fields) {
+
+            //	Create xml node <custom-fields>
+            if(isset($_POST['cf'])){
+
+                $cfs = $dom->createElement('custom-fields');
+                $cfs = $root->appendChild($cfs);
+
+            }
+
+            foreach ( $custom_fields as $custom_field ){
+
+                if(isset($_POST['cf'][$custom_field->meta_key])){
+
+                    $cf = $dom->createElement('custom-field', $custom_field->meta_key);
+                    $cf = $cfs->appendChild($cf);
+                    $cfatr = $dom->createAttribute('action');
+                    $cfatr->value = $_POST['radio_cf'][$custom_field->meta_key];
+                    $cf->appendChild($cfatr);
+
+                }
+            }
+        }
+
+        $options = NULL;
+
+        if(isset($_POST['option_name']))
+            $options = get_option($_POST['option_name']);
+
+        $ats = $dom->createElement('admin-texts');
+        $ats = $root->appendChild($ats);
+
+        $atp = $dom->createElement('key');
+        $atp = $ats->appendChild($atp);
+        $atpatr = $dom->createAttribute('name');
+
+        if(isset($_POST['option_name']))
+            $atpatr->value = $_POST['option_name'];
+
+        $atp->appendChild($atpatr);
+
+        $this->option2xml($options, $atp, $dom);
+
+        $xml = $dom->saveXML($root);
+
+        switch($_POST['save']){
+            case 'file' :
+               header( "Content-Description: File Transfer" );
+               header( 'Content-Disposition: attachment; filename="wpml-config.xml"' );
+               header( "Content-Type: application/xml" );
+               echo $xml;
+               die();
+               break;
+
+            case 'dir' :
+               file_put_contents(get_template_directory() . '/wpml-config.xml', $xml);
+               break;
+
+        }
+    }
+
+
+    /**
+     * Generate XML from option array
+     */
+    public function option2xml($options, $node, $dom){
+
+        if (is_array($options)){
+
+            foreach ($options as $option => $value) {
+
+                $at = $node->appendChild($dom->createElement('key'));
+                $atatr = $dom->createAttribute('name');
+                $atatr->value = $option;
+                $at->appendChild($atatr);
+
+                if (is_array($value)) {
+
+                    $this->option2xml($value, $at, $dom);
+
+                }
+            }
+        }
+    }
 
 
 }

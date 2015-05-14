@@ -25,10 +25,64 @@ jQuery(document).ready(function(){
 		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
 	});
 
+    jQuery('#cpt_toggle_all').click(function(event) {
+        event.preventDefault();
+        var checkBoxes = jQuery("input[type='checkbox'][name^='cpt']");
+        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+    });
 
+    jQuery('#cpt0_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='cpt0']");
+        radioGroup.prop("checked", true);
+    });
 
+    jQuery('#cpt1_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='cpt1']");
+        radioGroup.prop("checked", true);
+    });
 
+    jQuery('#tax_toggle_all').click(function(event) {
+        event.preventDefault();
+        var checkBoxes = jQuery("input[type='checkbox'][name^='tax']");
+        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+    });
 
+    jQuery('#tax0_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='tax0']");
+        radioGroup.prop("checked", true);
+    });
 
+    jQuery('#tax1_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='tax1']");
+        radioGroup.prop("checked", true);
+    });
+
+    jQuery('.cf_toggle_all').click(function(event) {
+        event.preventDefault();
+        var checkBoxes = jQuery("input[type='checkbox'][name^='cf']");
+        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+    });
+
+    jQuery('.cf0_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='cf0']");
+        radioGroup.prop("checked", true);
+    });
+
+    jQuery('.cf1_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='cf1']");
+        radioGroup.prop("checked", true);
+    });
+
+    jQuery('.cf2_toggle_all').click(function(event) {
+        event.preventDefault();
+        var radioGroup = jQuery("input[type='radio'][id^='cf2']");
+        radioGroup.prop("checked", true);
+    });
 
 });
