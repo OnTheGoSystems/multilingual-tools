@@ -26,16 +26,13 @@
 
 							?><tr>
 								<td>
-                                    <input type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>>
-                                    <label><?php echo $post_type; ?></label>
+                                    <label><input type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
                                 </td>
 	                            <td width="100px" align="right">
-                                    <input id="cpt0" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="0" <?php echo !isset($_POST[$post_type]) || $_POST[$post_type] == '0' ? 'checked' : '' ?>/>
-									<label>Do nothing</label>
+                                    <label><input id="cpt0" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="0" <?php echo !isset($_POST[$post_type]) || $_POST[$post_type] == '0' ? 'checked' : '' ?>/>Do nothing</label>
 	                            </td>
 	                            <td width="100px">
-                                    <input id="cpt1" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST[$post_type]) && $_POST[$post_type] == '1' ? 'checked' : '' ?>/>
-	                                <label>Translate</label>
+                                    <label><input id="cpt1" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST[$post_type]) && $_POST[$post_type] == '1' ? 'checked' : '' ?>/>Translate</label>
 			                    </td>
 	                        </tr><?php
 
@@ -82,16 +79,13 @@
 
 						?><tr>
 							<td>
-                                <input type="checkbox" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['tax'][$taxonomy]) ? 'checked' : '' ?>>
-                                <label><?php echo $taxonomy; ?></label>
+                                <label><input type="checkbox" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['tax'][$taxonomy]) ? 'checked' : '' ?>><?php echo $taxonomy; ?></label>
                             </td>
 	                        <td width="100px" align="right">
-                                <input id="tax0" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="0" <?php echo !isset($_POST[$taxonomy]) || $_POST[$taxonomy] == '0' ? 'checked' : '' ?>/>
-								<label>Do nothing</label>
+                                <label><input id="tax0" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="0" <?php echo !isset($_POST[$taxonomy]) || $_POST[$taxonomy] == '0' ? 'checked' : '' ?>/>Do nothing</label>
 	                        </td>
 	                        <td width="100px">
-                                <input id="tax1" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST[$taxonomy]) && $_POST[$taxonomy] == '1' ? 'checked' : '' ?>/>
-	                            <label>Translate</label>
+                                <label><input id="tax1" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST[$taxonomy]) && $_POST[$taxonomy] == '1' ? 'checked' : '' ?>/>Translate</label>
 		                    </td>
 	                    </tr><?php
 
@@ -170,8 +164,7 @@
 
 						?><tr>
                             <td>
-                                <input type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>>
-                                <label><?php echo $custom_field->meta_key ?></label>
+                                <label><input type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
                             </td>
                             <td width="100px" title="<?php _e("Don't translate", 'wpml-compatibility-test-tools')?>">
                                 <input id="cf0" type="radio" name="radio_cf[<?php echo $custom_field->meta_key ?>]" value="ignore" <?php echo !isset($_POST[$custom_field->meta_key]) || $_POST[$custom_field->meta_key] == 'ignore' ? 'checked' : '' ?>/>
@@ -191,52 +184,54 @@
 					_e('<tr><td>No custom fields found</td></tr>', 'wpml-compatibility-test-tools');
 				}
 
-                $all_options = array_slice( wp_load_alloptions(), 30);
-				$tmp_options = array();
-				foreach( $all_options as $name => $value ) {
-					if(!stristr($name, '_transient')) $tmp_options[$name] = $value;
-				}
-                $all_options = $tmp_options;
+                $options = wpml_ctt_options_list();
 
-				?>
+                ?>
                     </tbody>
-                </table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<table class="widefat">
-                        <tr>
-                            <th><?php _e('Admin Texts', 'wpml-compatibility-test-tools') ?></th>
-                            <th style="float:right">
-                            	<label style="text-align:right;width: 235px; margin-top: 3px;"><?php _e('Select options name:', 'wpml-compatibility-test-tools'); ?>
-                                    <select name="option_name"><?php
-                                        foreach ($all_options as $option => $value) {
-                                            echo "<option namevalue='$option'" . ($option == isset($_POST['option_name']) ? ' selected="selected"' : '') .">$option</option>";
-                                        } ?>
-                                    </select>
-                                </label>
-	                        </th>
-                        </tr>
                 </table>
 			</td>
 		</tr>
         <tr>
             <td>
+                <table class="widefat">
+                    <thead>
+                    <tr>
+                        <th>
+                            <label style="vertical-align: -webkit-baseline-middle;"><?php _e('Admin Texts', 'wpml-compatibility-test-tools') ?>
+                                <span style="float: right;">
+                                    <label style="font-size: 13px"><?php _e('Options from <strong>wp_options</strong> table:', 'wpml-compatibility-test-tools'); ?>
+                                        <select name="option_list">
+                                            <option value="none"><?php _e('- Select options name -', 'wpml-compatibility-test-tools'); ?></option>
+                                            <?php
+                                            foreach ($options as $name => $value) {
+                                                echo "<option value='{$name}'>{$name}</option>";
+                                            }
+                                            ?>
+                                            <option value="all"><?php _e('*all options as keys', 'wpml-compatibility-test-tools'); ?></option>
+                                        </select>
+                                    </label>
+                                </span>
+                            </label>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="result">
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <table style="float:right">
                     <tr>
                         <th>
-                            <input style="margin: 2px 2px" type="radio" name="save" value="dir" <?php echo !isset($_POST['save']) || $_POST['save'] == 'dir' ? 'checked' : '' ?>/>
-                            <label style="margin-right: 20px">Save to theme directory</label>
-                            <input style="margin: 2px 2px" type="radio" name="save" value="file" <?php echo isset($_POST['save']) && $_POST['save'] == 'file' ? 'checked' : '' ?>/>
-                            <label>Save to file</label>
+                            <label style="margin-right: 20px"><input style="margin: 2px 2px" type="radio" name="save" value="dir" <?php echo !isset($_POST['save']) || $_POST['save'] == 'dir' ? 'checked' : '' ?>/>Save to theme directory</label>
+                            <label><input style="margin: 2px 2px" type="radio" name="save" value="file" <?php echo isset($_POST['save']) && $_POST['save'] == 'file' ? 'checked' : '' ?>/>Save to file</label>
                         </th>
                     </tr>
                 </table>
             </td>
         </tr>
-		</tbody>
-		<th><input name="submit" style="float:right;margin-bottom:5px" type="submit" class="button-primary" value="<?php _e('Generate', 'wpml-compatibility-test-tools') ?>" /></th>
+		<tr><th><input name="submit" style="float:right;margin-bottom:5px" type="submit" class="button-primary" value="<?php _e('Generate', 'wpml-compatibility-test-tools') ?>" disabled /></th></tr>
 	</table>
 </form>
 </div>

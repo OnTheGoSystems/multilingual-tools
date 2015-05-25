@@ -1,3 +1,6 @@
-.ctt tr:nth-child(even) {background: #FAFAFA}
-.ctt tr:nth-child(odd) {background: #FFF}
+.ctt tr:nth-child(2n) {background: #FAFAFA}
 .ctt tr:hover {background: #E6F1F6}
+#result ul {margin: 0}
+#tree ul, li {margin: 0}
+#tree li {padding: 8px 10px;word-break: break-all}
+#tree li ul {padding: 8px 0 0 10px}

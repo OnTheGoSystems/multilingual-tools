@@ -247,6 +247,8 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
 
+            wp_localize_script( 'wctt-scripts', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' )) );
+
 	}
 
     /**
@@ -354,27 +356,39 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             }
         }
 
-        $options = NULL;
+        // If option "none" from the list is selected, node <admin-texts> won't be included in XML file.
+        if ($_POST['option_list'] != 'none') {
 
-        if(isset($_POST['option_name']))
-            $options = get_option($_POST['option_name']);
+            $options = null;
 
-        $ats = $dom->createElement('admin-texts');
-        $ats = $root->appendChild($ats);
+            if (isset($_POST['option_list'])) {
+                $options = get_option($_POST['option_list']);
+            }
 
-        $atp = $dom->createElement('key');
-        $atp = $ats->appendChild($atp);
-        $atpatr = $dom->createAttribute('name');
+            $ats = $dom->createElement('admin-texts');
+            $ats = $root->appendChild($ats);
 
-        if(isset($_POST['option_name']))
-            $atpatr->value = $_POST['option_name'];
+            // If option "all" from the list is selected, parent key with option name won't be included in XML file.
+            if ($_POST['option_list'] == 'all') {
+                $options = wpml_ctt_options_list();
+                $atp = $ats;
+            } else {
+                $atp = $dom->createElement('key');
+                $atp = $ats->appendChild($atp);
+                $atpatr = $dom->createAttribute('name');
 
-        $atp->appendChild($atpatr);
+                if (isset($_POST['option_list']))
+                    $atpatr->value = $_POST['option_list'];
 
-        $this->option2xml($options, $atp, $dom);
+                $atp->appendChild($atpatr);
+            }
+
+            $this->option2xml($options, $atp, $dom);
+        }
 
         $xml = $dom->saveXML($root);
 
+        // Save options
         switch($_POST['save']){
             case 'file' :
                header( "Content-Description: File Transfer" );
@@ -387,13 +401,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             case 'dir' :
                file_put_contents(get_template_directory() . '/wpml-config.xml', $xml);
                break;
-
         }
     }
 
 
     /**
      * Generate XML from option array
+     * @param $options
+     * @param $node
+     * @param $dom
      */
     public function option2xml($options, $node, $dom){
 
@@ -401,15 +417,19 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
             foreach ($options as $option => $value) {
 
-                $at = $node->appendChild($dom->createElement('key'));
-                $atatr = $dom->createAttribute('name');
-                $atatr->value = $option;
-                $at->appendChild($atatr);
+                // Only if parent option is selected, both parent and child will be generated
+                if(isset($_POST['at'][$option])) {
 
-                if (is_array($value)) {
+                    $at = $node->appendChild($dom->createElement('key'));
+                    $atatr = $dom->createAttribute('name');
+                    $atatr->value = $option;
+                    $at->appendChild($atatr);
 
-                    $this->option2xml($value, $at, $dom);
+                    if (is_array($value)) {
 
+                        $this->option2xml($value, $at, $dom);
+
+                    }
                 }
             }
         }
