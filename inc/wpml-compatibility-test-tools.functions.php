@@ -93,7 +93,7 @@ function wpml_get_custom_fields(){
 add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
 
-    $option = get_option($_POST['option']);
+    $option = maybe_unserialize( get_option($_POST['option']) );
 
     if (!is_array($option)) {
         $option = array($_POST['option'] => $option);

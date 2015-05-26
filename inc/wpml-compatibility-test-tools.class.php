@@ -362,7 +362,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             $options = null;
 
             if (isset($_POST['option_list'])) {
-                $options = get_option($_POST['option_list']);
+                $options = maybe_unserialize( get_option($_POST['option_list']) );
             }
 
             $ats = $dom->createElement('admin-texts');
