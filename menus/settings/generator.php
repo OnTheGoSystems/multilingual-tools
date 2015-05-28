@@ -26,7 +26,7 @@
 
 							?><tr>
 								<td>
-                                    <label><input type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
+                                    <label><input class="outer" type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
                                 </td>
 	                            <td width="100px" align="right">
                                     <label><input id="cpt0" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="0" <?php echo !isset($_POST[$post_type]) || $_POST[$post_type] == '0' ? 'checked' : '' ?>/>Do nothing</label>
@@ -79,7 +79,7 @@
 
 						?><tr>
 							<td>
-                                <label><input type="checkbox" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['tax'][$taxonomy]) ? 'checked' : '' ?>><?php echo $taxonomy; ?></label>
+                                <label><input class="outer" type="checkbox" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['tax'][$taxonomy]) ? 'checked' : '' ?>><?php echo $taxonomy; ?></label>
                             </td>
 	                        <td width="100px" align="right">
                                 <label><input id="tax0" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="0" <?php echo !isset($_POST[$taxonomy]) || $_POST[$taxonomy] == '0' ? 'checked' : '' ?>/>Do nothing</label>
@@ -164,7 +164,7 @@
 
 						?><tr>
                             <td>
-                                <label><input type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
+                                <label><input class="outer" type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
                             </td>
                             <td width="100px" title="<?php _e("Don't translate", 'wpml-compatibility-test-tools')?>">
                                 <input id="cf0" type="radio" name="radio_cf[<?php echo $custom_field->meta_key ?>]" value="ignore" <?php echo !isset($_POST[$custom_field->meta_key]) || $_POST[$custom_field->meta_key] == 'ignore' ? 'checked' : '' ?>/>
@@ -184,8 +184,6 @@
 					_e('<tr><td>No custom fields found</td></tr>', 'wpml-compatibility-test-tools');
 				}
 
-                $options = wpml_ctt_options_list();
-
                 ?>
                     </tbody>
                 </table>
@@ -203,9 +201,13 @@
                                         <select name="option_list">
                                             <option value="none"><?php _e('- Select options name -', 'wpml-compatibility-test-tools'); ?></option>
                                             <?php
+
+                                            $options = wpml_ctt_options_list();
+
                                             foreach ($options as $name => $value) {
                                                 echo "<option value='{$name}'>{$name}</option>";
                                             }
+
                                             ?>
                                             <option value="all"><?php _e('*all options as keys', 'wpml-compatibility-test-tools'); ?></option>
                                         </select>
@@ -215,7 +217,7 @@
                         </th>
                     </tr>
                     </thead>
-                    <tbody id="result">
+                    <tbody id="result"></tbody>
                 </table>
             </td>
         </tr>
