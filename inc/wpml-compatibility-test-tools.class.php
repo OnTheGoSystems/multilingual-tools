@@ -356,36 +356,21 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             }
         }
 
-        // If option "none" from the list is selected, node <admin-texts> won't be included in XML file.
-        if ($_POST['option_list'] != 'none') {
+        if(isset($_POST['at'])) {
+            $data = null;
 
-            $options = null;
-
-            if (isset($_POST['option_list'])) {
-                $options = maybe_unserialize( get_option($_POST['option_list']) );
-            }
-
+            //	Create xml node <custom-fields>
             $ats = $dom->createElement('admin-texts');
             $ats = $root->appendChild($ats);
 
-            // If option "all" from the list is selected, parent key with option name won't be included in XML file.
-            if ($_POST['option_list'] == 'all') {
-                $options = wpml_ctt_options_list();
-                $atp = $ats;
-            } else {
-                $atp = $dom->createElement('key');
-                $atp = $ats->appendChild($atp);
-                $atpatr = $dom->createAttribute('name');
+            $options = wpml_ctt_options_list();
 
-                if (isset($_POST['option_list']))
-                    $atpatr->value = $_POST['option_list'];
-
-                $atp->appendChild($atpatr);
+            foreach ($options as $name => $value) {
+                $data[$name] = maybe_unserialize( maybe_unserialize( $value ) );
             }
 
-            $this->option2xml($options, $atp, $dom);
+            $this->option2xml($data, $ats, $dom);
         }
-
         $xml = $dom->saveXML($root);
 
         // Save options

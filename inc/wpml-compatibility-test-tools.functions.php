@@ -93,17 +93,15 @@ function wpml_get_custom_fields(){
 add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
 
-    $option = maybe_unserialize( get_option($_POST['option']) );
+    $options = $_POST['options'];
 
-    if (!is_array($option)) {
-        $option = array($_POST['option'] => $option);
+    $data[] = null;
+
+    foreach ($options as $option) {
+        $data[$option] = maybe_unserialize( get_option($option) );
     }
 
-    if ($_POST['option'] == 'all') {
-        $option = wpml_ctt_options_list();
-    }
-
-    echo json_encode($option);
+    echo json_encode($data);
     wp_die();
 
 }

@@ -1,20 +1,42 @@
 jQuery(document).ready(function(){
 
-    var result = jQuery("#result"),
+    var option = [],
+        result = jQuery("#result"),
         submitButton = jQuery("input[type='submit']");
 
-    // Generating checkboxes option tree.
-    jQuery("select").change(function() {
-        var option = jQuery('select option:selected').val();
+    function buttonToggle(){
+        submitButton.attr("disabled", !jQuery("input[type='checkbox'][class^='cb']").is(":checked"));
+    }
 
-        // Disabling submit button on every dropdown selection, if outer checkboxes are not checked.
-        submitButton.attr("disabled", !jQuery("input[type='checkbox'][class^='outer']").is(":checked"));
+    // Toggle drop-down on mouse gesture.
+    jQuery( ".dropdown" )
+        .mouseenter(function() {
+            jQuery(".dropdown dd ul").slideToggle('fast');
+        })
+        .mouseleave(function() {
+            jQuery(".dropdown dd ul").slideToggle('fast');
+        });
 
-        if (option !== "none") {
+    // Enable submit button if any checkbox is selected.
+    jQuery(document).on("click", "[type='checkbox']", function() {
+        buttonToggle();
+    });
+
+    jQuery('#multiSelect input[type="checkbox"]').on('click', function () {
+
+        // Disable submit button on Multi-Select option change.
+        buttonToggle();
+
+        // Collecting options from Multi-Select.
+        option = jQuery('#multiSelect input[type="checkbox"]:checked').map(function(_, i) {
+            return jQuery(i).val();
+        }).get();
+
+        if (option.length != 0) {
 
             var data = {
                 'action': "wpml_ctt_action",
-                'option': option
+                'options': option
             };
 
             jQuery.post(ajax_object.ajax_url, data, function (response) {
@@ -25,33 +47,27 @@ jQuery(document).ready(function(){
                 output = '<ul id="tree">';
                 jQuery.each(data, generateList);
 
+                // Generating checkboxes option tree.
                 function generateList(key, value) {
                     if (jQuery.isPlainObject(value)) {
-                        output += '<li><input type="checkbox" name="at[' + key + ']" value="0"><strong> [ ' + key + ' ] => ' + '</strong><ul>';
+                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"><strong> [ ' + key + ' ] => ' + '</strong><ul>';
                         jQuery.each(value, generateList);
                         output += '</ul></li>';
                     } else {
-                        output += '<li><input type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
+                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
                     }
                 }
-
                 output += '</ul>';
 
-                result.hide('fast', function () {
-                    result.html(output);
-                });
-                result.show('fast');
+                result.html(output);
             });
         } else {
-            // Need to destroy element because of button disable on checkbox unchecked.
-            result.hide('fast', function(){ jQuery("#tree").remove(); });
+            jQuery("#tree").remove();
         }
     });
 
     // Multi-check options tree.
-    jQuery("tbody").on("click", "[type='checkbox']", function() {
-        // Enable submit button if any checkbox is selected.
-        submitButton.attr("disabled", !jQuery("input[type='checkbox']").is(":checked"));
+    result.on("click", "[type='checkbox']", function() {
         var cur = jQuery(this);
         cur.next().next().find("input[type='checkbox']").prop('checked', this.checked);
         if (this.checked) {
@@ -90,6 +106,7 @@ jQuery(document).ready(function(){
         event.preventDefault();
         var checkBoxes = jQuery("input[type='checkbox'][name^='cpt']");
         checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        buttonToggle();
     });
 
     jQuery('#cpt0_toggle_all').click(function(event) {
@@ -108,6 +125,7 @@ jQuery(document).ready(function(){
         event.preventDefault();
         var checkBoxes = jQuery("input[type='checkbox'][name^='tax']");
         checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        buttonToggle();
     });
 
     jQuery('#tax0_toggle_all').click(function(event) {
@@ -126,6 +144,7 @@ jQuery(document).ready(function(){
         event.preventDefault();
         var checkBoxes = jQuery("input[type='checkbox'][name^='cf']");
         checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        buttonToggle();
     });
 
     jQuery('.cf0_toggle_all').click(function(event) {
