@@ -93,9 +93,9 @@ function wpml_get_custom_fields(){
 add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
 
-    $options = $_POST['options'];
+    check_ajax_referer( 'wctt-generate', '_wctt_mighty_nonce' );
 
-    $data[] = null;
+    $options = $_POST['options'];
 
     foreach ($options as $option) {
         $data[$option] = maybe_unserialize( get_option($option) );

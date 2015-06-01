@@ -12,7 +12,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function init(){
 
         //generate XML
-        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit'])) {
+        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit']) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' )) {
             add_action('wp_loaded', array($this, 'generate_xml'));
         }
 
@@ -357,7 +357,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
         }
 
         if(isset($_POST['at'])) {
-            $data = null;
 
             //	Create xml node <custom-fields>
             $ats = $dom->createElement('admin-texts');
@@ -366,10 +365,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             $options = wpml_ctt_options_list();
 
             foreach ($options as $name => $value) {
-                $data[$name] = maybe_unserialize( maybe_unserialize( $value ) );
+                $options[$name] = maybe_unserialize( maybe_unserialize( $value ) );
             }
 
-            $this->option2xml($data, $ats, $dom);
+            $this->option2xml($options, $ats, $dom);
         }
         $xml = $dom->saveXML($root);
 

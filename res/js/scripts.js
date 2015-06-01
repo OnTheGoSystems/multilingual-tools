@@ -36,6 +36,7 @@ jQuery(document).ready(function(){
 
             var data = {
                 'action': "wpml_ctt_action",
+                '_wctt_mighty_nonce': jQuery('#_wctt_mighty_nonce').val(),
                 'options': option
             };
 
