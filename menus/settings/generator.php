@@ -240,7 +240,7 @@
                     </table>
                 </td>
             </tr>
-            <tr><th><input name="submit" style="float:right;margin-bottom:5px" type="submit" class="button-primary" value="<?php _e('Generate', 'wpml-compatibility-test-tools') ?>" disabled /><?php wp_nonce_field("wctt-generate","_wctt_mighty_nonce"); ?></th></tr>
+            <tr><th><input id="wctt_generate" name="submit" style="float:right;margin-bottom:5px" type="submit" class="button-primary" value="<?php _e('Generate', 'wpml-compatibility-test-tools') ?>" disabled /><?php wp_nonce_field("wctt-generate","_wctt_mighty_nonce"); ?></th></tr>
         </table>
     </form>
 </div>

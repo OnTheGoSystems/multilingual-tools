@@ -2,7 +2,7 @@ jQuery(document).ready(function(){
 
     var option = [],
         result = jQuery("#result"),
-        submitButton = jQuery("input[type='submit']");
+        submitButton = jQuery("input[type='submit'][id^='wctt_generate']");
 
     function buttonToggle(){
         submitButton.attr("disabled", !jQuery("input[type='checkbox'][class^='cb']").is(":checked"));
