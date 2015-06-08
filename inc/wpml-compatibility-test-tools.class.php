@@ -12,7 +12,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function init(){
 
         //generate XML
-        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit'])) {
+        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit']) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' )) {
             add_action('wp_loaded', array($this, 'generate_xml'));
         }
 
@@ -241,25 +241,31 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 
 	/**
-	 * Add scripts only for plugin's settings page
+	 * Add scripts only for plugin's pages
 	 */
-	public function add_scripts(){
+	public function add_scripts() {
 
-			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array( 'jquery' ), WPML_CTT_VERSION );
+        $screen = get_current_screen();
 
+        if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings', WPML_CTT_FOLDER . '/menus/settings/generator' ) ) ) {
+
+             wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array('jquery'), WPML_CTT_VERSION ) ;
+            wp_localize_script( 'wctt-scripts', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php') ) );
+
+        }
 	}
 
     /**
-     * Add styles only for Configuration Generator settings page
+     * Add styles only for WPML Configuration Generator settings page
      */
     public function add_styles() {
 
         $screen = get_current_screen();
 
         if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/generator') ) ){
-            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/ctt_style.css', WPML_CTT_VERSION );
 
-            wp_enqueue_style( 'wctt-generator-style' );
+            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/ctt_style.css', WPML_CTT_VERSION );
+             wp_enqueue_style( 'wctt-generator-style' );
         }
     }
 
@@ -354,27 +360,23 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             }
         }
 
-        $options = NULL;
+        if(isset($_POST['at'])) {
 
-        if(isset($_POST['option_name']))
-            $options = get_option($_POST['option_name']);
+            //	Create xml node <custom-fields>
+            $ats = $dom->createElement('admin-texts');
+            $ats = $root->appendChild($ats);
 
-        $ats = $dom->createElement('admin-texts');
-        $ats = $root->appendChild($ats);
+            $options = wpml_ctt_options_list();
 
-        $atp = $dom->createElement('key');
-        $atp = $ats->appendChild($atp);
-        $atpatr = $dom->createAttribute('name');
+            foreach ($options as $name => $value) {
+                $options[$name] = maybe_unserialize( maybe_unserialize( $value ) );
+            }
 
-        if(isset($_POST['option_name']))
-            $atpatr->value = $_POST['option_name'];
-
-        $atp->appendChild($atpatr);
-
-        $this->option2xml($options, $atp, $dom);
-
+            $this->option2xml($options, $ats, $dom);
+        }
         $xml = $dom->saveXML($root);
 
+        // Save options
         switch($_POST['save']){
             case 'file' :
                header( "Content-Description: File Transfer" );
@@ -387,13 +389,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             case 'dir' :
                file_put_contents(get_template_directory() . '/wpml-config.xml', $xml);
                break;
-
         }
     }
 
 
     /**
      * Generate XML from option array
+     * @param $options
+     * @param $node
+     * @param $dom
      */
     public function option2xml($options, $node, $dom){
 
@@ -401,15 +405,19 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
             foreach ($options as $option => $value) {
 
-                $at = $node->appendChild($dom->createElement('key'));
-                $atatr = $dom->createAttribute('name');
-                $atatr->value = $option;
-                $at->appendChild($atatr);
+                // Only if parent option is selected, both parent and child will be generated
+                if(isset($_POST['at'][$option])) {
 
-                if (is_array($value)) {
+                    $at = $node->appendChild($dom->createElement('key'));
+                    $atatr = $dom->createAttribute('name');
+                    $atatr->value = $option;
+                    $at->appendChild($atatr);
 
-                    $this->option2xml($value, $at, $dom);
+                    if (is_array($value)) {
 
+                        $this->option2xml($value, $at, $dom);
+
+                    }
                 }
             }
         }

@@ -1,3 +1,65 @@
-.ctt tr:nth-child(even) {background: #FAFAFA}
-.ctt tr:nth-child(odd) {background: #FFF}
-.ctt tr:hover {background: #E6F1F6}
+.ctt tr:nth-child(2n) {
+    background: #FAFAFA
+}
+.ctt tr:hover {
+    background: #E6F1F6
+}
+#result ul {
+    margin: 0
+}
+#tree ul, li {
+    margin: 0
+}
+#tree li {
+    padding: 8px 10px;
+    word-break: break-all
+}
+#tree li ul {
+    padding: 8px 0 0 10px
+}
+.dropdown dd, .dropdown dt {
+    margin:0;
+    padding:0;
+}
+.dropdown ul {
+    margin: -2px 0 0 0;
+}
+.dropdown dd {
+    position:relative;
+}
+.dropdown dt {
+    display:block;
+    min-height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    background: url("../img/select_bg.png") no-repeat right;
+}
+.dropdown dd ul {
+    background:#FFF;
+    display:none;
+    left:0;
+    padding: 5px 0;
+    position:absolute;
+    top:2px;
+    list-style:none;
+    height: 130px;
+    overflow: auto;
+}
+.dropdown dt,
+.dropdown dd ul {
+    width:280px;
+    color: #32373c;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+}
+
+.dropdown dd ul li {
+    padding: 3px;
+}
+.dropdown dd ul li input[type=checkbox] {
+    margin: 0 4px 0;
+}
+.placeholder {
+    padding:0 0 0 5px;
+}
