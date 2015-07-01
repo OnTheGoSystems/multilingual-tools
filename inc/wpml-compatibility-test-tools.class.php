@@ -12,8 +12,11 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function init(){
 
         //generate XML
-        if (isset($_GET['page']) == WPML_CTT_FOLDER . '/menus/settings/generator.php' && isset($_POST['submit']) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' )) {
-            add_action('wp_loaded', array($this, 'generate_xml'));
+        if ( isset( $_GET['page'] )
+                && $_GET['page'] == WPML_CTT_FOLDER . '/menus/settings/generator.php'
+                && isset( $_POST['submit'] )
+                && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' )) {
+            add_action( 'wp_loaded', array($this, 'generate_xml') );
         }
 
 
