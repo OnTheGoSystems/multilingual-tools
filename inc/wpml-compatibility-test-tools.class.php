@@ -306,7 +306,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
                     $cpt = $dom->createElement('custom-type', $post_type);
                     $cpt = $cpts->appendChild($cpt);
                     $cptatr = $dom->createAttribute('translate');
-                    $cptatr->value = $_POST['radio_cpt'][$post_type];
+                    $cptatr->value = wpml_ctt_validate_radio( $_POST['radio_cpt'][$post_type] );
                     $cpt->appendChild($cptatr);
 
                 }
@@ -331,7 +331,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
                     $tax = $dom->createElement('taxonomy', $taxonomy);
                     $tax = $taxs->appendChild($tax);
                     $taxatr = $dom->createAttribute('translate');
-                    $taxatr->value = $_POST['radio_tax'][$taxonomy];
+                    $taxatr->value = wpml_ctt_validate_radio($_POST['radio_tax'][$taxonomy]);
                     $tax->appendChild($taxatr);
 
                 }
@@ -356,7 +356,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
                     $cf = $dom->createElement('custom-field', $custom_field->meta_key);
                     $cf = $cfs->appendChild($cf);
                     $cfatr = $dom->createAttribute('action');
-                    $cfatr->value = $_POST['radio_cf'][$custom_field->meta_key];
+                    $cfatr->value = wpml_ctt_validate_radio($_POST['radio_cf'][$custom_field->meta_key]);
                     $cf->appendChild($cfatr);
 
                 }
@@ -380,7 +380,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
         $xml = $dom->saveXML($root);
 
         // Save options
-        switch($_POST['save']){
+        switch(wpml_ctt_validate_radio($_POST['save'])){
             case 'file' :
                header( "Content-Description: File Transfer" );
                header( 'Content-Disposition: attachment; filename="wpml-config.xml"' );
@@ -394,7 +394,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
                break;
         }
     }
-
 
     /**
      * Generate XML from option array

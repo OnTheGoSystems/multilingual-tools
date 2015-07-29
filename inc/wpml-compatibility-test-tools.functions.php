@@ -95,7 +95,7 @@ function wpml_ctt_options_list_ajax() {
 
     check_ajax_referer( 'wctt-generate', '_wctt_mighty_nonce' );
 
-    $options = $_POST['options'];
+    $options = isset($_POST['options']) ? (array)$_POST['options'] : array();
 
     foreach ($options as $option) {
         $data[$option] = maybe_unserialize( get_option($option) );
@@ -267,4 +267,31 @@ function wpml_ctt_options_list() {
     }
 
     return $options;
+}
+
+/**
+ *
+ * Validate radio values.
+ *
+ * @param $value
+ *
+ * @return mixed
+ */
+function wpml_ctt_validate_radio( $value ) {
+
+    $allowed = array(
+
+        'translate',
+        'ignore',
+        'copy',
+        'file',
+        'dir',
+         1, 0
+    );
+
+    if ( in_array( $value, $allowed, true ) ) {
+        return $value;
+    }
+
+    return "";
 }

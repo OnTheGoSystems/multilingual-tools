@@ -24,6 +24,8 @@
 
                             foreach ( $post_types as $post_type ):
 
+                                $post_type = esc_attr($post_type);
+
                                 ?><tr>
                                 <td>
                                     <label><input class="cb" type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
@@ -76,6 +78,8 @@
                         if ($taxonomies) {
 
                             foreach ( $taxonomies as $taxonomy ) :
+
+                                $taxonomy = esc_attr($taxonomy);
 
                                 ?><tr>
                                 <td>
@@ -162,6 +166,8 @@
 
                             foreach ( $custom_fields as $custom_field ):
 
+                                $custom_field->meta_key = esc_attr($custom_field->meta_key);
+
                                 ?><tr>
                                 <td>
                                     <label><input class="cb" type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
@@ -213,7 +219,11 @@
                                                 $options = wpml_ctt_options_list();
 
                                                 foreach ($options as $name => $value) {
+
+                                                    $name = esc_attr($name);
+
                                                     echo "<li><input type='checkbox' value='". $name . "' />{$name}</li>";
+
                                                 }
 
                                                 ?>
