@@ -102,6 +102,12 @@ jQuery(document).ready(function(){
 		var checkBoxes = jQuery("input[type='checkbox'][name^='active_languages']");
 		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
 	});
+	
+	jQuery('#translate_strings_contexts_toggle_all').click(function(event) {
+		event.preventDefault();
+		var checkBoxes = jQuery("input[type='checkbox'][name^='strings_auto_translate_context']");
+		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+	});
 
     jQuery('#cpt_toggle_all').click(function(event) {
         event.preventDefault();

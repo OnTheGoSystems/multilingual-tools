@@ -90,7 +90,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			$error = false;
 
-			$context   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
+			$contexts   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
 			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : array();
 			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? $_POST['strings_auto_translate_template'] : '';
 
@@ -103,7 +103,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				return false;
 			}
 
-			self::update_option('string_auto_translate_context', $context);
+			self::update_option('string_auto_translate_context', $contexts);
 			self::update_option('string_auto_translate_languages', $languages);
 			self::update_option('string_auto_translate_template', $template);
 
@@ -111,7 +111,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			if ( isset( $_POST['strings_auto_translate_action_translate'] ) ) {
 
-				$context   = self::get_option('string_auto_translate_context');
+				$contexts   = self::get_option('string_auto_translate_context');
 				$languages = self::get_option('string_auto_translate_languages');
 				$template  = self::get_option('string_auto_translate_template');
 
@@ -121,22 +121,34 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 					$error = true;
 				}
 
-				if ( empty( $context ) ) {
-					add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
-					$error = true;
-				}
-
 				if ( empty( $template ) ) {
 					add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
 					$error = true;
 				}
+				
+				if (empty($contexts)) {
+					add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
+						$error = true;
+						return false;
+				}
+				
+				foreach ($contexts as $context) {
+					if ( empty( $context ) ) {
+						add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
+						$error = true;
+					}
+				}
+				
 
 				if ( $error ) {
 					return false;
 				}
-
-				$this->translate_strings( $context, $languages, $template );
-				add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
+				
+				foreach ($contexts as $context) {
+					$this->translate_strings( $context, $languages, $template );
+					add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
+				}
+				
 
 			}
 

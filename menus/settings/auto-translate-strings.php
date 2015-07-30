@@ -21,15 +21,15 @@
 				$stt_context = wpml_ctt_st_contexts();
 
 				if( !empty( $stt_context ) ){ ?>
-					<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Select strings within context to translate:', 'wpml-compatibility-test-tools'); ?></label>
-					<select name="strings_auto_translate_context">
-						<option value=""><?php _e('Select context', 'wpml-compatibility-test-tools'); ?></option>
-						<option <?php selected('all_contexts', WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> value="all_contexts" ><?php _e('All contexts', 'wpml-compatibility-test-tools'); ?></option>
-
-						<?php foreach( $stt_context as $v ){ ?>
-							<option <?php selected(htmlspecialchars($v->context), WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> value="<?php echo htmlspecialchars( $v->context ); ?>"><?php echo $v->context . ' ('. $v->c .')'; ?></option>
-						<?php } ?>
-					</select>
+					<label style="margin-top: 3px; display: block"><?php _e('Select strings within context to translate:', 'wpml-compatibility-test-tools'); ?></label>
+					<?php foreach ( $stt_context as $v ) : ?>
+					<label>
+					<input type="checkbox" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>" 
+						<?php checked(htmlspecialchars($v->context), WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> > 
+							<?php echo $v->context . ' ('. $v->c .')'; ?> <br>
+					</label>
+					<?php endforeach; ?>
+					<a id="translate_strings_contexts_toggle_all" href="#">Toggle all</a>
 				<?php } ?>
 				<br /><br />
 
