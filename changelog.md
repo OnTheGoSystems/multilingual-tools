@@ -1,3 +1,9 @@
+# 1.1.2
+
+## Improvements
+
+* Added checkboxes instead of option list when selecting contexts for translation.
+
 # 1.1.1
 
 ## Improvements
