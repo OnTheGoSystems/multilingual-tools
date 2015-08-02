@@ -286,7 +286,8 @@ function wpml_ctt_validate_radio( $value ) {
         'copy',
         'file',
         'dir',
-         1, 0
+        '1',
+        '0'
     );
 
     if ( in_array( $value, $allowed, true ) ) {
