@@ -19,13 +19,20 @@
 			<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 				<?php
 				$stt_context = wpml_ctt_st_contexts();
+				$string_auto_translate_context = WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context');
 
 				if( !empty( $stt_context ) ){ ?>
 					<label style="margin-top: 3px; display: block"><?php _e('Select strings within context to translate:', 'wpml-compatibility-test-tools'); ?></label>
-					<?php foreach ( $stt_context as $v ) : ?>
+					<?php foreach ( $stt_context as $v ) : 
+					$checked = '';	
+					if ( is_array($string_auto_translate_context) && (in_array(htmlspecialchars($v->context), $string_auto_translate_context)) ) {
+						$checked = " checked='checked' ";
+					}
+					
+						?>
 					<label>
 					<input type="checkbox" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>" 
-						<?php checked(htmlspecialchars($v->context), WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context')) ?> > 
+						<?php echo $checked; ?> > 
 							<?php echo $v->context . ' ('. $v->c .')'; ?> <br>
 					</label>
 					<?php endforeach; ?>
