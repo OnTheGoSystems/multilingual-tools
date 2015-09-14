@@ -4,6 +4,10 @@
 
 * Added checkboxes instead of option list when selecting contexts for translation.
 
+## Bugfix
+
+* Fixed: Removed notice, checked strings inputs are remembered.
+
 # 1.1.1
 
 ## Improvements
@@ -12,6 +16,6 @@
 
 # 1.1
 
-## New
+## Features
 
 * Added option for generating wpml-config.xml files.
