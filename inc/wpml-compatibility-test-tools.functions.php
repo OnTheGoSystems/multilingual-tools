@@ -10,7 +10,6 @@
  * @return mixed
  */
 function wpml_ctt_prepare_string( $template, $string, $lang ) {
-
 	global $sitepress;
 
 	$template = str_replace( '%original_string%', $string, $template );
@@ -30,7 +29,6 @@ function wpml_ctt_prepare_string( $template, $string, $lang ) {
 	}
 
 	return $template;
-
 }
 
 /**
@@ -52,7 +50,6 @@ function wpml_ctt_st_contexts(){
  * @return string
  */
 function wpml_ctt_active_languages_output( $selected_languages = array() ){
-
     global $sitepress;
 							
     $active_langs = $sitepress->get_active_languages();
@@ -69,7 +66,6 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
     }
     
     return $theme_lang_inputs;
-							    
 }
 
 /**
@@ -82,7 +78,6 @@ function wpml_get_custom_fields(){
 	global $wpdb;
 
 	return $wpdb->get_results( "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta" );
-
 }
 
 /**
@@ -92,7 +87,6 @@ function wpml_get_custom_fields(){
  */
 add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
-
     check_ajax_referer( 'wctt-generate', '_wctt_mighty_nonce' );
 
     $options = isset($_POST['options']) ? (array)$_POST['options'] : array();
@@ -103,7 +97,6 @@ function wpml_ctt_options_list_ajax() {
 
     echo json_encode($data);
     wp_die();
-
 }
 
 /**
@@ -114,7 +107,6 @@ function wpml_ctt_options_list_ajax() {
  *
  */
 function wpml_ctt_options_list() {
-
     $exclude_list = array(
 
         /* WP default ones */
@@ -258,7 +250,7 @@ function wpml_ctt_options_list() {
         'wpml_cms_nav_settings',
         'wpml_ctt_settings' );
 
-    $options = wp_load_alloptions();
+    $options = wpml_ctt_load_alloptions();
 
     foreach ( $options as $name => $value ) {
         if ( in_array($name, $exclude_list) || (!stristr($name, '_transient') === false) ) {
@@ -278,9 +270,7 @@ function wpml_ctt_options_list() {
  * @return mixed
  */
 function wpml_ctt_validate_radio( $value ) {
-
     $allowed = array(
-
         'translate',
         'ignore',
         'copy',
@@ -295,4 +285,37 @@ function wpml_ctt_validate_radio( $value ) {
     }
 
     return "";
+}
+
+/**
+ * Loads and caches all options.
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return array List of all options.
+ */
+function wpml_ctt_load_alloptions() {
+    global $wpdb;
+
+    if ( ! wp_installing() || ! is_multisite() )
+        $alloptions = wp_cache_get( 'wpml_ctt_all_options', 'options' );
+    else
+        $alloptions = false;
+
+    if ( !$alloptions ) {
+        $suppress      = $wpdb->suppress_errors();
+        $alloptions_db = $wpdb->get_results( "SELECT option_name, option_value FROM $wpdb->options" );
+
+        $wpdb->suppress_errors($suppress);
+
+        $alloptions = array();
+
+        foreach ( (array) $alloptions_db as $o ) {
+            $alloptions[$o->option_name] = $o->option_value;
+        }
+        if ( ! wp_installing() || ! is_multisite() )
+            wp_cache_add( 'wpml_ctt_all_options', $alloptions, 'options' );
+    }
+
+    return $alloptions;
 }

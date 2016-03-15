@@ -17,6 +17,9 @@
 #tree li ul {
     padding: 8px 0 0 10px
 }
+#tree ul li:last-child {
+    padding-bottom: 0;
+}
 .dropdown dd, .dropdown dt {
     margin:0;
     padding:0;

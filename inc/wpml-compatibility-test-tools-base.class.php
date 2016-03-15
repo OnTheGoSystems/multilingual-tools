@@ -14,8 +14,6 @@ class WPML_Compatibility_Test_Tools_Base {
 	 * Save initial configuration to database
 	 */
 	public static function install() {
-
-
 		if ( get_option( self::OPTIONS_NAME ) === false ) {
 			$options[ 'string_auto_translate_template' ] = '[%language_name%] %original_string%';
 			$options[ 'duplicate_strings_template' ] = '[%language_name%] %original_string%';
@@ -24,7 +22,6 @@ class WPML_Compatibility_Test_Tools_Base {
 
 		return true;
 	}
-
 
 	/**
 	 * Return plugin option
@@ -35,7 +32,6 @@ class WPML_Compatibility_Test_Tools_Base {
 	 * @return null
 	 */
 	public static function get_option($option_name, $default = null){
-
 		if (empty(self::$options)){
 			self::$options = get_option(self::OPTIONS_NAME);
 		}
@@ -45,11 +41,9 @@ class WPML_Compatibility_Test_Tools_Base {
 		}
 
 		return $default;
-
 	}
 
 	public static function update_option($option_name, $option_value){
-
 		$options = get_option(self::OPTIONS_NAME);
 		$options[$option_name] = $option_value;
 		$result = update_option( self::OPTIONS_NAME, $options );
@@ -64,5 +58,4 @@ class WPML_Compatibility_Test_Tools_Base {
 	public static function refresh_options(){
 		self::$options = get_option(self::OPTIONS_NAME);
 	}
-
 }

@@ -50,20 +50,30 @@ jQuery(document).ready(function(){
 
                 // Generating checkboxes option tree.
                 function generateList(key, value) {
+                    key = jQuery('<div />').text(key).html();
+
                     if (jQuery.isPlainObject(value)) {
-                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"><strong> [ ' + key + ' ] => ' + '</strong><ul>';
+                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => ' + '</><ul>';
                         jQuery.each(value, generateList);
                         output += '</ul></li>';
                     } else {
+                        value   = jQuery('<div />').text(value).html();
                         output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
                     }
                 }
                 output += '</ul>';
 
-                result.html(output);
+                jQuery("#tree").remove();
+
+                var content = jQuery(output).hide();
+                result.append(content);
+                content.fadeIn();
+
+                jQuery("#at-notice").hide();
             });
         } else {
             jQuery("#tree").remove();
+            jQuery("#at-notice").fadeIn();
         }
     });
 
@@ -170,6 +180,18 @@ jQuery(document).ready(function(){
         event.preventDefault();
         var radioGroup = jQuery("input[type='radio'][id^='cf2']");
         radioGroup.prop("checked", true);
+    });
+
+    jQuery('.at_toggle_all').click(function(event) {
+        event.preventDefault();
+        var checkBoxes = jQuery("input[type='checkbox'][name^='at']");
+        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        buttonToggle();
+    });
+
+    jQuery('input[type=radio]').change(function() {
+        jQuery("input[type='checkbox'][name^='" + this.name.substr(6) + "']").prop("checked", true);
+        buttonToggle();
     });
 
 });

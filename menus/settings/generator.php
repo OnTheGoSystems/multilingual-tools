@@ -233,8 +233,15 @@
                                 </dl>
                             </th>
                         </tr>
+                        <tr>
+                            <th style="font-size:11px;line-height: 5px"><a class="at_toggle_all" href="#">Toggle all</a></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                         </thead>
-                        <tbody id="result"></tbody>
+                        <tbody id="result">
+                        <?php _e('<tr id="at-notice"><td>No option(s) selected</td></tr>', 'wpml-compatibility-test-tools'); ?>
+                        </tbody>
                     </table>
                 </td>
             </tr>
