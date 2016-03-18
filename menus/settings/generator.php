@@ -28,13 +28,13 @@
 
                                 ?><tr>
                                 <td>
-                                    <label><input class="cb" type="checkbox" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
+                                    <label><input id="cpt" type="checkbox" name="_cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST['_cpt'][$post_type]) ? 'checked' : '' ?>><?php echo $post_type; ?></label>
                                 </td>
                                 <td width="100px" align="right">
-                                    <label><input id="cpt0" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="0" <?php echo !isset($_POST[$post_type]) || $_POST[$post_type] == '0' ? 'checked' : '' ?>/>Do nothing</label>
+                                    <label><input id="cpt_0" type="radio" name="cpt[<?php echo $post_type; ?>]" value="0" <?php echo !isset($_POST[$post_type]) || $_POST[$post_type] == '0' ? 'checked' : '' ?>/>Do nothing</label>
                                 </td>
                                 <td width="100px">
-                                    <label><input id="cpt1" type="radio" name="radio_cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST[$post_type]) && $_POST[$post_type] == '1' ? 'checked' : '' ?>/>Translate</label>
+                                    <label><input id="cpt_1" type="radio" name="cpt[<?php echo $post_type; ?>]" value="1" <?php echo isset($_POST[$post_type]) && $_POST[$post_type] == '1' ? 'checked' : '' ?>/>Translate</label>
                                 </td>
                                 </tr><?php
 
@@ -49,9 +49,9 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th style="font-size:11px;line-height: 5px"><a id="cpt_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px;padding-left: 22px"><a id="cpt0_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a id="cpt1_toggle_all" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cpt" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px;padding-left: 22px"><a id="cpt_0" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cpt_1" class="toggle" href="#">Toggle all</a></th>
                         </tr>
                         </tfoot>
                     </table>
@@ -83,13 +83,13 @@
 
                                 ?><tr>
                                 <td>
-                                    <label><input class="cb" type="checkbox" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['tax'][$taxonomy]) ? 'checked' : '' ?>><?php echo $taxonomy; ?></label>
+                                    <label><input id="tax" type="checkbox" name="_tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST['_tax'][$taxonomy]) ? 'checked' : '' ?>><?php echo $taxonomy; ?></label>
                                 </td>
                                 <td width="100px" align="right">
-                                    <label><input id="tax0" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="0" <?php echo !isset($_POST[$taxonomy]) || $_POST[$taxonomy] == '0' ? 'checked' : '' ?>/>Do nothing</label>
+                                    <label><input id="tax_0" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="0" <?php echo !isset($_POST[$taxonomy]) || $_POST[$taxonomy] == '0' ? 'checked' : '' ?>/>Do nothing</label>
                                 </td>
                                 <td width="100px">
-                                    <label><input id="tax1" type="radio" name="radio_tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST[$taxonomy]) && $_POST[$taxonomy] == '1' ? 'checked' : '' ?>/>Translate</label>
+                                    <label><input id="tax_1" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php echo isset($_POST[$taxonomy]) && $_POST[$taxonomy] == '1' ? 'checked' : '' ?>/>Translate</label>
                                 </td>
                                 </tr><?php
 
@@ -103,9 +103,9 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th style="font-size:11px;line-height: 5px"><a id="tax_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px;padding-left: 22px"><a id="tax0_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a id="tax1_toggle_all" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="tax" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px;padding-left: 22px"><a id="tax_0" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="tax_1" class="toggle" href="#">Toggle all</a></th>
                         </tr>
                         </tfoot>
                     </table>
@@ -130,18 +130,18 @@
                             </th>
                         </tr>
                         <tr>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf0_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf1_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf2_toggle_all" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_0" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_1" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_2" class="toggle" href="#">Toggle all</a></th>
                         </tr>
                         </thead>
                         <tfoot>
                         <tr>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf0_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf1_toggle_all" href="#">Toggle all</a></th>
-                            <th style="font-size:11px;line-height: 5px"><a class="cf2_toggle_all" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_0" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_1" class="toggle" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="cf_2" class="toggle" href="#">Toggle all</a></th>
                         </tr>
                         <tr>
                             <th>
@@ -170,16 +170,16 @@
 
                                 ?><tr>
                                 <td>
-                                    <label><input class="cb" type="checkbox" name="cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
+                                    <label><input id="cf" type="checkbox" name="_cf[<?php echo $custom_field->meta_key; ?>]" value="1" <?php echo isset($_POST['_cf'][$custom_field->meta_key]) ? 'checked' : '' ?>><?php echo $custom_field->meta_key ?></label>
                                 </td>
                                 <td width="100px" title="<?php _e("Don't translate", 'wpml-compatibility-test-tools')?>">
-                                    <input id="cf0" type="radio" name="radio_cf[<?php echo $custom_field->meta_key ?>]" value="ignore" <?php echo !isset($_POST[$custom_field->meta_key]) || $_POST[$custom_field->meta_key] == 'ignore' ? 'checked' : '' ?>/>
+                                    <input id="cf_0" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="ignore" <?php echo !isset($_POST[$custom_field->meta_key]) || $_POST[$custom_field->meta_key] == 'ignore' ? 'checked' : '' ?>/>
                                 </td>
                                 <td width="100px" title="<?php _e("Copy from original to translation", 'wpml-compatibility-test-tools')?>">
-                                    <input id="cf1" type="radio" name="radio_cf[<?php echo $custom_field->meta_key ?>]" value="copy" <?php echo isset($_POST[$custom_field->meta_key]) && $_POST[$custom_field->meta_key] == 'copy' ? 'checked' : '' ?>/>
+                                    <input id="cf_1" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="copy" <?php echo isset($_POST[$custom_field->meta_key]) && $_POST[$custom_field->meta_key] == 'copy' ? 'checked' : '' ?>/>
                                 </td>
                                 <td width="100px" title="<?php _e("Translate", 'wpml-compatibility-test-tools')?>">
-                                    <input id="cf2" type="radio" name="radio_cf[<?php echo $custom_field->meta_key ?>]" value="translate" <?php echo isset($_POST[$custom_field->meta_key]) && $_POST[$custom_field->meta_key] == 'translate' ? 'checked' : '' ?>/>
+                                    <input id="cf_2" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="translate" <?php echo isset($_POST[$custom_field->meta_key]) && $_POST[$custom_field->meta_key] == 'translate' ? 'checked' : '' ?>/>
                                 </td>
                                 </tr><?php
 
@@ -222,7 +222,7 @@
 
                                                     $name = esc_attr($name);
 
-                                                    echo "<li><input type='checkbox' value='". $name . "' />{$name}</li>";
+                                                    echo "<li><input class='option' type='checkbox' value='". $name . "' />{$name}</li>";
 
                                                 }
 
@@ -234,7 +234,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th style="font-size:11px;line-height: 5px"><a class="at_toggle_all" href="#">Toggle all</a></th>
+                            <th style="font-size:11px;line-height: 5px"><a id="at" class="toggle" href="#">Toggle all</a></th>
                             <th></th>
                             <th></th>
                         </tr>

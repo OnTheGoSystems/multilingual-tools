@@ -1,3 +1,10 @@
+# 1.1.3
+
+## Improvements
+
+* Major code optimizations.
+* Added notice for successfully saved file in theme folder.
+
 # 1.1.2
 
 ## Improvements

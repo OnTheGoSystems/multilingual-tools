@@ -31,18 +31,18 @@
 					
 						?>
 					<label>
-					<input type="checkbox" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>" 
+					<input type="checkbox" id="strings_auto_translate_context" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>"
 						<?php echo $checked; ?> > 
 							<?php echo $v->context . ' ('. $v->c .')'; ?> <br>
 					</label>
 					<?php endforeach; ?>
-					<a id="translate_strings_contexts_toggle_all" href="#">Toggle all</a>
+					<a id="strings_auto_translate_context" class="toggle" href="#">Toggle all</a>
 				<?php } ?>
 				<br /><br />
 
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Translate languages:', 'wpml-compatibility-test-tools'); ?></label>
 				<?php echo wpml_ctt_active_languages_output( WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_languages', array()) ); ?>
-				<a style="margin-left: 20px;" id="translate_strings_active_languages_toggle_all" href="#">Toggle all</a>
+				<a style="margin-left: 20px;" id="active_languages" class="toggle" href="#">Toggle all</a>
 				<br /><br />
 
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Template:', 'wpml-compatibility-test-tools'); ?></label>

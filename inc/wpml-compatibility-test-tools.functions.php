@@ -61,7 +61,7 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
 							
     foreach( $active_langs as $lang => $v ){
 		$checked = in_array($lang, $selected_languages  ) ? 'checked' : '';
-        $theme_lang_inputs .= ' <input type="checkbox" '.$checked.' name="active_languages[]" value="'. $lang .'" /> ' . $active_langs[$lang]['english_name'];
+        $theme_lang_inputs .= ' <input type="checkbox" '.$checked.' id="active_languages" name="active_languages[]" value="'. $lang .'" /> ' . $active_langs[$lang]['english_name'];
 
     }
     
@@ -284,7 +284,7 @@ function wpml_ctt_validate_radio( $value ) {
         return $value;
     }
 
-    return "";
+    return '';
 }
 
 /**

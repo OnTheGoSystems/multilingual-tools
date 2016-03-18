@@ -16,14 +16,14 @@
 
 				<?php $duplicate_strings = WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings', array() );?>
 
-				<input type="checkbox" name="duplicate_strings_to_translate[post][title]" value="1" <?php checked(isset($duplicate_strings['post']['title']))?>  /> <?php _e('Post title', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[post][content]" value="1" <?php checked(isset($duplicate_strings['post']['content']))?> /> <?php _e('Post content', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[post][image-tags]" value="1" <?php checked(isset($duplicate_strings['post']['image-tags']))?> /> <?php _e('Alt and title tags for images in content', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[post][excerpt]" value="1" <?php checked(isset($duplicate_strings['post']['excerpt']))?> /> <?php _e('Post excerpt', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[custom_fields][value]" value="1" <?php checked(isset($duplicate_strings['custom_fields']['value']))?> /> <?php _e('Custom fields', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy']['all']))?> /> <?php _e('Term name', 'wpml-compatibility-test-tools' );?> <br/>
-				<input type="checkbox" name="duplicate_strings_to_translate[taxonomy_slug][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy_slug']['all']))?> /> <?php _e('Term slug', 'wpml-compatibility-test-tools' );?> <br/>
-				<a id="duplicate_strings_to_translate_toggle_all" href="#">Toggle all</a>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[post][title]" value="1" <?php checked(isset($duplicate_strings['post']['title']))?>  /> <?php _e('Post title', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[post][content]" value="1" <?php checked(isset($duplicate_strings['post']['content']))?> /> <?php _e('Post content', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[post][image-tags]" value="1" <?php checked(isset($duplicate_strings['post']['image-tags']))?> /> <?php _e('Alt and title tags for images in content', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[post][excerpt]" value="1" <?php checked(isset($duplicate_strings['post']['excerpt']))?> /> <?php _e('Post excerpt', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[custom_fields][value]" value="1" <?php checked(isset($duplicate_strings['custom_fields']['value']))?> /> <?php _e('Custom fields', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[taxonomy][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy']['all']))?> /> <?php _e('Term name', 'wpml-compatibility-test-tools' );?> <br/>
+				<input type="checkbox" id="duplicate_strings_to_translate" name="duplicate_strings_to_translate[taxonomy_slug][all]" value="1" <?php checked(isset($duplicate_strings['taxonomy_slug']['all']))?> /> <?php _e('Term slug', 'wpml-compatibility-test-tools' );?> <br/>
+				<a id="duplicate_strings_to_translate" class="toggle" href="#">Toggle all</a>
 				<br /><br />
 
 				<label style="width: 235px; margin-top: 3px; float: left;"><?php _e('Template:', 'wpml-compatibility-test-tools'); ?></label>

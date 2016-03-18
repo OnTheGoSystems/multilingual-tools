@@ -304,7 +304,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
         if ($post_types) {
 
             //	Create xml node <custom-types>
-            if(isset($_POST['cpt'])){
+            if(isset($_POST['_cpt'])){
 
                 $cpts = $dom->createElement('custom-types');
                 $cpts = $root->appendChild($cpts);
@@ -313,12 +313,12 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
             foreach ( $post_types as $post_type ){
 
-                if(isset($_POST['cpt'][$post_type])){
+                if(isset($_POST['_cpt'][$post_type])){
 
                     $cpt = $dom->createElement('custom-type', $post_type);
                     $cpt = $cpts->appendChild($cpt);
                     $cptatr = $dom->createAttribute('translate');
-                    $cptatr->value = wpml_ctt_validate_radio( $_POST['radio_cpt'][$post_type] );
+                    $cptatr->value = wpml_ctt_validate_radio( $_POST['cpt'][$post_type] );
                     $cpt->appendChild($cptatr);
 
                 }
@@ -329,7 +329,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
         if ($taxonomies) {
 
             //	Create xml node <taxonomies>
-            if(isset($_POST['tax'])){
+            if(isset($_POST['_tax'])){
 
                 $taxs = $dom->createElement('taxonomies');
                 $taxs = $root->appendChild($taxs);
@@ -338,12 +338,12 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
             foreach ( $taxonomies as $taxonomy ){
 
-                if(isset($_POST['tax'][$taxonomy])){
+                if(isset($_POST['_tax'][$taxonomy])){
 
                     $tax = $dom->createElement('taxonomy', $taxonomy);
                     $tax = $taxs->appendChild($tax);
                     $taxatr = $dom->createAttribute('translate');
-                    $taxatr->value = wpml_ctt_validate_radio($_POST['radio_tax'][$taxonomy]);
+                    $taxatr->value = wpml_ctt_validate_radio($_POST['tax'][$taxonomy]);
                     $tax->appendChild($taxatr);
 
                 }
@@ -354,7 +354,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
         if ($custom_fields) {
 
             //	Create xml node <custom-fields>
-            if(isset($_POST['cf'])){
+            if(isset($_POST['_cf'])){
 
                 $cfs = $dom->createElement('custom-fields');
                 $cfs = $root->appendChild($cfs);
@@ -363,12 +363,12 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
             foreach ( $custom_fields as $custom_field ){
 
-                if(isset($_POST['cf'][$custom_field->meta_key])){
+                if(isset($_POST['_cf'][$custom_field->meta_key])){
 
                     $cf = $dom->createElement('custom-field', $custom_field->meta_key);
                     $cf = $cfs->appendChild($cf);
                     $cfatr = $dom->createAttribute('action');
-                    $cfatr->value = wpml_ctt_validate_radio($_POST['radio_cf'][$custom_field->meta_key]);
+                    $cfatr->value = wpml_ctt_validate_radio($_POST['cf'][$custom_field->meta_key]);
                     $cf->appendChild($cfatr);
 
                 }
@@ -402,7 +402,9 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
                break;
 
             case 'dir' :
-               file_put_contents(get_template_directory() . '/wpml-config.xml', $xml);
+               if ( file_put_contents( get_template_directory() . '/wpml-config.xml', $xml) ) {
+				   add_action( 'admin_notices', array( $this->messages, 'file_save_success' ) );
+			   }
                break;
         }
     }

@@ -1,196 +1,120 @@
-jQuery(document).ready(function(){
+jQuery( document ).ready(function() {
 
-    var option = [],
-        result = jQuery("#result"),
-        submitButton = jQuery("input[type='submit'][id^='wctt_generate']");
+    var option       = [],
+        result       = jQuery( '#result' ),
+        submitButton = jQuery( '[type="submit"][id="wctt_generate"]' );
 
     function buttonToggle(){
-        submitButton.attr("disabled", !jQuery("input[type='checkbox'][class^='cb']").is(":checked"));
+        submitButton.attr( 'disabled', !jQuery( '[type="checkbox"]' ).not( '[class="option"]' ).is( ':checked' ));
     }
 
     // Toggle drop-down on mouse gesture.
-    jQuery( ".dropdown" )
+    jQuery( '.dropdown' )
         .mouseenter(function() {
-            jQuery(".dropdown dd ul").slideToggle('fast');
+            jQuery( '.dropdown dd ul' ).slideToggle( 'fast' );
         })
         .mouseleave(function() {
-            jQuery(".dropdown dd ul").slideToggle('fast');
+            jQuery( '.dropdown dd ul' ).slideToggle( 'fast' );
         });
 
     // Enable submit button if any checkbox is selected.
-    jQuery(document).on("click", "[type='checkbox']", function() {
+    jQuery( document ).on( 'click', '[type="checkbox"]', function() {
         buttonToggle();
     });
 
-    jQuery('#multiSelect input[type="checkbox"]').on('click', function () {
-
-        // Disable submit button on Multi-Select option change.
-        buttonToggle();
+    jQuery( '#multiSelect [type="checkbox"]' ).on( 'click', function () {
 
         // Collecting options from Multi-Select.
-        option = jQuery('#multiSelect input[type="checkbox"]:checked').map(function(_, i) {
-            return jQuery(i).val();
+        option = jQuery( '#multiSelect [type="checkbox"]:checked' ).map(function( _, i ) {
+            return jQuery( i ).val();
         }).get();
 
-        if (option.length != 0) {
+        if ( option.length != 0 ) {
 
             var data = {
-                'action': "wpml_ctt_action",
-                '_wctt_mighty_nonce': jQuery('#_wctt_mighty_nonce').val(),
-                'options': option
+                'options'            : option,
+                'action'             : "wpml_ctt_action",
+                '_wctt_mighty_nonce' : jQuery( '#_wctt_mighty_nonce' ).val()
             };
 
-            jQuery.post(ajax_object.ajax_url, data, function (response) {
+            jQuery.post( ajax_object.ajax_url, data, function ( response ) {
 
-                var data = jQuery.parseJSON(response),
-                    output;
+                var output, data = jQuery.parseJSON( response );
 
                 output = '<ul id="tree">';
-                jQuery.each(data, generateList);
+                jQuery.each( data, generateList );
 
                 // Generating checkboxes option tree.
-                function generateList(key, value) {
-                    key = jQuery('<div />').text(key).html();
+                function generateList( key, value ) {
+                    key = jQuery( '<div />' ).text( key ).html();
 
-                    if (jQuery.isPlainObject(value)) {
-                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => ' + '</><ul>';
-                        jQuery.each(value, generateList);
+                    if ( jQuery.isPlainObject( value ) ) {
+                        output += '<li><input id="at" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => ' + '</><ul>';
+                        jQuery.each( value, generateList );
                         output += '</ul></li>';
                     } else {
-                        value   = jQuery('<div />').text(value).html();
-                        output += '<li><input class="cb" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
+                        value   = jQuery('<div />').text( value ).html();
+                        output += '<li><input id="at" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
                     }
                 }
                 output += '</ul>';
 
-                jQuery("#tree").remove();
+                jQuery( '#tree' ).remove();
 
-                var content = jQuery(output).hide();
-                result.append(content);
+                var content = jQuery( output ).hide();
+                result.append( content );
                 content.fadeIn();
 
-                jQuery("#at-notice").hide();
+                jQuery( '#at-notice' ).hide();
             });
         } else {
-            jQuery("#tree").remove();
-            jQuery("#at-notice").fadeIn();
+            jQuery( '#tree' ).remove();
+            jQuery( '#at-notice' ).fadeIn();
         }
     });
 
     // Multi-check options tree.
-    result.on("click", "[type='checkbox']", function() {
-        var cur = jQuery(this);
-        cur.next().next().find("input[type='checkbox']").prop('checked', this.checked);
-        if (this.checked) {
-            cur.parents('li').children("input[type='checkbox']").prop('checked', true);
-        } else while (cur.attr('id') != 'tree' && !(cur = cur.parent().parent()).find('input:checked').length) {
-            cur.prev().prev().prop('checked', false);
+    result.on( 'click', '#tree [type="checkbox"]', function() {
+        var current = jQuery( this );
+
+        if ( this.checked ) {
+            current.parentsUntil('ul#tree').children( '[type="checkbox"]' ).prop( 'checked', true );
+        } else {
+            current.parent().find( '[type="checkbox"]' ).prop( 'checked', false );
         }
     });
 
 	jQuery( "#string_auto_translate_predefined_templates" ).change(function() {
-		jQuery( "#strings_auto_translate_template").val( jQuery( "#string_auto_translate_predefined_templates").find("option:selected").text() );
+		jQuery( "#strings_auto_translate_template" ).val( jQuery( "#string_auto_translate_predefined_templates" ).find( "option:selected" ).text() );
 	});
 
 	jQuery( "#duplicate_strings_predefined_templates" ).change(function() {
-		jQuery( "#duplicate_strings_template").val( jQuery( "#duplicate_strings_predefined_templates").find("option:selected").text() );
+		jQuery( "#duplicate_strings_template" ).val( jQuery( "#duplicate_strings_predefined_templates" ).find( "option:selected" ).text() );
 	});
 
 	jQuery( "#strings_auto_translate_action_translate" ).click(function() {
 		var question = "All existing strings translations will be replaced with new values.\nAre you sure you want to do this?";
-		return confirm(question);
+		return confirm( question );
 	});
 
-	jQuery('#duplicate_strings_to_translate_toggle_all').click(function(event) {
-			event.preventDefault();
-			var checkBoxes = jQuery("input[type='checkbox'][name^='duplicate_strings_to_translate']");
-			checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-	});
-
-	jQuery('#translate_strings_active_languages_toggle_all').click(function(event) {
-		event.preventDefault();
-		var checkBoxes = jQuery("input[type='checkbox'][name^='active_languages']");
-		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-	});
-	
-	jQuery('#translate_strings_contexts_toggle_all').click(function(event) {
-		event.preventDefault();
-		var checkBoxes = jQuery("input[type='checkbox'][name^='strings_auto_translate_context']");
-		checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-	});
-
-    jQuery('#cpt_toggle_all').click(function(event) {
+    // Provides toggle all functionality.
+    jQuery( '.toggle' ).click( function () {
         event.preventDefault();
-        var checkBoxes = jQuery("input[type='checkbox'][name^='cpt']");
-        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-        buttonToggle();
+        var group = jQuery( 'input[id=' + this.id + ']' );
+
+        if ( group.attr( 'type' ) == 'radio' ) {
+            group.prop( 'checked', true );
+            jQuery( 'input[type="checkbox"][id="' + this.id.slice( 0, -2 ) + '"]' ).prop( 'checked', true );
+            buttonToggle();
+        } else {
+            group.prop( 'checked', ! group.prop( 'checked' ) );
+            buttonToggle();
+        }
     });
 
-    jQuery('#cpt0_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='cpt0']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('#cpt1_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='cpt1']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('#tax_toggle_all').click(function(event) {
-        event.preventDefault();
-        var checkBoxes = jQuery("input[type='checkbox'][name^='tax']");
-        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-        buttonToggle();
-    });
-
-    jQuery('#tax0_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='tax0']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('#tax1_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='tax1']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('.cf_toggle_all').click(function(event) {
-        event.preventDefault();
-        var checkBoxes = jQuery("input[type='checkbox'][name^='cf']");
-        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-        buttonToggle();
-    });
-
-    jQuery('.cf0_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='cf0']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('.cf1_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='cf1']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('.cf2_toggle_all').click(function(event) {
-        event.preventDefault();
-        var radioGroup = jQuery("input[type='radio'][id^='cf2']");
-        radioGroup.prop("checked", true);
-    });
-
-    jQuery('.at_toggle_all').click(function(event) {
-        event.preventDefault();
-        var checkBoxes = jQuery("input[type='checkbox'][name^='at']");
-        checkBoxes.prop("checked", !checkBoxes.prop("checked"));
-        buttonToggle();
-    });
-
-    jQuery('input[type=radio]').change(function() {
-        jQuery("input[type='checkbox'][name^='" + this.name.substr(6) + "']").prop("checked", true);
+    // Automatically check checkbox if radio is changed.
+    jQuery( 'input[type=radio]' ).change( function() {
+        jQuery( 'input[type="checkbox"][name="_' + this.name + '"]' ).prop( 'checked', true );
         buttonToggle();
     });
 
