@@ -3,7 +3,6 @@
 class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function __construct() {
-
 		parent::__construct();
 
 		add_action( 'init', array( $this, 'init' ) );
@@ -11,7 +10,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function init(){
 
-        //generate XML
+        // Generate XML
         if ( isset( $_GET['page'] )
                 && $_GET['page'] == WPML_CTT_FOLDER . '/menus/settings/generator.php'
                 && isset( $_POST['submit'] )
@@ -19,8 +18,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
             add_action( 'wp_loaded', array($this, 'generate_xml') );
         }
 
-
-		//check for WPML
+		// Check for WPML
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) || ICL_PLUGIN_INACTIVE ) {
 			if ( ! function_exists( 'is_multisite' ) || ! is_multisite() ) {
 				add_action( 'admin_notices', array( $this->messages, 'no_wpml_notice' ) );
@@ -28,19 +26,19 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			return false;
 		}
 
-		//check for Translation Management
+		// Check for Translation Management
 		if( ! defined( 'WPML_TM_VERSION' ) ){
 			add_action( 'admin_notices', array( $this->messages, 'no_tm_notice' ) );
 			return false;
 		}
 
-		//check for String Translation
+		// Check for String Translation
 		if( ! defined( 'WPML_ST_VERSION' ) ){
 			add_action( 'admin_notices', array( $this->messages, 'no_st_notice' ) );
 			return false;
 		}
 
-		//WPML setup has to be finished
+		// WPML setup has to be finished
 		global $sitepress;
 		if( !isset( $sitepress ) ){
 			add_action( 'admin_notices', array( $this->messages, 'no_wpml_notice' ) );
@@ -58,9 +56,9 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'add_styles'  ) );
 
-		//handle admin settings page
+		// Handle admin settings page
 		$this->process_request();
-		//change WPML behaviour based on selected settings
+		// Change WPML behaviour based on selected settings
 		$this->modify_wpml_behaviour();
 
 		return true;
@@ -72,7 +70,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @return bool
 	 */
 	public function process_request() {
-
 		$this->process_strings_auto_translate_action_translate();
 		$this->process_save_duplicate_strings_to_translate();
 
@@ -85,12 +82,11 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @return bool
 	 */
 	private function process_strings_auto_translate_action_translate(){
-
 		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] )  ) {
 
 			$error = false;
 
-			$contexts   = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
+			$contexts  = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
 			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : array();
 			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? $_POST['strings_auto_translate_template'] : '';
 
@@ -103,17 +99,17 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				return false;
 			}
 
-			self::update_option('string_auto_translate_context', $contexts);
-			self::update_option('string_auto_translate_languages', $languages);
-			self::update_option('string_auto_translate_template', $template);
+			self::update_option( 'string_auto_translate_context', $contexts );
+			self::update_option( 'string_auto_translate_languages', $languages );
+			self::update_option( 'string_auto_translate_template', $template );
 
 			add_action( 'admin_notices', array( $this->messages, 'settings_updated_notice' ) );
 
 			if ( isset( $_POST['strings_auto_translate_action_translate'] ) ) {
 
-				$contexts   = self::get_option('string_auto_translate_context');
-				$languages = self::get_option('string_auto_translate_languages');
-				$template  = self::get_option('string_auto_translate_template');
+				$contexts  = self::get_option( 'string_auto_translate_context' );
+				$languages = self::get_option( 'string_auto_translate_languages' );
+				$template  = self::get_option( 'string_auto_translate_template' );
 
 
 				if ( empty( $languages ) ) {
@@ -126,36 +122,31 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 					$error = true;
 				}
 				
-				if (empty($contexts)) {
+				if ( empty( $contexts ) ) {
 					add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
-						$error = true;
-						return false;
+					$error = true;
+					return false;
 				}
 				
-				foreach ($contexts as $context) {
+				foreach ( $contexts as $context ) {
 					if ( empty( $context ) ) {
 						add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
 						$error = true;
 					}
 				}
-				
 
 				if ( $error ) {
 					return false;
 				}
 				
-				foreach ($contexts as $context) {
+				foreach ( $contexts as $context ) {
 					$this->translate_strings( $context, $languages, $template );
 					add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
 				}
-				
-
 			}
-
 		}
 
 		return true;
-
 	}
 
 	/**
@@ -277,7 +268,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
         $screen = get_current_screen();
 
-        if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/generator') ) ){
+        if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings', WPML_CTT_FOLDER . '/menus/settings/generator' ) ) ) {
 
             wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/ctt_style.css', WPML_CTT_VERSION );
              wp_enqueue_style( 'wctt-generator-style' );

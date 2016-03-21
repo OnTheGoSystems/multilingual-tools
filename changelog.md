@@ -1,9 +1,12 @@
-# 1.1.3
+# 1.2
 
 ## Improvements
 
-* Major code optimizations.
+* Major code improvements.
 * Added notice for successfully saved file in theme folder.
+* Added responsive layout.
+* Added dropdown for context selection.
+* Added flags for active languages.
 
 # 1.1.2
 

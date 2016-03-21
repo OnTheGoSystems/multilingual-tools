@@ -50,21 +50,23 @@ function wpml_ctt_st_contexts(){
  * @return string
  */
 function wpml_ctt_active_languages_output( $selected_languages = array() ){
-    global $sitepress;
-							
-    $active_langs = $sitepress->get_active_languages();
-    $default_lang = $sitepress->get_default_language();
+    $active_langs = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=asc' );
+    $default_lang = apply_filters( 'wpml_default_language', NULL );
     $theme_lang_inputs = '';
 
-	//remove default language from list
+	// Remove default language from list.
     unset($active_langs[$default_lang]);
-							
+
     foreach( $active_langs as $lang => $v ){
 		$checked = in_array($lang, $selected_languages  ) ? 'checked' : '';
-        $theme_lang_inputs .= ' <input type="checkbox" '.$checked.' id="active_languages" name="active_languages[]" value="'. $lang .'" /> ' . $active_langs[$lang]['english_name'];
+        $icon = '<img src="' . $active_langs[$lang]['country_flag_url']
+                             . '" alt="' . $active_langs[$lang]['translated_name']
+                             . '" width="18" height="12"> ';
 
+        $theme_lang_inputs .= ' <input type="checkbox" ' . $checked . ' id="active_languages" name="active_languages[]" value="'
+                                                        . $lang .'" />'. $icon . $active_langs[$lang]['translated_name'] . '<br>';
     }
-    
+
     return $theme_lang_inputs;
 }
 

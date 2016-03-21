@@ -2,7 +2,7 @@
     <div id="icon-wpml" class="icon32"><br /></div>
     <h2 style="margin-bottom: 20px;"><?php _e('WPML Configuration Generator', 'wpml-compatibility-test-tools'); ?></h2>
     <form method="post">
-        <table class="widefat general_options_table" style="margin-top: 20px;">
+        <table id="ctt_generator" class="widefat general_options_table" style="margin-top: 20px;">
             <tbody>
             <tr>
                 <td>
@@ -206,7 +206,7 @@
 
                             <th style="width: 200px;font-size: 13px"><?php _e('Options from <strong>wp_options</strong> table:', 'wpml-compatibility-test-tools'); ?></th>
                             <th width="300px" >
-                                <dl class="dropdown">
+                                <dl id="dropdown">
                                     <dt>
                                         <span class="placeholder"><?php _e('- Select options -', 'wpml-compatibility-test-tools'); ?></span>
                                         <span class="selection"></span>

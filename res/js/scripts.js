@@ -9,13 +9,20 @@ jQuery( document ).ready(function() {
     }
 
     // Toggle drop-down on mouse gesture.
-    jQuery( '.dropdown' )
+    jQuery( '#dropdown' )
         .mouseenter(function() {
-            jQuery( '.dropdown dd ul' ).slideToggle( 'fast' );
+            jQuery( '#dropdown dd ul' ).slideToggle( 'fast', function() {
+                jQuery( '#ctt_settings #dropdown .toggle' ).show()
+            });
         })
         .mouseleave(function() {
-            jQuery( '.dropdown dd ul' ).slideToggle( 'fast' );
-        });
+            jQuery('#dropdown dd ul').slideToggle({
+                duration: 'fast',
+                start: function () {
+                    jQuery( '#ctt_settings #dropdown .toggle' ).hide();
+                }
+            });
+        })
 
     // Enable submit button if any checkbox is selected.
     jQuery( document ).on( 'click', '[type="checkbox"]', function() {

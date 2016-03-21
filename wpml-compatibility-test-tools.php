@@ -8,7 +8,7 @@ Author URI: http://wpml.org
 Version: 1.1.1
 */
 
-define('WPML_CTT_VERSION', '1.1.3');
+define('WPML_CTT_VERSION', '1.2');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_FOLDER', basename(WPML_CTT_PATH));
 define('WPML_CTT_MENU_SETTINGS_SLUG', WPML_CTT_FOLDER . '/menus/settings/settings.php');
