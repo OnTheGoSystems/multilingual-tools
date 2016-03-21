@@ -37,8 +37,8 @@ function wpml_ctt_prepare_string( $template, $string, $lang ) {
  *
  * @return mixed
  */
-function wpml_ctt_st_contexts(){
-    return icl_st_get_contexts(false);
+function wpml_ctt_st_contexts() {
+    return icl_st_get_contexts( false );
 }
 
 /**
@@ -49,22 +49,32 @@ function wpml_ctt_st_contexts(){
  *
  * @return string
  */
-function wpml_ctt_active_languages_output( $selected_languages = array() ){
-    global $sitepress;
-							
-    $active_langs = $sitepress->get_active_languages();
-    $default_lang = $sitepress->get_default_language();
+function wpml_ctt_active_languages_output( $selected_languages = array() ) {
+    $active_langs      = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=asc' );
+    $default_lang      = apply_filters( 'wpml_default_language', NULL );
     $theme_lang_inputs = '';
 
-	//remove default language from list
-    unset($active_langs[$default_lang]);
-							
-    foreach( $active_langs as $lang => $v ){
-		$checked = in_array($lang, $selected_languages  ) ? 'checked' : '';
-        $theme_lang_inputs .= ' <input type="checkbox" '.$checked.' name="active_languages[]" value="'. $lang .'" /> ' . $active_langs[$lang]['english_name'];
+	// Remove default language from list.
+    unset( $active_langs[$default_lang] );
 
+    if ( empty( $active_langs ) ) {
+        return sprintf( __( 'No active languages set. You can enable languages <a href="%s">here</a>.', 'wpml-compatibility-test-tools' ), admin_url( 'admin.php?page=sitepress-multilingual-cms/menu/languages.php' ) );
     }
-    
+
+    $theme_lang_inputs = '<ul>';
+
+    foreach( $active_langs as $lang => $v ) {
+		$checked = in_array( $lang, $selected_languages ) ? 'checked' : '';
+        $icon    = '<img src="' . $active_langs[$lang]['country_flag_url']
+                                . '" alt="' . $active_langs[$lang]['translated_name']
+                                . '" width="18" height="12"> ';
+
+        $theme_lang_inputs .= ' <li><input type="checkbox" ' . $checked . ' id="active_languages" name="active_languages[]" value="' . $lang .'" />'
+                                                         . $icon . $active_langs[$lang]['translated_name'] . '</li>';
+    }
+
+    $theme_lang_inputs .= '<a id="active_languages" class="toggle" href="#">Toggle all</a></ul>';
+
     return $theme_lang_inputs;
 }
 
@@ -74,7 +84,7 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ){
  *
  * @return mixed
  */
-function wpml_get_custom_fields(){
+function wpml_get_custom_fields() {
 	global $wpdb;
 
 	return $wpdb->get_results( "SELECT DISTINCT(meta_key) FROM $wpdb->postmeta" );
@@ -89,13 +99,13 @@ add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
     check_ajax_referer( 'wctt-generate', '_wctt_mighty_nonce' );
 
-    $options = isset($_POST['options']) ? (array)$_POST['options'] : array();
+    $options = isset( $_POST['options'] ) ? (array) $_POST['options'] : array();
 
-    foreach ($options as $option) {
-        $data[$option] = maybe_unserialize( get_option($option) );
+    foreach ( $options as $option ) {
+        $data[$option] = maybe_unserialize( get_option( $option ) );
     }
 
-    echo json_encode($data);
+    echo json_encode( $data );
     wp_die();
 }
 
@@ -253,8 +263,8 @@ function wpml_ctt_options_list() {
     $options = wpml_ctt_load_alloptions();
 
     foreach ( $options as $name => $value ) {
-        if ( in_array($name, $exclude_list) || (!stristr($name, '_transient') === false) ) {
-            unset($options[$name]);
+        if ( in_array( $name, $exclude_list ) || ( ! stristr( $name, '_transient' ) === false ) ) {
+            unset( $options[$name] );
         }
     }
 
@@ -284,7 +294,7 @@ function wpml_ctt_validate_radio( $value ) {
         return $value;
     }
 
-    return "";
+    return '';
 }
 
 /**
