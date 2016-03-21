@@ -7,7 +7,7 @@
 	<tbody>
 	<tr>
 		<td>
-			<p><?php printf( __( 'Before you start make sure that your theme/plugin is already <a href="%s">scanned for strings</a>.', 'wpml-compatibility-test-tools' ), admin_url( 'admin.php?page=sitepress-multilingual-cms/menu/theme-localization.php' ) ) ; ?></p>
+			<p><?php printf( __( 'Before you start make sure that your theme/plugin is already <a href="%s">scanned for strings</a>.', 'wpml-compatibility-test-tools' ), admin_url( 'admin.php?page=sitepress-multilingual-cms/menu/theme-localization.php' ) ); ?></p>
 		</td>
 	</tr>
 	<tr>
@@ -41,7 +41,6 @@
 				<label><?php _e( 'Translate languages:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
 					<?php echo wpml_ctt_active_languages_output( WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_languages', array() ) ); ?>
-				    <a id="active_languages" class="toggle" href="#">Toggle all</a>
                 </div>
 
 				<label><?php _e( 'Template:', 'wpml-compatibility-test-tools' ); ?></label>

@@ -4,9 +4,7 @@ jQuery( document ).ready(function() {
         result       = jQuery( '#result' ),
         submitButton = jQuery( '[type="submit"][id="wctt_generate"]' );
 
-    function buttonToggle(){
-        submitButton.attr( 'disabled', !jQuery( '[type="checkbox"]' ).not( '[class="option"]' ).is( ':checked' ));
-    }
+    optionCount();
 
     // Toggle drop-down on mouse gesture.
     jQuery( '#dropdown' )
@@ -23,6 +21,11 @@ jQuery( document ).ready(function() {
                 }
             });
         })
+
+    // Update option count on checkbox selection.
+    jQuery( '#dropdown input[type="checkbox"]' ).change(function() {
+        optionCount()
+    });
 
     // Enable submit button if any checkbox is selected.
     jQuery( document ).on( 'click', '[type="checkbox"]', function() {
@@ -107,6 +110,7 @@ jQuery( document ).ready(function() {
     // Provides toggle all functionality.
     jQuery( '.toggle' ).click( function () {
         event.preventDefault();
+
         var group = jQuery( 'input[id=' + this.id + ']' );
 
         if ( group.attr( 'type' ) == 'radio' ) {
@@ -116,6 +120,7 @@ jQuery( document ).ready(function() {
         } else {
             group.prop( 'checked', ! group.prop( 'checked' ) );
             buttonToggle();
+            optionCount();
         }
     });
 
@@ -125,4 +130,19 @@ jQuery( document ).ready(function() {
         buttonToggle();
     });
 
+    // Button toggle disable.
+    function buttonToggle(){
+        submitButton.attr( 'disabled', !jQuery( '[type="checkbox"]' ).not( '[class="option"]' ).is( ':checked' ));
+    }
+
+    // Count selected options from dropdown.
+    function optionCount() {
+        var selectedCount   = jQuery( '#dropdown input[type="checkbox"]:checked' ).length
+
+        if ( selectedCount > 0 ) {
+            jQuery('.placeholder').text('- Select options (' + selectedCount + ') -')
+        } else {
+            jQuery('.placeholder').text('- Select options -')
+        }
+    }
 });

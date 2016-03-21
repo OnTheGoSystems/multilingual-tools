@@ -69,6 +69,13 @@
     display: table;
     clear: both;
 }
+.holder ul {
+    margin: 0;
+}
+.count {
+    float: right;
+    margin-right: 20px;
+}
 .full_width {
     width: 100%;
 }

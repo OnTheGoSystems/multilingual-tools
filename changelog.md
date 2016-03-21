@@ -6,7 +6,9 @@
 * Added notice for successfully saved file in theme folder.
 * Added responsive layout.
 * Added dropdown for context selection.
+* Added dropdown option count.
 * Added flags for active languages.
+* Added new icon.
 
 # 1.1.2
 
