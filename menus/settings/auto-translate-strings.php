@@ -17,7 +17,7 @@
 				$stt_context = wpml_ctt_st_contexts();
 				$string_auto_translate_context = (array) WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context' );
 
-				if( ! empty( $stt_context ) ) { ?>
+				if( ! empty( $stt_context ) ) : ?>
 					<label><?php _e( 'Select strings within context to translate:', 'wpml-compatibility-test-tools' ); ?></label>
                     <dl id="dropdown" class="holder">
                         <dt>
@@ -29,18 +29,21 @@
                                     <li>
                                         <input type="checkbox" id="strings_auto_translate_context" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>"
                                             <?php checked( is_array( $string_auto_translate_context ), in_array( htmlspecialchars( $v->context ), $string_auto_translate_context) ); ?>>
-                                        <?php echo $v->context . ' ('. $v->c .')'; ?><br>
+                                        <?php echo $v->context . ' ('. $v->c .')'; ?>
                                     </li>
-                                <?php endforeach; } ?>
+                                <?php endforeach; ?>
                             </ul>
                             <a id="strings_auto_translate_context" class="toggle" href="#">Toggle all</a>
                         </dd>
                     </dl>
+				<?php endif; ?>
+
 				<label><?php _e( 'Translate languages:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
 					<?php echo wpml_ctt_active_languages_output( WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_languages', array() ) ); ?>
 				    <a id="active_languages" class="toggle" href="#">Toggle all</a>
                 </div>
+
 				<label><?php _e( 'Template:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
 					<div class="template_l">
