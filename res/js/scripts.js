@@ -108,7 +108,7 @@ jQuery( document ).ready(function() {
 	});
 
     // Provides toggle all functionality.
-    jQuery( '.toggle' ).click( function () {
+    jQuery( '.toggle' ).click( function ( event ) {
         event.preventDefault();
 
         var group = jQuery( 'input[id=' + this.id + ']' );
