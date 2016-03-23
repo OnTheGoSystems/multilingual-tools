@@ -1,30 +1,39 @@
-jQuery( document ).ready(function() {
+jQuery( document ).ready( function() {
 
-    var option       = [],
-        result       = jQuery( '#result' ),
-        submitButton = jQuery( '[type="submit"][id="wctt_generate"]' );
+    var option         = [],
+        result         = jQuery( '#result' ),
+        submitButton   = jQuery( '[type="submit"][id="wctt_generate"]' ),
+        dropdownToggle = jQuery( 'a#strings_auto_translate_context.toggle' ),
+        dropdown       = jQuery( '#dropdown' ),
+        multiSelect    = jQuery( '#multiSelect' );
 
     optionCount();
 
     // Toggle drop-down on mouse gesture.
-    jQuery( '#dropdown' )
-        .mouseenter(function() {
-            jQuery( '#dropdown dd ul' ).slideToggle( 'fast', function() {
-                jQuery( '#ctt_settings #dropdown .toggle' ).show()
-            });
-        })
-        .mouseleave(function() {
-            jQuery('#dropdown dd ul').slideToggle({
-                duration: 'fast',
+    dropdown.click( function( event ) {
+            event.stopPropagation();
+
+            dropdown.find( 'ul' ).slideToggle({
+                duration: 50,
                 start: function () {
-                    jQuery( '#ctt_settings #dropdown .toggle' ).hide();
+                    dropdownToggle.toggle();
                 }
             });
-        })
+        });
+
+    dropdown.find( 'ul' ).on( 'click', function( event ) {
+        event.stopPropagation();
+    });
 
     // Update option count on checkbox selection.
-    jQuery( '#dropdown input[type="checkbox"]' ).change(function() {
+    dropdown.find( 'input[type="checkbox"]' ).change( function() {
         optionCount()
+    });
+
+    // Hiding elements if clicked elsewhere
+    jQuery( document ).on( 'click', function() {
+        dropdown.find( 'ul' ).hide();
+        dropdownToggle.hide();
     });
 
     // Enable submit button if any checkbox is selected.
@@ -32,10 +41,10 @@ jQuery( document ).ready(function() {
         buttonToggle();
     });
 
-    jQuery( '#multiSelect [type="checkbox"]' ).on( 'click', function () {
+    multiSelect.find( '[type="checkbox"]' ).click( function () {
 
         // Collecting options from Multi-Select.
-        option = jQuery( '#multiSelect [type="checkbox"]:checked' ).map(function( _, i ) {
+        option = multiSelect.find( '[type="checkbox"]:checked' ).map( function( _, i ) {
             return jQuery( i ).val();
         }).get();
 
@@ -56,14 +65,14 @@ jQuery( document ).ready(function() {
 
                 // Generating checkboxes option tree.
                 function generateList( key, value ) {
-                    key = jQuery( '<div />' ).text( key ).html();
+                    key = jQuery( '<div />' ).text( key ).html();   // Escaping chars
 
                     if ( jQuery.isPlainObject( value ) ) {
                         output += '<li><input id="at" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => ' + '</><ul>';
                         jQuery.each( value, generateList );
                         output += '</ul></li>';
                     } else {
-                        value   = jQuery('<div />').text( value ).html();
+                        value   = jQuery('<div />').text( value ).html();   // Escaping chars
                         output += '<li><input id="at" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => <strong>' + value + '</strong></li>';
                     }
                 }
@@ -84,25 +93,25 @@ jQuery( document ).ready(function() {
     });
 
     // Multi-check options tree.
-    result.on( 'click', '#tree [type="checkbox"]', function() {
+    result.on( 'click', '[type="checkbox"]', function() {
         var current = jQuery( this );
 
         if ( this.checked ) {
-            current.parentsUntil('ul#tree').children( '[type="checkbox"]' ).prop( 'checked', true );
+            current.parentsUntil( 'ul#tree' ).children( '[type="checkbox"]' ).prop( 'checked', true );
         } else {
             current.parent().find( '[type="checkbox"]' ).prop( 'checked', false );
         }
     });
 
-	jQuery( "#string_auto_translate_predefined_templates" ).change(function() {
+	jQuery( "#string_auto_translate_predefined_templates" ).change( function() {
 		jQuery( "#strings_auto_translate_template" ).val( jQuery( "#string_auto_translate_predefined_templates" ).find( "option:selected" ).text() );
 	});
 
-	jQuery( "#duplicate_strings_predefined_templates" ).change(function() {
+	jQuery( "#duplicate_strings_predefined_templates" ).change( function() {
 		jQuery( "#duplicate_strings_template" ).val( jQuery( "#duplicate_strings_predefined_templates" ).find( "option:selected" ).text() );
 	});
 
-	jQuery( "#strings_auto_translate_action_translate" ).click(function() {
+	jQuery( "#strings_auto_translate_action_translate" ).click( function() {
 		var question = "All existing strings translations will be replaced with new values.\nAre you sure you want to do this?";
 		return confirm( question );
 	});
@@ -110,6 +119,7 @@ jQuery( document ).ready(function() {
     // Provides toggle all functionality.
     jQuery( '.toggle' ).click( function ( event ) {
         event.preventDefault();
+        event.stopPropagation();
 
         var group = jQuery( 'input[id=' + this.id + ']' );
 
@@ -125,7 +135,7 @@ jQuery( document ).ready(function() {
     });
 
     // Automatically check checkbox if radio is changed.
-    jQuery( 'input[type=radio]' ).change( function() {
+    jQuery( 'input[type="radio"]' ).change( function() {
         jQuery( 'input[type="checkbox"][name="_' + this.name + '"]' ).prop( 'checked', true );
         buttonToggle();
     });
@@ -137,12 +147,13 @@ jQuery( document ).ready(function() {
 
     // Count selected options from dropdown.
     function optionCount() {
-        var selectedCount   = jQuery( '#dropdown input[type="checkbox"]:checked' ).length
+        var selectedCount = dropdown.find( '[type="checkbox"]:checked' ).length,
+            placeholder   = jQuery( '.placeholder' );
 
         if ( selectedCount > 0 ) {
-            jQuery('.placeholder').text('- Select options (' + selectedCount + ') -')
+            placeholder.text('- Select options (' + selectedCount + ') -')
         } else {
-            jQuery('.placeholder').text('- Select options -')
+            placeholder.text('- Select options -')
         }
     }
 });

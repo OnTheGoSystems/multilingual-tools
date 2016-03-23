@@ -1,4 +1,4 @@
-<table id="ctt_settings" class="widefat general_options_table">
+<table id="ctt-settings" class="widefat general_options_table">
 	<thead>
 	<tr>
 		<th><?php _e( 'Add language information to post duplicate', 'wpml-compatibility-test-tools' ) ?></th>
@@ -29,11 +29,11 @@
 
 				<label><?php _e( 'Template:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
-					<div class="template_l">
-						<input class="full_width" type="text" id="duplicate_strings_template" name="duplicate_strings_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings_template' ); ?>" />
+					<div class="template-left">
+						<input class="full-width" type="text" id="duplicate_strings_template" name="duplicate_strings_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings_template' ); ?>" />
 					</div>
-					<div class="template_r">
-						<select class="full_width" id="duplicate_strings_predefined_templates" name="duplicate_strings_predefined_templates">
+					<div class="template-right">
+						<select class="full-width" id="duplicate_strings_predefined_templates" name="duplicate_strings_predefined_templates">
 							<option value="0"> -= Select predefined template =- </option>
 							<option value="1">[%language_code%] %original_string%</option>
 							<option value="2">%original_string% [%language_code%]</option>

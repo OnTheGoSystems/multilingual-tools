@@ -16,6 +16,10 @@
     line-height: 24px;
     overflow: hidden;
     background: url("../img/select_bg.png") no-repeat right;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 #dropdown dd ul {
     background:#FFF;
@@ -25,7 +29,7 @@
     position:absolute;
     top:2px;
     list-style:none;
-    height: 130px;
+    max-height: 180px;
     overflow: auto;
 }
 #dropdown dt,
@@ -39,7 +43,7 @@
 #dropdown dd ul li {
     padding: 3px;
 }
-#dropdown dd ul li input[type=checkbox] {
+#dropdown dd ul li input[type="checkbox"] {
     margin: 0 4px 0;
 }
 .placeholder {
@@ -48,16 +52,16 @@
 
 /* SETTINGS PAGE */
 
-#ctt_settings {
+#ctt-settings {
     margin-top: 20px
 }
-#ctt_settings #dropdown .toggle {
+#ctt-settings #dropdown .toggle {
     position: absolute;
     display: none;
-    bottom: -133px;
+    bottom: -30px;
     right: 15px;
 }
-#ctt_settings label {
+#ctt-settings label {
     width: 260px;
 }
 .holder {
@@ -76,26 +80,28 @@
     float: right;
     margin-right: 20px;
 }
-.full_width {
+.full-width {
     width: 100%;
 }
-.template_l {
+.template-left {
     width: 49%;
     margin-right: 1%;
 }
-.template_r {
+.template-right {
     width: 50%;
 }
-#ctt_settings label, small,
-.template_l, .template_r {
+#ctt-settings label, small,
+.template-left,
+.template-right {
     float: left;
 }
 @media only screen and (max-width: 1024px) {
-    .template_l, .template_r {
+    .template-left,
+    .template-right {
         width: 100%;
         font-size: smaller !important;
     }
-    #ctt_settings label {
+    #ctt-settings label {
         float: left;
         width: 200px;
     }

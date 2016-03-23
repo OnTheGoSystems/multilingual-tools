@@ -1,4 +1,4 @@
-<table id="ctt_settings" class="widefat general_options_table">
+<table id="ctt-settings" class="widefat general_options_table">
 	<thead>
 	<tr>
 		<th><?php _e( 'Auto generate strings translations', 'wpml-compatibility-test-tools' ) ?></th>
@@ -45,11 +45,11 @@
 
 				<label><?php _e( 'Template:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
-					<div class="template_l">
-						<input class="full_width" id="strings_auto_translate_template" name="strings_auto_translate_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_template' ); ?>" />
+					<div class="template-left">
+						<input class="full-width" id="strings_auto_translate_template" name="strings_auto_translate_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_template' ); ?>" />
 					</div>
-					<div class="template_r">
-						<select class="full_width" id="string_auto_translate_predefined_templates" name="string_auto_translate_predefined_templates">
+					<div class="template-right">
+						<select class="full-width" id="string_auto_translate_predefined_templates" name="string_auto_translate_predefined_templates">
 							<option value="0"> -= Select predefined template =- </option>
 							<option value="1">[%language_code%] %original_string%</option>
 							<option value="2">%original_string% [%language_code%]</option>

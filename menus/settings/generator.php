@@ -2,7 +2,7 @@
     <div id="icon-wpml" class="icon32"><br /></div>
     <h2 style="margin-bottom: 20px;"><?php _e('WPML Configuration Generator', 'wpml-compatibility-test-tools'); ?></h2>
     <form method="post">
-        <table id="ctt_generator" class="widefat general_options_table" style="margin-top: 20px;">
+        <table id="ctt-generator" class="widefat general_options_table" style="margin-top: 20px;">
             <tbody>
             <tr>
                 <td>
