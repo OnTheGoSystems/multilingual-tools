@@ -1,0 +1,1 @@
+# WPML Compatibility Test Tools

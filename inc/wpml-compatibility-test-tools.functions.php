@@ -50,9 +50,8 @@ function wpml_ctt_st_contexts() {
  * @return string
  */
 function wpml_ctt_active_languages_output( $selected_languages = array() ) {
-    $active_langs      = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=asc' );
-    $default_lang      = apply_filters( 'wpml_default_language', NULL );
-    $theme_lang_inputs = '';
+    $active_langs = apply_filters( 'wpml_active_languages', NULL, 'orderby=id&order=asc' );
+    $default_lang = apply_filters( 'wpml_default_language', NULL );
 
 	// Remove default language from list.
     unset( $active_langs[$default_lang] );
@@ -99,9 +98,18 @@ add_action( 'wp_ajax_wpml_ctt_action', 'wpml_ctt_options_list_ajax' );
 function wpml_ctt_options_list_ajax() {
     check_ajax_referer( 'wctt-generate', '_wctt_mighty_nonce' );
 
+    $data    = array();
     $options = isset( $_POST['options'] ) ? (array) $_POST['options'] : array();
 
+    $safe_options = wpml_ctt_options_list();
+
     foreach ( $options as $option ) {
+        // Dealing with unwanted.
+        if ( ! array_key_exists( $option, $safe_options ) ) {
+            $data = ["{$option}" => 'No way Jose!'];
+            break;
+        }
+        // Dealing with bad nested serialization.
         $data[$option] = maybe_unserialize( get_option( $option ) );
     }
 

@@ -15,7 +15,7 @@
     min-height: 25px;
     line-height: 24px;
     overflow: hidden;
-    background: url("../img/select_bg.png") no-repeat right;
+    background: url("../img/wctt-multiselect-bg.png") no-repeat right;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -52,16 +52,17 @@
 
 /* SETTINGS PAGE */
 
-#ctt-settings {
+#wctt-settings,
+#wctt-generator {
     margin-top: 20px
 }
-#ctt-settings #dropdown .toggle {
+#wctt-settings #dropdown .toggle {
     position: absolute;
     display: none;
     bottom: -30px;
     right: 15px;
 }
-#ctt-settings label {
+#wctt-settings label {
     width: 260px;
 }
 .holder {
@@ -76,10 +77,6 @@
 .holder ul {
     margin: 0;
 }
-.count {
-    float: right;
-    margin-right: 20px;
-}
 .full-width {
     width: 100%;
 }
@@ -90,7 +87,7 @@
 .template-right {
     width: 50%;
 }
-#ctt-settings label, small,
+#wctt-settings label, small,
 .template-left,
 .template-right {
     float: left;
@@ -101,7 +98,7 @@
         width: 100%;
         font-size: smaller !important;
     }
-    #ctt-settings label {
+    #wctt-settings label {
         float: left;
         width: 200px;
     }
@@ -112,10 +109,10 @@
 
 /* GENERATOR PAGE */
 
-.ctt tr:nth-child(2n) {
+.wctt tr:nth-child(2n) {
     background: #FAFAFA
 }
-.ctt tr:hover {
+.wctt tr:hover {
     background: #E6F1F6
 }
 #result ul {
@@ -133,4 +130,36 @@
 }
 #tree ul li:last-child {
     padding-bottom: 0;
+}
+#dropdown-column {
+    width: 280px;
+}
+#wctt-generator .wctt td:not(:first-child) {
+    width: 100px;
+}
+#wctt-generator .widefat .toggle {
+    font-size:11px;
+    line-height: 5px;
+}
+#wctt-generator tfoot tr:first-child > th,
+#wctt-generator thead tr:not(:first-child) > th {
+    padding: 0 0 3px 10px;
+}
+.column-desc {
+    width: 200px;
+    font-size: 13px !important;
+}
+#at-toggle {
+    display: none;
+}
+#wctt-generator input[name="save"] {
+    margin: 2px 2px 0 20px;
+}
+#wctt-generator input[type="submit"] {
+    float:right;
+    margin-bottom:5px;
+}
+#save {
+    padding: 20px;
+    float: right;
 }

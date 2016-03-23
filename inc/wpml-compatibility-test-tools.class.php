@@ -224,7 +224,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
-		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML Tools', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG, null, WPML_CTT_PLUGIN_URL . '/res/img/ctt_icon.png' );
+		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML Tools', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG, null, WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
 		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Settings'				, 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' )				 , 'manage_options', WPML_CTT_MENU_SETTINGS_SLUG );
 		add_submenu_page( WPML_CTT_MENU_SETTINGS_SLUG, __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', WPML_CTT_FOLDER . '/menus/settings/generator.php' );
 
@@ -240,7 +240,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
         if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings', WPML_CTT_FOLDER . '/menus/settings/generator' ) ) ) {
 
-             wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/scripts.js', array('jquery'), WPML_CTT_VERSION ) ;
+             wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array('jquery'), WPML_CTT_VERSION ) ;
             wp_localize_script( 'wctt-scripts', 'ajax_object'							  , array('ajax_url' => admin_url('admin-ajax.php') ) );
 
         }
@@ -255,7 +255,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
         if ( in_array( $screen->id, array( WPML_CTT_FOLDER . '/menus/settings/settings', WPML_CTT_FOLDER . '/menus/settings/generator' ) ) ) {
 
-            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/ctt_style.css', WPML_CTT_VERSION );
+            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
              wp_enqueue_style( 'wctt-generator-style' );
         }
     }

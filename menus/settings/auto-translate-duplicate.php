@@ -1,4 +1,4 @@
-<table id="ctt-settings" class="widefat general_options_table">
+<table id="wctt-settings" class="widefat general_options_table">
 	<thead>
 	<tr>
 		<th><?php _e( 'Add language information to post duplicate', 'wpml-compatibility-test-tools' ) ?></th>

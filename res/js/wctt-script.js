@@ -2,12 +2,13 @@ jQuery( document ).ready( function() {
 
     var option         = [],
         result         = jQuery( '#result' ),
-        submitButton   = jQuery( '[type="submit"][id="wctt_generate"]' ),
+        submitButton   = jQuery( '#wctt-generator' ).find( '[type="submit"]' ),
         dropdownToggle = jQuery( 'a#strings_auto_translate_context.toggle' ),
         dropdown       = jQuery( '#dropdown' ),
         multiSelect    = jQuery( '#multiSelect' );
 
     optionCount();
+    buttonToggle();
 
     // Toggle drop-down on mouse gesture.
     dropdown.click( function( event ) {
@@ -27,7 +28,7 @@ jQuery( document ).ready( function() {
 
     // Update option count on checkbox selection.
     dropdown.find( 'input[type="checkbox"]' ).change( function() {
-        optionCount()
+        optionCount();
     });
 
     // Hiding elements if clicked elsewhere
@@ -48,7 +49,7 @@ jQuery( document ).ready( function() {
             return jQuery( i ).val();
         }).get();
 
-        if ( option.length != 0 ) {
+        if ( option.length !== 0 ) {
 
             var data = {
                 'options'            : option,
@@ -57,7 +58,7 @@ jQuery( document ).ready( function() {
             };
 
             jQuery.post( ajax_object.ajax_url, data, function ( response ) {
-
+                console.log(response);
                 var output, data = jQuery.parseJSON( response );
 
                 output = '<ul id="tree">';
@@ -85,10 +86,12 @@ jQuery( document ).ready( function() {
                 content.fadeIn();
 
                 jQuery( '#at-notice' ).hide();
+                jQuery( 'tr#at-toggle' ).show();
             });
         } else {
             jQuery( '#tree' ).remove();
             jQuery( '#at-notice' ).fadeIn();
+            jQuery( 'tr#at-toggle' ).hide();
         }
     });
 
@@ -123,7 +126,7 @@ jQuery( document ).ready( function() {
 
         var group = jQuery( 'input[id=' + this.id + ']' );
 
-        if ( group.attr( 'type' ) == 'radio' ) {
+        if ( group.attr( 'type' ) === 'radio' ) {
             group.prop( 'checked', true );
             jQuery( 'input[type="checkbox"][id="' + this.id.slice( 0, -2 ) + '"]' ).prop( 'checked', true );
             buttonToggle();
@@ -151,9 +154,9 @@ jQuery( document ).ready( function() {
             placeholder   = jQuery( '.placeholder' );
 
         if ( selectedCount > 0 ) {
-            placeholder.text('- Select options (' + selectedCount + ') -')
+            placeholder.text('- Select options (' + selectedCount + ') -');
         } else {
-            placeholder.text('- Select options -')
+            placeholder.text('- Select options -');
         }
     }
 });
