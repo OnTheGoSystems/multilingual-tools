@@ -228,7 +228,7 @@
                 </th>
             </tr>
             <tr>
-                <th><input name="submit" type="submit" class="button-primary" value="<?php _e( 'Generate', 'wpml-compatibility-test-tools' ) ?>" disabled /><?php wp_nonce_field( "wctt-generate","_wctt_mighty_nonce" ); ?></th>
+                <th><input name="wctt-generator-submit" type="submit" class="button-primary" value="<?php _e( 'Generate', 'wpml-compatibility-test-tools' ) ?>" disabled /><?php wp_nonce_field( "wctt-generate","_wctt_mighty_nonce" ); ?></th>
             </tr>
         </table>
     </form>

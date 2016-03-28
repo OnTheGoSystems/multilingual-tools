@@ -3,7 +3,7 @@
 class WPML_Compatibility_Test_Tools_Messages {
 
 	public function __call( $name, $arguments ) {
-		switch($name){
+		switch( $name ) {
 			case 'no_wpml_notice' :
 				$message = __( 'WPML Compatibility Test Tools plugin is enabled but not effective. It requires %s plugin in order to work.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>' . sprintf( $message, '<a href="http://wpml.org/">WPML</a>' ) . '</p></div>';
@@ -62,9 +62,9 @@ class WPML_Compatibility_Test_Tools_Messages {
 				break;
 
 			case 'wctt_in_action_notice' :
-				//get current settings for string duplication
+				// Get current settings for string duplication
 				$duplicate_strings = WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings' );
-				//prepare a message
+				// Prepare a message
 				$message =
 					__( "WPML Compatibility Tester plugin is running and will automatically add language information to all new duplicates for your site. Right now, it will add language information for the following post fields:", 'wpml-compatibility-test-tools'  ) . "<br/>" .
 					( isset( $duplicate_strings['post']['title'] ) 			? '[&#10004;] ' : '[ ] ' ) . __( 'Post title'		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
@@ -74,7 +74,7 @@ class WPML_Compatibility_Test_Tools_Messages {
 					( isset( $duplicate_strings['custom_fields']['value'] ) ? '[&#10004;] ' : '[ ] ' ) . __( 'Custom fields'	  , 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['taxonomy']['all'] )	 	? '[&#10004;] ' : '[ ] ' ) . __( 'Term name '		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['taxonomy_slug']['all'] )	? '[&#10004;] ' : '[ ] ' ) . __( 'Term slug'		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
-					sprintf( "<a href=\"%s\">" . __( "Click here to change fields to duplicate", 'wpml-compatibility-test-tools') . "</a><br/>", admin_url( 'admin.php?page='.WPML_CTT_MENU_SETTINGS_SLUG ) ) . "<br/>" .
+					sprintf( "<a href=\"%s\">" . __( "Click here to change fields to duplicate", 'wpml-compatibility-test-tools') . "</a><br/>", admin_url( 'admin.php?page=wctt' ) ) . "<br/>" .
 					__("To proceed, select all the site's content, scroll down and select <strong>Duplicate all</strong> and then click on <strong>Send documents</strong>.", 'wpml-compatibility-test-tools') . "<br/>" .
 					"<div style=\"color: #ff0000\">" . __( "Please note that any existing translations for selected posts will be overwritten!", 'wpml-compatibility-test-tools' ) . "</div>";
 
