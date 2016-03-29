@@ -28,7 +28,7 @@
                                 <?php foreach ( $stt_context as $v ) : ?>
                                     <li>
                                         <input type="checkbox" id="strings_auto_translate_context" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>"
-                                            <?php checked( is_array( $string_auto_translate_context ), in_array( htmlspecialchars( $v->context ), $string_auto_translate_context) ); ?>>
+                                            <?php echo ! empty( $string_auto_translate_context ) ? checked( is_array( $string_auto_translate_context ), in_array( htmlspecialchars( $v->context ), $string_auto_translate_context ), false ) : 'checked'; ?>>
                                         <?php echo $v->context . ' ('. $v->c .')'; ?>
                                     </li>
                                 <?php endforeach; ?>
