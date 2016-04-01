@@ -4,12 +4,12 @@
 ![License](https://img.shields.io/badge/license-GPLv2-red.svg?style=flat-squar)
 
 
-WPML Compatibility Test Tools presents set of tools realeted to [WPML](https://wpml.org) plugin bundle. Created with tendency to ease WPML compatibility testing process, and help out users that applied to [WPML GoGlobal Program](https://wpml.org/documentation/theme-compatibility/go-global-program/).
+WPML Compatibility Test Tools presents set of tools realeted to [WPML](https://wpml.org) plugin bundle. Created with tendency to ease WPML compatibility testing process, and help out WordPress developers that applied to [WPML GoGlobal Program](https://wpml.org/documentation/theme-compatibility/go-global-program/).
 
 
 ## Key features
 
-- Auto generate strings translations
+- Auto generate strings for translations
 - Add language information to post duplicate
 - Generate WPML config file ( wpml-config.xml )
 
