@@ -28,4 +28,4 @@ All plugins can be downloaded from [WPML.org](https://wpml.org/purchase/)
 ## Contribute
 
 Have in mind that this tool began as internal WPML Compatibility Team test tool, and thus is not perfect. : )
-So if you spot any bug or have idea for useful feature feel free to contibute via [GitHub]().
+So if you spot any bug or have idea for useful feature feel free to contibute via [GitHub](https://github.com/OnTheGoSystems/multilingual-test-tools).
