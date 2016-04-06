@@ -1,0 +1,165 @@
+/* DROPDOWN */
+
+#dropdown dd, #dropdown dt {
+    margin:0;
+    padding:0;
+}
+#dropdown ul {
+    margin: -2px 0 0 0;
+}
+#dropdown dd {
+    position:relative;
+}
+#dropdown dt {
+    display:block;
+    min-height: 25px;
+    line-height: 24px;
+    overflow: hidden;
+    background: url("../img/wctt-multiselect-bg.png") no-repeat right;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+#dropdown dd ul {
+    background:#FFF;
+    display:none;
+    left:0;
+    padding: 5px 0;
+    position:absolute;
+    top:2px;
+    list-style:none;
+    max-height: 180px;
+    overflow: auto;
+}
+#dropdown dt,
+#dropdown dd ul {
+    width: 100%;
+    color: #32373c;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+}
+#dropdown dd ul li {
+    padding: 3px;
+}
+#dropdown dd ul li input[type="checkbox"] {
+    margin: 0 4px 0;
+}
+.placeholder {
+    padding: 0 0 0 5px;
+}
+
+/* SETTINGS PAGE */
+
+#wctt-settings,
+#wctt-generator {
+    margin-top: 20px
+}
+#wctt-settings #dropdown .toggle {
+    position: absolute;
+    display: none;
+    bottom: -30px;
+    right: 15px;
+}
+#wctt-settings label {
+    width: 260px;
+}
+.holder {
+    margin: 0 0 30px 260px;
+    max-width: 780px;
+}
+.holder:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.holder ul {
+    margin: 0;
+}
+.full-width {
+    width: 100%;
+}
+.template-left {
+    width: 49%;
+    margin-right: 1%;
+}
+.template-right {
+    width: 50%;
+}
+#wctt-settings label, small,
+.template-left,
+.template-right {
+    float: left;
+}
+@media only screen and (max-width: 1024px) {
+    .template-left,
+    .template-right {
+        width: 100%;
+        font-size: smaller !important;
+    }
+    #wctt-settings label {
+        float: left;
+        width: 200px;
+    }
+    .holder {
+        margin-left: 200px;
+    }
+}
+
+/* GENERATOR PAGE */
+
+.wctt tr:nth-child(2n) {
+    background: #FAFAFA
+}
+.wctt tr:hover {
+    background: #E6F1F6
+}
+#result ul {
+    margin: 0
+}
+#tree ul, li {
+    margin: 0
+}
+#tree li {
+    padding: 8px 10px;
+    word-break: break-all
+}
+#tree li ul {
+    padding: 8px 0 0 10px
+}
+#tree ul li:last-child {
+    padding-bottom: 0;
+}
+#dropdown-column {
+    width: 280px;
+}
+#wctt-generator .wctt td:not(:first-child) {
+    width: 100px;
+}
+#wctt-generator .widefat .toggle {
+    font-size:11px;
+    line-height: 5px;
+}
+#wctt-generator tfoot tr:first-child > th,
+#wctt-generator thead tr:not(:first-child) > th {
+    padding: 0 0 3px 10px;
+}
+.column-desc {
+    width: 200px;
+    font-size: 13px !important;
+}
+#at-toggle {
+    display: none;
+}
+#wctt-generator input[name="save"] {
+    margin: 2px 2px 0 20px;
+}
+#wctt-generator input[type="submit"] {
+    float:right;
+    margin-bottom:5px;
+}
+#save {
+    padding: 20px;
+    float: right;
+}

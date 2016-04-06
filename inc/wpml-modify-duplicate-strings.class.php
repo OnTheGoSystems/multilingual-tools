@@ -9,7 +9,7 @@
  */
 class Modify_Duplicate_Strings {
 
-	private $filter = array();
+	private $filter   = array();
 	private $template = '';
 
 	public function __construct( $filter = array(), $template = '[%language_name%] %original_string%' ) {
@@ -34,13 +34,13 @@ class Modify_Duplicate_Strings {
 	 */
 	public function icl_duplicate_generic_string( $string, $lang, $context ) {
 
-		//check context
-		$filter_context = isset( $context['context'] ) ? $context['context'] : '';
+		// Check context
+		$filter_context = isset( $context['context'] )   ? $context['context']   : '';
 		$attribute      = isset( $context['attribute'] ) ? $context['attribute'] : '';
 
-		//check if user required to filter given string type (based on selected settings in admin panel)
+		// Check if user required to filter given string type (based on selected settings in admin panel)
 		if ( isset( $this->filter[$filter_context] ) ) {
-			//special case for taxonomy
+			// Special case for taxonomy
 			if ( in_array( $filter_context, array( 'taxonomy', 'taxonomy_slug' ) ) ) {
 				if ( ! isset( $this->filter[$filter_context]['all'] ) ) {
 					if ( ! isset( $this->filter[$filter_context][$attribute] ) ) {
@@ -55,16 +55,16 @@ class Modify_Duplicate_Strings {
 			return $string;
 		}
 
-		//based on context
+		// Based on context
 		switch ( $filter_context ) {
 			case 'post':
 
-				//exception for empty excerpt field
+				// Exception for empty excerpt field
 				if ( ( 0 === strcmp( $attribute, 'excerpt' ) ) && ( empty( $string ) ) ) {
 					break;
 				}
 
-				//check if user want to add language information also for images alt and title tags in content
+				// Check if user want to add language information also for images alt and title tags in content
 				if ( 0 === strcmp( $attribute, 'content' ) && isset( $this->filter[$filter_context]['image-tags'] ) ) {
 					$string = $this->add_language_name_to_images( $this->template, $string, $lang );
 				}
@@ -82,11 +82,9 @@ class Modify_Duplicate_Strings {
 				break;
 		}
 
-		//by default return the same value
+		// By default return the same value
 		return $string;
-
 	}
-
 
 	/**
 	 * Add language name to slug
@@ -115,18 +113,16 @@ class Modify_Duplicate_Strings {
 			if ( $image->hasAttribute( 'title' ) ) {
 				$image->setAttribute( 'title', wpml_ctt_prepare_string( $template, $image->getAttribute( 'title' ), $lang ) );
 			}
-
 		}
 
-		// removes doctype
-		$doc->removeChild($doc->firstChild);
+		// Removes doctype
+		$doc->removeChild( $doc->firstChild );
 
-		// removes html, body and div tags
-		$result = str_replace( array('<html>', '</html>', '<body><div>', '</div></body>'), array('', '', '', ''), $doc->saveHTML());
+		// Removes html, body and div tags
+		$result = str_replace( array( '<html>', '</html>', '<body><div>', '</div></body>' ), array( '', '', '', '' ), $doc->saveHTML() );
+
 		return $result;
-
 	}
-
 
 	/**
 	 * Add language name to slug
@@ -137,17 +133,16 @@ class Modify_Duplicate_Strings {
 	 * @return string
 	 */
 	private function add_language_name_to_slug( $string, $lang ) {
-
 		global $sitepress;
+
 		$language_details = $sitepress->get_language_details( $lang );
+
 		if ( isset( $language_details['english_name'] ) ) {
 			return sanitize_title_with_dashes( $language_details['english_name'] . '-' . $string, 'save' );
 		}
 
 		return $string;
-
 	}
-
 
 	/**
 	 *
@@ -161,26 +156,25 @@ class Modify_Duplicate_Strings {
 	 */
 	private function add_language_name_to_custom_field( $string, $lang, $context ) {
 
-		//get settings - $this->settings is not set when creating duplicate (not updating)
+		// Get settings - $this->settings is not set when creating duplicate (not updating)
 		global $sitepress_settings;
 		$settings =& $sitepress_settings['translation-management'];
 
-		//check for custom fields to translate
+		// Check for custom fields to translate
 		if ( isset( $settings['custom_fields_translation'] ) ) {
-			//get information about custom fields to translate
+			// Get information about custom fields to translate
 			$custom_fields_translation = $settings['custom_fields_translation'];
+
 			if ( isset( $custom_fields_translation[$context['key']] ) ) {
-				//if custom field is set to translate (id = 2)
+
+				// If custom field is set to translate (id = 2)
 				if ( $custom_fields_translation[$context['key']] == 2 ) {
-					//add language information
+					// Add language information
 					return wpml_ctt_prepare_string( $this->template, $string, $lang );
 				}
 			}
 		}
 
 		return $string;
-
 	}
-
 }
-
