@@ -139,7 +139,7 @@ jQuery( document ).ready( function() {
 
     // Automatically check checkbox if radio is changed.
     jQuery( 'input[type="radio"]' ).change( function() {
-        jQuery( 'input[type="checkbox"][name="_' + this.name + '"]' ).prop( 'checked', true );
+        jQuery( this ).closest( 'tr' ).find( 'input[type="checkbox"]' ).prop( 'checked', true );
         buttonToggle();
     });
 

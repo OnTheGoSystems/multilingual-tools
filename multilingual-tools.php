@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: WPML Compatibility Test Tools
-Plugin URI: http://wpml.org
-Description: Tools to test theme and plugin compatibility.
+Plugin Name: Multilingual Tools
+Plugin URI: https://wpml.org/download/multilingual-tools/
+Description: Set of tools to test themes and plugins multilingual compatibility.
 Author: WPML Compatibility Team
 Author URI: http://wpml.org
 Version: 1.2
