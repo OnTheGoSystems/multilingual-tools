@@ -221,7 +221,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
-		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'WPML Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt', array( $this, 'load_template' ), WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
+		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Multilingual Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt', array( $this, 'load_template' ), WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
 		add_submenu_page( 'wctt', __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt' );
 		add_submenu_page( 'wctt', __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt-generator', array( $this, 'load_template' ) );
 	}
@@ -237,7 +237,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				require WPML_CTT_ABS_PATH . 'menus/settings/settings.php';
 				break;
 
-			case 'wpml-tools_page_wctt-generator' :
+			case 'multilingual-tools_page_wctt-generator' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/generator.php';
 				break;
 		}
@@ -247,7 +247,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Add scripts only for plugin pages
 	 */
 	public function add_scripts( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_wctt', 'wpml-tools_page_wctt-generator' ) ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
 			wp_enqueue_script('wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array('jquery'), WPML_CTT_VERSION);
 			wp_localize_script('wctt-scripts', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 		}
@@ -257,7 +257,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
      * Add styles only for plugin pages
      */
     public function add_styles( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_wctt', 'wpml-tools_page_wctt-generator' ) ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
             wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
 			wp_enqueue_style( 'wctt-generator-style' );
         }

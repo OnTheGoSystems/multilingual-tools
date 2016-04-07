@@ -5,22 +5,22 @@ class WPML_Compatibility_Test_Tools_Messages {
 	public function __call( $name, $arguments ) {
 		switch( $name ) {
 			case 'no_wpml_notice' :
-				$message = __( 'WPML Compatibility Test Tools plugin is enabled but not effective. It requires %s plugin in order to work.', 'wpml-compatibility-test-tools' );
+				$message = __( 'Multilingual Tools plugin is enabled but not effective. It requires %s plugin in order to work.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>' . sprintf( $message, '<a href="http://wpml.org/">WPML</a>' ) . '</p></div>';
 				break;
 
 			case 'not_finished_wpml_setup' :
-				$message = __( 'WPML Compatibility Test Tools is enabled but not effective. You have to finish WPML setup.', 'wpml-compatibility-test-tools' );
+				$message = __( 'Multilingual Tools plugin is enabled but not effective. You have to finish WPML setup.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>' . sprintf( $message, '<a href="http://wpml.org/">WPML</a>' ) . '</p></div>';
 				break;
 
 			case 'no_tm_notice' :
-				$message = __( 'WPML Compatibility Test Tools is enabled but not effective. It requires WPML Translation Management plugin in order to work.', 'wpml-compatibility-test-tools' );
+				$message = __( 'Multilingual Tools plugin is enabled but not effective. It requires WPML Translation Management plugin in order to work.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>' . sprintf( $message, '<a href="http://wpml.org/">WPML</a>' ) . '</p></div>';
 				break;
 
 			case 'no_st_notice' :
-				$message = __( 'WPML Compatibility Test Tools is enabled but not effective. It requires WPML String Translation plugin in order to work.', 'wpml-compatibility-test-tools' );
+				$message = __( 'Multilingual Tools plugin is enabled but not effective. It requires WPML String Translation plugin in order to work.', 'wpml-compatibility-test-tools' );
 				echo '<div class="message error"><p>' . sprintf( $message, '<a href="http://wpml.org/">WPML</a>' ) . '</p></div>';
 				break;
 
