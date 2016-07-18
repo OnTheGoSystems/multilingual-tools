@@ -1,3 +1,10 @@
+# 1.2.1
+
+## Bugfix
+
+* Fixed automatic child selection in generator
+* Fixed JS object parsing
+
 # 1.2
 
 ## Improvements

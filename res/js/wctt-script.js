@@ -58,7 +58,6 @@ jQuery( document ).ready( function() {
             };
 
             jQuery.post( ajax_object.ajax_url, data, function ( response ) {
-                console.log(response);
                 var output, data = jQuery.parseJSON( response );
 
                 output = '<ul id="tree">';
@@ -68,7 +67,7 @@ jQuery( document ).ready( function() {
                 function generateList( key, value ) {
                     key = jQuery( '<div />' ).text( key ).html();   // Escaping chars
 
-                    if ( jQuery.isPlainObject( value ) ) {
+                    if ( jQuery.isPlainObject( value ) || jQuery.isArray( value ) ) {
                         output += '<li><input id="at" type="checkbox" name="at[' + key + ']" value="0"> [ ' + key + ' ] => ' + '</><ul>';
                         jQuery.each( value, generateList );
                         output += '</ul></li>';
@@ -101,6 +100,7 @@ jQuery( document ).ready( function() {
 
         if ( this.checked ) {
             current.parentsUntil( 'ul#tree' ).children( '[type="checkbox"]' ).prop( 'checked', true );
+            current.siblings('ul').find('[type="checkbox"]').prop( 'checked', true );
         } else {
             current.parent().find( '[type="checkbox"]' ).prop( 'checked', false );
         }

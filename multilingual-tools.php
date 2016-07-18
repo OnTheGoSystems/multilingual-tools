@@ -3,7 +3,7 @@
 Plugin Name: Multilingual Tools
 Plugin URI: https://wpml.org/download/multilingual-tools/
 Description: Set of tools to test themes and plugins multilingual compatibility.
-Author: WPML Compatibility Team
+Author: OnTheGoSystems
 Author URI: http://wpml.org
 Version: 1.2
 */
