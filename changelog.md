@@ -1,5 +1,9 @@
 # 1.2.1
 
+## Improvements
+
+* Added composer file.
+
 ## Bugfix
 
 * Fixed automatic child selection in generator
