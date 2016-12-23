@@ -2,31 +2,33 @@
 
 ## Improvements
 
-* Added composer file.
+* Add composer file.
+* Changelog style updated.
 
 ## Bugfix
 
-* Fixed automatic child selection in generator
-* Fixed JS object parsing
+* Fix automatic child selection in generator.
+* Fix JS object parsing.
+* Fix maximum execution time fatal error.
 
 # 1.2
 
 ## Improvements
 
 * Major code improvements.
-* Added notice for successfully saved file in theme folder.
-* Added responsive layout.
-* Added dropdown for context selection.
-* Added dropdown option count.
-* Added flags for active languages.
-* Added new icon.
+* Add notice for successfully saved file in theme folder.
+* Add responsive layout.
+* Add dropdown for context selection.
+* Add dropdown option count.
+* Add flags for active languages.
+* Add new icon.
 
 # 1.1.2
 
 ## Improvements
 
-* Added checkboxes instead of option list when selecting contexts for translation.
-* Added "Toggle All" for admin text checkboxes.
+* Add checkboxes instead of option list when selecting contexts for translation.
+* Add "Toggle All" for admin text checkboxes.
 * Some code style improvements.
 * Checkboxes are now automatically checked on radio button change.
 
@@ -34,16 +36,16 @@
 
 * WP Options with 'autoload' set as 'no' were not listed on configuration generator screen.
 * Escaped special characters in wctt-script.js
-* Removed notice, checked strings inputs are remembered.
+* Remove notice, checked strings inputs are remembered.
 
 # 1.1.1
 
 ## Improvements
 
-* Added necessary sanitization & validation.
+* Add necessary sanitization & validation.
 
 # 1.1
 
 ## Features
 
-* Added option for generating wpml-config.xml files.
+* Add option for generating wpml-config.xml files.
