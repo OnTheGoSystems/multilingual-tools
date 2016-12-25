@@ -69,7 +69,6 @@ class WPML_Compatibility_Test_Tools_Messages {
 					__( "WPML Compatibility Tester plugin is running and will automatically add language information to all new duplicates for your site. Right now, it will add language information for the following post fields:", 'wpml-compatibility-test-tools'  ) . "<br/>" .
 					( isset( $duplicate_strings['post']['title'] ) 			? '[&#10004;] ' : '[ ] ' ) . __( 'Post title'		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['post']['content'] ) 		? '[&#10004;] ' : '[ ] ' ) . __( 'Post content'		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
-					( isset( $duplicate_strings['post']['image-tags'] )	    ? '[&#10004;] ' : '[ ] ' ) . __( 'Image alt and title', 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['post']['excerpt'] ) 		? '[&#10004;] ' : '[ ] ' ) . __( 'Post excerpt'		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['custom_fields']['value'] ) ? '[&#10004;] ' : '[ ] ' ) . __( 'Custom fields'	  , 'wpml-compatibility-test-tools' ) . "<br/>" .
 					( isset( $duplicate_strings['taxonomy']['all'] )	 	? '[&#10004;] ' : '[ ] ' ) . __( 'Term name '		  , 'wpml-compatibility-test-tools' ) . "<br/>" .
