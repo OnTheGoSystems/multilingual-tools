@@ -55,6 +55,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		// Handle admin settings page
 		$this->process_request();
+
 		// Change WPML behaviour based on selected settings
 		$this->modify_wpml_behaviour();
 
@@ -79,6 +80,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @return bool
 	 */
 	private function process_strings_auto_translate_action_translate() {
+
+        // Warning: set_time_limit(): Cannot set time limit in safe mode
+	    set_time_limit(0);
+
 		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] )  ) {
 
 			$error = false;
