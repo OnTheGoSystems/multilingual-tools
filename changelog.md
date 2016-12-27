@@ -4,12 +4,15 @@
 
 * Add composer file.
 * Changelog style updated.
+* Minor content duplication code refactoring
 
 ## Bugfix
 
 * Fix automatic child selection in generator.
 * Fix JS object parsing.
 * Fix maximum execution time fatal error.
+* Fix duplicate post content special chars conversion.
+* Remove alt and title for images in content option.
 
 # 1.2
 
