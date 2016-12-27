@@ -15,39 +15,37 @@ class Modify_Duplicate_Strings {
 	public function __construct( $filter = array(), $template = '[%language_name%] %original_string%' ) {
 		$this->filter   = $filter;
 		$this->template = $template;
-		add_filter( 'icl_duplicate_generic_string', array( $this, 'icl_duplicate_generic_string' ), 10, 3 );
+		add_filter( 'icl_duplicate_generic_string', array( $this, 'duplicate_generic_string' ), 10, 3 );
 	}
 
 	/**
 	 *
 	 * Add information about language to string based on context
 	 *
-	 * @param $string             - string to modify
-	 * @param $lang               - language code
-	 * @param $context            - array(
-	 *                            'context'   => 'post' or 'custom_field' or 'taxonomy',
-	 *                            'attribute' => 'title' or 'content' or 'excerpt' (for a post), 'value' (for a custom field), '{taxonomy_name}' (for a taxonomy),
-	 *                            'key'       => '{post_id}' | '{meta_key}' | '{term_id}',
-	 *                            );
+	 * @param $string - string to modify
+	 * @param $lang - language code
+	 * @param $context - array(
+	 *      'context'   => 'post' or 'custom_field' or 'taxonomy',
+	 *      'attribute' => 'title' or 'content' or 'excerpt' (for a post), 'value' (for a custom field), '{taxonomy_name}' (for a taxonomy),
+	 *      'key'       => '{post_id}' | '{meta_key}' | '{term_id}',
+	 * );
 	 *
 	 * @return string
 	 */
-	public function icl_duplicate_generic_string( $string, $lang, $context ) {
+	public function duplicate_generic_string( $string, $lang, $context ) {
 
 		// Check context
-		$filter_context = isset( $context['context'] )   ? $context['context']   : '';
+		$filter_context = isset( $context['context'] ) ? $context['context'] : '';
 		$attribute      = isset( $context['attribute'] ) ? $context['attribute'] : '';
 
 		// Check if user required to filter given string type (based on selected settings in admin panel)
-		if ( isset( $this->filter[$filter_context] ) ) {
+		if ( isset( $this->filter[ $filter_context ] ) ) {
 			// Special case for taxonomy
 			if ( in_array( $filter_context, array( 'taxonomy', 'taxonomy_slug' ) ) ) {
-				if ( ! isset( $this->filter[$filter_context]['all'] ) ) {
-					if ( ! isset( $this->filter[$filter_context][$attribute] ) ) {
+				if ( ! isset( $this->filter[ $filter_context ]['all'] ) ) {
 						return $string;
-					}
 				}
-			} elseif ( ! isset( $this->filter[$filter_context][$attribute] ) ) {
+			} elseif ( ! isset( $this->filter[ $filter_context ][ $attribute ] ) ) {
 				return $string;
 			}
 
@@ -62,11 +60,6 @@ class Modify_Duplicate_Strings {
 				// Exception for empty excerpt field
 				if ( ( 0 === strcmp( $attribute, 'excerpt' ) ) && ( empty( $string ) ) ) {
 					break;
-				}
-
-				// Check if user want to add language information also for images alt and title tags in content
-				if ( 0 === strcmp( $attribute, 'content' ) && isset( $this->filter[$filter_context]['image-tags'] ) ) {
-					$string = $this->add_language_name_to_images( $this->template, $string, $lang );
 				}
 
 				$string = wpml_ctt_prepare_string( $this->template, $string, $lang );
@@ -84,44 +77,6 @@ class Modify_Duplicate_Strings {
 
 		// By default return the same value
 		return $string;
-	}
-
-	/**
-	 * Add language name to slug
-	 *
-	 * @param $template
-	 * @param $string
-	 * @param $lang
-	 *
-	 * @return string
-	 */
-	private function add_language_name_to_images( $template, $string, $lang ) {
-
-		$doc = new DOMDocument();
-		$loaded = @$doc->loadHTML( '<div>'.$string.'</div>'); //dirty hack with <div> to avoid additional <p> for text without tags
-		if ( !$loaded){
-			return $string;
-		}
-
-		$images = $doc->getElementsByTagName( 'img' );
-		foreach ( $images as $image ) {
-
-			if ( $image->hasAttribute( 'alt' ) ) {
-				$image->setAttribute( 'alt', wpml_ctt_prepare_string( $template, $image->getAttribute( 'alt' ), $lang ) );
-			}
-
-			if ( $image->hasAttribute( 'title' ) ) {
-				$image->setAttribute( 'title', wpml_ctt_prepare_string( $template, $image->getAttribute( 'title' ), $lang ) );
-			}
-		}
-
-		// Removes doctype
-		$doc->removeChild( $doc->firstChild );
-
-		// Removes html, body and div tags
-		$result = str_replace( array( '<html>', '</html>', '<body><div>', '</div></body>' ), array( '', '', '', '' ), $doc->saveHTML() );
-
-		return $result;
 	}
 
 	/**
