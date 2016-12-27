@@ -15,7 +15,7 @@ class Modify_Duplicate_Strings {
 	public function __construct( $filter = array(), $template = '[%language_name%] %original_string%' ) {
 		$this->filter   = $filter;
 		$this->template = $template;
-		add_filter( 'icl_duplicate_generic_string', array( $this, 'icl_duplicate_generic_string' ), 10, 3 );
+		add_filter( 'icl_duplicate_generic_string', array( $this, 'duplicate_generic_string' ), 10, 3 );
 	}
 
 	/**
@@ -32,7 +32,7 @@ class Modify_Duplicate_Strings {
 	 *
 	 * @return string
 	 */
-	public function icl_duplicate_generic_string( $string, $lang, $context ) {
+	public function duplicate_generic_string( $string, $lang, $context ) {
 
 		// Check context
 		$filter_context = isset( $context['context'] ) ? $context['context'] : '';
@@ -43,9 +43,7 @@ class Modify_Duplicate_Strings {
 			// Special case for taxonomy
 			if ( in_array( $filter_context, array( 'taxonomy', 'taxonomy_slug' ) ) ) {
 				if ( ! isset( $this->filter[ $filter_context ]['all'] ) ) {
-					if ( ! isset( $this->filter[ $filter_context ][ $attribute ] ) ) {
 						return $string;
-					}
 				}
 			} elseif ( ! isset( $this->filter[ $filter_context ][ $attribute ] ) ) {
 				return $string;
