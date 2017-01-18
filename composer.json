@@ -1,5 +1,5 @@
 {
-    "name": "onthegosystems/multilingual-tools",
+    "name": "otgs/multilingual-tools",
     "type": "wordpress-plugin",
     "description": "Set of tools related to WPML plugin bundle. Created with tendency to ease WPML compatibility testing process.",
     "homepage": "https://wpml.org/documentation/related-projects/wpml-compatibility-test-tools-plugin/",
