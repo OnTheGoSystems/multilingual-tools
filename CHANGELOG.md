@@ -1,3 +1,9 @@
+# 1.2.2
+
+## Improvements
+
+* Update composer file
+
 # 1.2.1
 
 ## Improvements
