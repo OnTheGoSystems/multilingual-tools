@@ -1,6 +1,6 @@
 # Multilingual Tools
 
-![Latest Stable Version](https://img.shields.io/badge/stable-1.2.1-green.svg?style=flat-squar)
+![Latest Stable Version](https://img.shields.io/badge/stable-1.2.2-green.svg?style=flat-squar)
 ![License](https://img.shields.io/badge/license-GPLv2-red.svg?style=flat-squar)
 
 
