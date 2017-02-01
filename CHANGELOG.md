@@ -1,3 +1,9 @@
+# 1.2.3
+
+## Bugfix
+
+* Fix "Translation management" notice
+
 # 1.2.2
 
 ## Improvements
