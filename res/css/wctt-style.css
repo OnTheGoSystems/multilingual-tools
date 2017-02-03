@@ -110,7 +110,7 @@
 /* GENERATOR PAGE */
 
 .wctt tr:nth-child(2n) {
-    background: #FAFAFA
+    background: #f9f9f9
 }
 .wctt tr:hover {
     background: #E6F1F6
@@ -137,7 +137,8 @@
 #wctt-generator .wctt td:not(:first-child) {
     width: 100px;
 }
-#wctt-generator .widefat .toggle {
+#wctt-generator .widefat .toggle,
+#wctt-generator .widefat #remove-all {
     font-size:11px;
     line-height: 5px;
 }
@@ -159,7 +160,54 @@
     float:right;
     margin-bottom:5px;
 }
+#wctt-generator .wctt input[type="text"] {
+    display: block;
+    width: 100%;
+    float: left;
+    padding: 5px;
+}
 #save {
     padding: 20px;
     float: right;
+}
+.remove {
+    float: right;
+    line-height:32px;
+    width: 10px;
+}
+#mt-shortcodes .wctt td {
+    width: 50%;
+}
+#mt-shortcodes .wctt tr:hover {
+    background: none !important;
+}
+#mt-shortcodes tfoot th {
+    text-align: center;
+}
+#add-shortcode-button {
+    float: right;
+}
+#shortcode-attr-tfield {
+    width: calc(100% - 22px) !important;
+}
+::-webkit-input-placeholder {
+    color: #BBBBBB;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: #BBBBBB;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    color: #BBBBBB;
+}
+
+:-ms-input-placeholder {
+    color: #BBBBBB;
+}
+#mt-shortcodes .wctt .td-left {
+    padding: 15px 7px 15px 15px;
+}
+#mt-shortcodes .wctt .td-right {
+    padding: 15px 15px 15px 7px;
 }

@@ -145,7 +145,13 @@ jQuery( document ).ready( function() {
 
     // Button toggle disable.
     function buttonToggle(){
-        submitButton.attr( 'disabled', !jQuery( '[type="checkbox"]' ).not( '[class="option"]' ).is( ':checked' ));
+        var $nonemptyTextFields = jQuery('input[type=text]').not( '[id="shortcode-attr-tfield"]' ).filter(function() {
+            return this.value !== ''
+        });
+
+        submitButton.attr( 'disabled',
+            !jQuery( '[type="checkbox"]' ).not( '[class="option"]' ).is( ':checked' ) &&
+            $nonemptyTextFields.length === 0);
     }
 
     // Count selected options from dropdown.
@@ -159,4 +165,72 @@ jQuery( document ).ready( function() {
             placeholder.text('- Select options -');
         }
     }
+
+    /*
+     * SHORTCODES
+     */
+
+    var shortcodes      = jQuery( '#mt-shortcodes' ),
+        shortcodeNotice = jQuery( '#shortcode-notice' ),
+        shortcodeButton = jQuery( '#add-shortcode-button' );
+
+    // Add shortcode
+
+    shortcodeButton.click( function( event ) {
+        event.preventDefault();
+
+        var output =  '<tr id="mt-shortcode"><td class="td-left">';
+            output += '<input id="shortcode-tfield" type="text" name="shc[]" placeholder="Enter shortcode tag"/>';
+            output += '</td><td class="td-right">';
+            output += '<input id="shortcode-attr-tfield" type="text" name="shc-attr[]" placeholder="Enter shortcode attributes (comma separated)"/>';
+            output += '<a class="remove" href="#">X</a></td></tr>';
+
+        var content = jQuery( output ).hide();
+
+        shortcodes.find( 'tbody' ).append( content );
+        content.fadeIn();
+        shortcodeNotice.hide();
+    });
+
+    // Remove shortcode
+
+    shortcodes.find( '.wctt' ).on( 'click', '.remove', function( event ) {
+        event.preventDefault();
+
+        var shortcode = jQuery(this).closest( '#mt-shortcode' );
+
+        shortcode.fadeOut( function () {
+            this.remove();
+        });
+
+        showShortcodeNotice();
+    });
+
+    // Remove all shortcodes
+
+    shortcodes.find( '#remove-all' ).click( function ( event ) {
+        event.preventDefault();
+
+        shortcodes.find( 'tbody #mt-shortcode' ).fadeOut( function () {
+            this.remove();
+        });
+
+        showShortcodeNotice();
+    });
+
+    function showShortcodeNotice() {
+        shortcodes.find( 'tbody #mt-shortcode' ).promise().done( function () {
+
+            if ( shortcodes.find( 'tbody' ).find( '#mt-shortcode' ).length === 0 ) {
+                shortcodeNotice.fadeIn();
+            }
+
+            buttonToggle();
+        });
+    }
+
+    shortcodes.on( 'keyup', 'input[type=text]', function( ) {
+        buttonToggle();
+    });
+
 });

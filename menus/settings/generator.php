@@ -222,6 +222,32 @@
                 </td>
             </tr>
             <tr>
+                <td>
+                    <table id="mt-shortcodes" class="widefat">
+                        <thead>
+                        <tr>
+                            <th><?php _e( 'Shortcodes', 'wpml-compatibility-test-tools' ) ?></th>
+                            <th>
+                                <a href="#" id="add-shortcode-button" class="button-secondary">
+					                <?php _e( 'Add shortcode', 'wpml-compatibility-test-tools' ) ?>
+                                </a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="wctt">
+                        <tr id="shortcode-notice">
+                            <td><?php _e( 'No shortcode(s) added', 'wpml-compatibility-test-tools' ); ?></td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th colspan="2"><a id="remove-all" href="#">Remove all</a></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </td>
+            </tr>
+            <tr>
                 <th id="save">
                     <label><input type="radio" name="save" value="dir" checked /> Save to theme directory</label>
                     <label><input type="radio" name="save" value="file" /> Save to file</label>
