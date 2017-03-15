@@ -1,3 +1,13 @@
+# 1.3.0
+
+## Features
+
+* Add option for generating shortcodes.
+
+## Improvements
+
+* Refactor XML generator code.
+
 # 1.2.3
 
 ## Bugfix

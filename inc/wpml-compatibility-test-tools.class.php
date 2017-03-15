@@ -8,50 +8,55 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		add_action( 'init', array( $this, 'init' ) );
 	}
 
-	public function init(){
+	public function init() {
 
-        // Generate XML
-        if ( isset( $_POST['wctt-generator-submit'] ) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' ) ) {
-            add_action( 'wp_loaded', array( $this, 'generate_xml' ) );
-        }
+		// Generate XML
+		if ( isset( $_POST['wctt-generator-submit'] ) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' ) ) {
+			add_action( 'wp_loaded', array( $this, 'generate_xml' ) );
+		}
 
 		// Check for WPML
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' ) || ICL_PLUGIN_INACTIVE ) {
 			if ( ! function_exists( 'is_multisite' ) || ! is_multisite() ) {
 				add_action( 'admin_notices', array( $this->messages, 'no_wpml_notice' ) );
 			}
+
 			return false;
 		}
 
 		// Check for Translation Management
-		if( ! defined( 'WPML_TM_VERSION' ) ){
+		if ( ! defined( 'WPML_TM_VERSION' ) ) {
 			add_action( 'admin_notices', array( $this->messages, 'no_tm_notice' ) );
+
 			return false;
 		}
 
 		// Check for String Translation
-		if( ! defined( 'WPML_ST_VERSION' ) ){
+		if ( ! defined( 'WPML_ST_VERSION' ) ) {
 			add_action( 'admin_notices', array( $this->messages, 'no_st_notice' ) );
+
 			return false;
 		}
 
 		// WPML setup has to be finished
 		global $sitepress;
-		if( !isset( $sitepress ) ){
+		if ( ! isset( $sitepress ) ) {
 			add_action( 'admin_notices', array( $this->messages, 'no_wpml_notice' ) );
+
 			return false;
 		}
 
-		if( method_exists( $sitepress, 'get_setting' ) && !$sitepress->get_setting( 'setup_complete' ) ) {
+		if ( method_exists( $sitepress, 'get_setting' ) && ! $sitepress->get_setting( 'setup_complete' ) ) {
 			add_action( 'admin_notices', array( $this->messages, 'not_finished_wpml_setup' ) );
+
 			return false;
 		}
 
 		self::install();
 
-		add_action( 'admin_menu'		   , array( $this, 'register_administration_page' ) );
+		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'add_styles'  ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles' ) );
 
 		// Handle admin settings page
 		$this->process_request();
@@ -81,15 +86,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 */
 	private function process_strings_auto_translate_action_translate() {
 
-        // Warning: set_time_limit(): Cannot set time limit in safe mode
-	    set_time_limit(0);
+		// Warning: set_time_limit(): Cannot set time limit in safe mode
+		set_time_limit( 0 );
 
-		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] )  ) {
+		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] ) ) {
 
 			$error = false;
 
-			$contexts  = ( isset( $_POST['strings_auto_translate_context'] ) )  ? $_POST['strings_auto_translate_context']  : '';
-			$languages = ( isset( $_POST['active_languages'] ) ) 				? $_POST['active_languages'] 				: array();
+			$contexts  = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
+			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : array();
 			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? $_POST['strings_auto_translate_template'] : '';
 
 			if ( empty( $template ) ) {
@@ -132,7 +137,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				if ( $error ) {
 					return false;
 				}
-				
+
 				foreach ( $contexts as $context ) {
 					$this->translate_strings( $context, $languages, $template );
 					add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
@@ -178,7 +183,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$error = false;
 
 			$strings  = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
-			$template = ( isset( $_POST['duplicate_strings_template'] ) ) 	  ? $_POST['duplicate_strings_template'] 	 : '';
+			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? $_POST['duplicate_strings_template'] : '';
 
 			if ( empty( $template ) ) {
 				add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
@@ -208,14 +213,14 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function modify_wpml_behaviour() {
 
 		// Enable adding language information for duplicated posts.
-		$duplicate_strings      	= self::get_option( 'duplicate_strings' );
+		$duplicate_strings          = self::get_option( 'duplicate_strings' );
 		$duplicate_strings_template = self::get_option( 'duplicate_strings_template' );
 
 		if ( ! empty( $duplicate_strings ) && ! empty( $duplicate_strings_template ) ) {
 			new Modify_Duplicate_Strings( $duplicate_strings, $duplicate_strings_template );
 
 			// Add information about the plugin settings to Translation Dashboard.
-			if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], array( basename( WPML_TM_PATH ).'/menu/main.php' ) ) ) ) {
+			if ( isset( $_GET['page'] ) && ( in_array( $_GET['page'], array( basename( WPML_TM_PATH ) . '/menu/main.php' ) ) ) ) {
 				add_action( 'admin_notices', array( $this->messages, 'wctt_in_action_notice' ) );
 			}
 		}
@@ -226,18 +231,24 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
-		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Multilingual Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt', array( $this, 'load_template' ), WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
+		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Multilingual Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt', array(
+			$this,
+			'load_template'
+		), WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
 		add_submenu_page( 'wctt', __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt' );
-		add_submenu_page( 'wctt', __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt-generator', array( $this, 'load_template' ) );
+		add_submenu_page( 'wctt', __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt-generator', array(
+			$this,
+			'load_template'
+		) );
 	}
 
 	/**
 	 * Load page template
-     */
+	 */
 	public function load_template() {
 		$screen = get_current_screen();
 
-		switch( $screen->id ) {
+		switch ( $screen->id ) {
 			case 'toplevel_page_wctt' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/settings.php';
 				break;
@@ -253,162 +264,254 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 */
 	public function add_scripts( $hook ) {
 		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
-			wp_enqueue_script('wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array('jquery'), WPML_CTT_VERSION);
-			wp_localize_script('wctt-scripts', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array( 'jquery' ), WPML_CTT_VERSION );
+			wp_localize_script( 'wctt-scripts', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
 	}
 
-    /**
-     * Add styles only for plugin pages
-     */
-    public function add_styles( $hook ) {
+	/**
+	 * Add styles only for plugin pages
+	 */
+	public function add_styles( $hook ) {
 		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
-            wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
+			wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
 			wp_enqueue_style( 'wctt-generator-style' );
-        }
-    }
+		}
+	}
 
-    /**
-     * Generate XML file
-     */
-    public function generate_xml() {
-        $dom 					 = new DOMDocument();
-        $dom->preserveWhiteSpace = false;
-        $dom->formatOutput		 = true;
+	/**
+	 * Generate XML file
+	 *
+	 * Generation wpml-config.xml file.
+	 * Used as configuration file for WPML plugin.
+	 *
+	 * @url https://wpml.org/documentation/support/language-configuration-files/
+	 */
+	public function generate_xml() {
+		$dom                     = new DOMDocument();
+		$dom->preserveWhiteSpace = false;
+		$dom->formatOutput       = true;
 
-        $root = $dom->createElement( 'wpml-config' );
-        $root = $dom->appendChild( $root );
+		$root = $dom->createElement( 'wpml-config' );
+		$root = $dom->appendChild( $root );
 
-        $args = array(
-            '_builtin' => false
-        );
+		$args = array(
+			'_builtin' => false
+		);
 
-        $post_types = get_post_types( $args, 'names' );
+		$post_types   = get_post_types( $args, 'names' );
+		$checkbox_cpt = isset( $_POST['_cpt'] ) && is_array( $_POST['_cpt'] ) ? $_POST['_cpt'] : null;
+		$radio_cpt    = isset( $_POST['cpt'] ) && is_array( $_POST['cpt'] ) ? $_POST['cpt'] : null;
 
-        if ( $post_types ) {
+		$taxonomies   = get_taxonomies( $args );
+		$checkbox_tax = isset( $_POST['_tax'] ) && is_array( $_POST['_tax'] ) ? $_POST['_tax'] : null;
+		$radio_tax    = isset( $_POST['tax'] ) && is_array( $_POST['tax'] ) ? $_POST['tax'] : null;
 
-            //	Create xml node <custom-types>
-            if ( isset( $_POST['_cpt'] ) ) {
-                $cpts = $dom->createElement( 'custom-types' );
-                $cpts = $root->appendChild( $cpts );
-            }
+		$custom_fields = wpml_get_custom_fields();
+		$checkbox_cf   = isset( $_POST['_cf'] ) && is_array( $_POST['_cf'] ) ? $_POST['_cf'] : null;
+		$radio_cf      = isset( $_POST['cf'] ) && is_array( $_POST['cf'] ) ? $_POST['cf'] : null;
 
-            foreach ( $post_types as $post_type ) {
+		if ( $checkbox_cpt ) {
+			$this->generate_basic_content_types(
+				$dom,
+				$root,
+				$post_types,
+				$checkbox_cpt,
+				$radio_cpt,
+				'custom-types',
+				'custom-type',
+				'translate'
+			);
+		}
 
-                if ( isset( $_POST['_cpt'][$post_type] ) ) {
-                    $cpt  		   = $dom->createElement( 'custom-type', $post_type );
-                    $cpt    	   = $cpts->appendChild( $cpt );
-                    $cptatr 	   = $dom->createAttribute( 'translate' );
-                    $cptatr->value = wpml_ctt_validate_radio( $_POST['cpt'][$post_type] );
-                    $cpt->appendChild( $cptatr );
-                }
-            }
-        }
+		if ( $checkbox_tax ) {
+			$this->generate_basic_content_types(
+				$dom,
+				$root,
+				$taxonomies,
+				$checkbox_tax,
+				$radio_tax,
+				'taxonomies',
+				'taxonomy',
+				'translate'
+			);
+		}
 
-        $taxonomies = get_taxonomies( $args );
+		if ( $checkbox_cf ) {
+			$this->generate_basic_content_types(
+				$dom,
+				$root,
+				$custom_fields,
+				$checkbox_cf,
+				$radio_cf,
+				'custom-fields',
+				'custom-field',
+				'action'
+			);
+		}
 
-        if ( $taxonomies ) {
+		if ( isset( $_POST['at'] ) ) {
+			$this->generate_admin_texts( $dom, $root );
+		}
 
-            //	Create xml node <taxonomies>
-            if ( isset( $_POST['_tax'] ) ) {
-                $taxs = $dom->createElement( 'taxonomies' );
-                $taxs = $root->appendChild( $taxs );
-            }
+		if ( isset( $_POST['shc'] ) && is_array( $_POST['shc'] ) ) {
+			$this->generate_shortcodes( $dom, $root );
+		}
 
-            foreach ( $taxonomies as $taxonomy ) {
+		$xml = $dom->saveXML( $root );
 
-                if ( isset( $_POST['_tax'][$taxonomy] ) ) {
-                    $tax 		   = $dom->createElement( 'taxonomy', $taxonomy );
-                    $tax 		   = $taxs->appendChild( $tax );
-                    $taxatr		   = $dom->createAttribute( 'translate' );
-                    $taxatr->value = wpml_ctt_validate_radio( $_POST['tax'][$taxonomy] );
-                    $tax->appendChild( $taxatr );
-                }
-            }
-        }
+		// Save options
+		switch ( wpml_ctt_validate_radio( $_POST['save'] ) ) {
+			case 'file' :
+				header( "Content-Description: File Transfer" );
+				header( 'Content-Disposition: attachment; filename="wpml-config.xml"' );
+				header( "Content-Type: application/xml" );
+				echo $xml;
+				die();
+				break;
 
-        $custom_fields = wpml_get_custom_fields();
+			case 'dir' :
+				if ( file_put_contents( get_template_directory() . '/wpml-config.xml', $xml ) ) {
+					add_action( 'admin_notices', array( $this->messages, 'file_save_success' ) );
+				}
+				break;
+		}
+	}
 
-        if ( $custom_fields ) {
+	/**
+	 * Generate XML from option array
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param $options
+	 * @param $node
+	 * @param $dom
+	 */
+	public function option2xml( $options, $node, $dom ) {
+		if ( is_array( $options ) ) {
 
-            //	Create xml node <custom-fields>
-            if ( isset( $_POST['_cf'] ) ) {
-                $cfs = $dom->createElement( 'custom-fields' );
-                $cfs = $root->appendChild( $cfs );
-            }
+			foreach ( $options as $option => $value ) {
 
-            foreach ( $custom_fields as $custom_field ){
+				// Only if parent option is selected, both parent and child will be generated
+				if ( isset( $_POST['at'][ $option ] ) ) {
+					$at           = $node->appendChild( $dom->createElement( 'key' ) );
+					$atatr        = $dom->createAttribute( 'name' );
+					$atatr->value = $option;
+					$at->appendChild( $atatr );
 
-                if ( isset( $_POST['_cf'][$custom_field->meta_key] ) ) {
-                    $cf 		  = $dom->createElement( 'custom-field', $custom_field->meta_key );
-                    $cf 	 	  = $cfs->appendChild( $cf );
-                    $cfatr 		  = $dom->createAttribute( 'action' );
-                    $cfatr->value = wpml_ctt_validate_radio( $_POST['cf'][$custom_field->meta_key] );
-                    $cf->appendChild( $cfatr );
+					if ( is_array( $value ) ) {
+						$this->option2xml( $value, $at, $dom );
+					}
+				}
+			}
+		}
+	}
 
-                }
-            }
-        }
+	/**
+	 * Generate DOM nodes for basic content types.
+	 *
+	 * Basic content types in this case are: custom post types, taxonomies, custom fields.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param $dom
+	 * @param $root
+	 * @param $content
+	 * @param $checkbox
+	 * @param $radio
+	 * @param $parent
+	 * @param $child
+	 * @param $attribute
+	 */
+	public function generate_basic_content_types( $dom, $root, $content, $checkbox, $radio, $parent, $child, $attribute ) {
+		$parent_node = $dom->createElement( $parent );
+		$parent_node = $root->appendChild( $parent_node );
 
-        if ( isset( $_POST['at'] ) ) {
+		foreach ( $content as $c ) {
 
-            //	Create xml node <custom-fields>
-            $ats = $dom->createElement( 'admin-texts' );
-            $ats = $root->appendChild( $ats );
+			if ( $parent === 'custom-fields' ) {
+				$c = $c->meta_key;
+			}
 
-            $options = wpml_ctt_options_list();
+			if ( isset( $checkbox[ $c ] ) ) {
+				$child_node             = $dom->createElement( $child, sanitize_key( $c ) );
+				$child_node             = $parent_node->appendChild( $child_node );
+				$child_node_attr        = $dom->createAttribute( $attribute );
+				$child_node_attr->value = wpml_ctt_validate_radio( $radio[ $c ] );
+				$child_node->appendChild( $child_node_attr );
+			}
+		}
+	}
 
-            foreach ( $options as $name => $value ) {
-                $options[ $name ] = maybe_unserialize( maybe_unserialize( $value ) );
-            }
+	/**
+	 * Generate DOM nodes for admin texts
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param $dom
+	 * @param $root
+	 */
+	public function generate_admin_texts( $dom, $root ) {
+		$ats = $dom->createElement( 'admin-texts' );
+		$ats = $root->appendChild( $ats );
 
-            $this->option2xml( $options, $ats, $dom );
-        }
+		$options = wpml_ctt_options_list();
 
-        $xml = $dom->saveXML( $root );
+		foreach ( $options as $name => $value ) {
+			$options[ $name ] = maybe_unserialize( maybe_unserialize( $value ) );
+		}
 
-        // Save options
-        switch( wpml_ctt_validate_radio( $_POST['save'] ) ) {
-            case 'file' :
-               header( "Content-Description: File Transfer" );
-               header( 'Content-Disposition: attachment; filename="wpml-config.xml"' );
-               header( "Content-Type: application/xml" );
-               echo $xml;
-               die();
-               break;
+		$this->option2xml( $options, $ats, $dom );
+	}
 
-            case 'dir' :
-               if ( file_put_contents( get_template_directory() . '/wpml-config.xml', $xml ) ) {
-				   add_action( 'admin_notices', array( $this->messages, 'file_save_success' ) );
-			   }
-               break;
-        }
-    }
+	/**
+	 * Generate DOM nodes for shortcodes
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param $dom
+	 * @param $root
+	 */
+	public function generate_shortcodes( $dom, $root ) {
+		$shortcodes     = array_unique( $_POST['shc'] );
+		$shortcode_attr = isset( $_POST['shc-attr'] ) && is_array( $_POST['shc-attr'] ) ? (array) $_POST['shc-attr'] : null;
 
-    /**
-     * Generate XML from option array
-     * @param $options
-     * @param $node
-     * @param $dom
-     */
-    public function option2xml( $options, $node, $dom ) {
+		//	Create xml node <shortcodes>
+		$shortcodes_node = $dom->createElement( 'shortcodes' );
+		$shortcodes_node = $root->appendChild( $shortcodes_node );
 
-        if ( is_array( $options ) ) {
+		foreach ( $shortcodes as $shortcode ) {
 
-            foreach ( $options as $option => $value ) {
+			$shortcode_index = array_search( $shortcode, $shortcodes, true );
+			$shortcode       = str_replace( ' ', '', sanitize_html_class( $shortcode, "Invalid_shortcode" ) );
 
-                // Only if parent option is selected, both parent and child will be generated
-                if( isset( $_POST['at'][$option] ) ) {
-                    $at    		  = $node->appendChild( $dom->createElement('key') );
-                    $atatr 		  = $dom->createAttribute( 'name' );
-                    $atatr->value = $option;
-                    $at->appendChild( $atatr );
+			$shortcode_node = $dom->createElement( 'shortcode' );
+			$shortcode_node = $shortcodes_node->appendChild( $shortcode_node );
 
-                    if ( is_array( $value ) ) {
-                        $this->option2xml( $value, $at, $dom );
-                    }
-                }
-            }
-        }
-    }
+			$tag_node = $dom->createElement( 'tag', $shortcode );
+			$shortcode_node->appendChild( $tag_node );
+
+			if ( ! is_null( $shortcode_attr ) && $shortcode_attr[ $shortcode_index ] !== "" ) {
+
+				$attribute        = str_replace( ' ', '', $shortcode_attr[ $shortcode_index ] );
+				$attributes_array = explode( ",", $attribute );
+
+				// Dealing with shortcode attribute if available.
+				$attributes_node = $dom->createElement( 'attribute' );
+				$attributes_node = $shortcode_node->appendChild( $attributes_node );
+
+				if ( ! empty( $attributes_array ) ) {
+
+					foreach ( $attributes_array as $a ) {
+						$attribute_node = $dom->createElement( 'attribute', sanitize_html_class( $a, "Invalid_attribute" ) );
+						$attributes_node->appendChild( $attribute_node );
+					}
+
+				} else {
+					$attribute_node = $dom->createElement( 'attribute', sanitize_html_class( $attribute, "Invalid_attribute" ) );
+					$attributes_node->appendChild( $attribute_node );
+				}
+			}
+		}
+	}
 }
