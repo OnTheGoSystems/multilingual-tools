@@ -497,7 +497,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				$attributes_array = explode( ",", $attribute );
 
 				// Dealing with shortcode attribute if available.
-				$attributes_node = $dom->createElement( 'attribute' );
+				$attributes_node = $dom->createElement( 'attributes' );
 				$attributes_node = $shortcode_node->appendChild( $attributes_node );
 
 				if ( ! empty( $attributes_array ) ) {
