@@ -107,7 +107,10 @@
                                     <?php _e( "Don't translate", 'wpml-compatibility-test-tools' )?>
                                 </th>
                                 <th>
-                                    <?php _e( "Copy from original to translation", 'wpml-compatibility-test-tools' )?>
+                                    <?php _e( "Copy", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Copy once", 'wpml-compatibility-test-tools' )?>
                                 </th>
                                 <th>
                                     <?php _e( "Translate", 'wpml-compatibility-test-tools' )?>
@@ -118,6 +121,7 @@
                                 <th><a id="cf_0" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="cf_1" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="cf_2" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="cf_3" class="toggle" href="#">Toggle all</a></th>
                             </tr>
                         </thead>
                         <tbody class="wctt">
@@ -131,11 +135,14 @@
                                     <td title="<?php _e("Don't translate", 'wpml-compatibility-test-tools')?>">
                                         <input id="cf_0" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="ignore" <?php checked( ! isset( $_POST['_cf'][$custom_field->meta_key] ) || $_POST['cf'][$custom_field->meta_key] == 'ignore' ) ?>/>
                                     </td>
-                                    <td title="<?php _e("Copy from original to translation", 'wpml-compatibility-test-tools')?>">
+                                    <td title="<?php _e("Copy", 'wpml-compatibility-test-tools')?>">
                                         <input id="cf_1" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="copy" <?php checked( isset( $_POST['_cf'][$custom_field->meta_key] ) && $_POST['cf'][$custom_field->meta_key] == 'copy' ) ?>/>
                                     </td>
+                                    <td title="<?php _e("Copy once", 'wpml-compatibility-test-tools')?>">
+                                        <input id="cf_2" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="copy-once" <?php checked( isset( $_POST['_cf'][$custom_field->meta_key] ) && $_POST['cf'][$custom_field->meta_key] == 'copy-once' ) ?>/>
+                                    </td>
                                     <td title="<?php _e("Translate", 'wpml-compatibility-test-tools')?>">
-                                        <input id="cf_2" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="translate" <?php checked( isset( $_POST['_cf'][$custom_field->meta_key] ) && $_POST['cf'][$custom_field->meta_key] == 'translate' ) ?>/>
+                                        <input id="cf_3" type="radio" name="cf[<?php echo $custom_field->meta_key ?>]" value="translate" <?php checked( isset( $_POST['_cf'][$custom_field->meta_key] ) && $_POST['cf'][$custom_field->meta_key] == 'translate' ) ?>/>
                                     </td>
                                 </tr>
                         <?php endforeach; ?>
@@ -146,6 +153,7 @@
                                 <th><a id="cf_0" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="cf_1" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="cf_2" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="cf_3" class="toggle" href="#">Toggle all</a></th>
                             </tr>
                             <tr>
                                 <th>
@@ -155,7 +163,10 @@
                                     <?php _e( "Don't translate", 'wpml-compatibility-test-tools' )?>
                                 </th>
                                 <th>
-                                    <?php _e( "Copy from original to translation", 'wpml-compatibility-test-tools' )?>
+                                    <?php _e( "Copy", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Copy once", 'wpml-compatibility-test-tools' )?>
                                 </th>
                                 <th>
                                     <?php _e( "Translate", 'wpml-compatibility-test-tools' )?>
@@ -165,7 +176,7 @@
                         <?php else : ?>
                         <thead>
                             <tr>
-                                <th colspan="3"><?php _e( 'Custom fields', 'wpml-compatibility-test-tools' ); ?></th>
+                                <th colspan="5"><?php _e( 'Custom fields', 'wpml-compatibility-test-tools' ); ?></th>
                             </tr>
                         </thead>
                         <tbody class="wctt">

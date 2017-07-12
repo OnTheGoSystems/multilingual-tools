@@ -109,8 +109,13 @@ function wpml_ctt_options_list_ajax() {
             $data = ["{$option}" => 'No way Jose!'];
             break;
         }
+
         // Dealing with bad nested serialization.
-        $data[$option] = maybe_unserialize( get_option( $option ) );
+	    if ( ! is_serialized( get_option( $option ) ) ) {
+		    $data[ $option ] = get_option( $option );
+	    } else {
+		    $data[ $option ] = '*** WARNING: NESTED SERIALIZATION DETECTED, WILL NOT WORK WITH WPML! ***';
+        }
     }
 
     echo json_encode( $data );
@@ -290,6 +295,7 @@ function wpml_ctt_options_list() {
 function wpml_ctt_validate_radio( $value ) {
     $allowed = array(
         'translate',
+	    'copy-once',
         'ignore',
         'copy',
         'file',
