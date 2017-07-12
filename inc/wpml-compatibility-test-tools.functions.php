@@ -290,6 +290,7 @@ function wpml_ctt_options_list() {
 function wpml_ctt_validate_radio( $value ) {
     $allowed = array(
         'translate',
+	    'copy-once',
         'ignore',
         'copy',
         'file',

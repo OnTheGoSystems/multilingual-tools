@@ -1,3 +1,9 @@
+# 1.4.0
+
+## Improvements
+
+* Add "Copy once" option for custom fields.
+
 # 1.3.1
 
 ## Bugfix
