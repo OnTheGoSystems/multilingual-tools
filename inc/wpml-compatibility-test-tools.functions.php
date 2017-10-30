@@ -338,3 +338,28 @@ function wpml_ctt_load_alloptions() {
 
     return $alloptions;
 }
+
+/**
+ * Display an entry from a wpml-config.xml file.
+ * 
+ * @param array $entry
+ */
+function wpml_ctt_parse_entry( $entry ) {
+	if ( isset( $entry['tag']['value'] ) ) {
+		// This is for items from the shortcodes section.
+		echo '<strong>' . $entry['tag']['value'] . '</strong>';
+		if ( isset( $entry['attributes']['attribute'] ) ) {
+			if ( sizeof( $entry['attributes']['attribute'] ) > 1 ) {
+				$entry['attributes']['attribute'] = wp_list_pluck($entry['attributes']['attribute'], 'value' );
+			}
+			echo ': ' . implode( ', ', $entry['attributes']['attribute'] );
+		}
+		echo '<br />';
+	} else {
+		// This is for any other type of entry.
+		echo '<strong>' . $entry['value'] . '</strong>: ';
+		foreach ( $entry['attr'] as $key => $value ) {
+			echo $key . ' =&gt; ' . $value . '<br /> ';
+		}
+	}
+}

@@ -240,6 +240,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$this,
 			'load_template'
 		) );
+		add_submenu_page( 'wctt', __( 'Debug', 'wpml-compatibility-test-tools' ), __( 'Debug', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt-debug', array(
+			$this,
+			'load_template'
+		) );
 	}
 
 	/**
@@ -255,6 +259,13 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			case 'multilingual-tools_page_wctt-generator' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/generator.php';
+				break;
+
+			case 'multilingual-tools_page_wctt-debug' :
+				add_filter( 'wpml_config_array', array( $this, 'save_configuration_for_debug' ) );
+				add_filter( 'wpml_parse_config_file', array( $this, 'display_configuration_for_debug' ) );
+
+				require WPML_CTT_ABS_PATH . 'menus/settings/debug.php';
 				break;
 		}
 	}
@@ -514,4 +525,64 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			}
 		}
 	}
+
+	/**
+	 * Save current configuration in a global variable to display debug
+	 * information later.
+	 *
+	 * @global array $wpml_config_debug
+	 * @param array $config
+	 * @return array
+	 */
+	function save_configuration_for_debug( $config ) {
+		global $wpml_config_debug;
+
+		$wpml_config_debug = $config;
+
+		return $config;
+	}
+
+	/**
+	 * Intercept wpml-config.xml parsing to display loaded configuration files
+	 * for debugging purposes.
+	 *
+	 * @global object $sitepress
+	 * @param string $file
+	 * @return string
+	 */
+	function display_configuration_for_debug( $file ) {
+		// Get url and name.
+		if ( is_object( $file ) ) {
+			$url = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $file->admin_text_context . '/wpml-config.xml';
+			$name = $file->admin_text_context;
+			$class = 'dashicons-admin-site';
+		} else {
+			$relative = str_replace( ABSPATH, '', $file );
+			$url = site_url( $relative );
+			$name = basename( dirname( $relative ) );
+			$class = '';
+		}
+
+		// Display link to file.
+		echo '<a href="' . $url . '">' . $name . '</a>';
+		if ( ! empty( $class ) ) {
+			echo ' <span class="dashicons ' . $class . '"></span>';
+		}
+		echo '<br />';
+
+		// Display validation errors if any found.
+		if ( is_string( $file ) && file_exists( $file ) ) {
+			$validate  = new WPML_XML_Config_Validate( WPML_PLUGIN_PATH . '/res/xsd/wpml-config.xsd' );
+			$validate->from_file($file);
+			$errors = wp_list_pluck( $validate->get_errors(), 'message' );
+			if ( ! empty( $errors ) ) {
+				$errors = array_unique( $errors );
+				// TODO: add some style.
+				echo '<p>' . implode( '<br>', $errors ) . '</p>';
+			}
+		}
+
+		return $file;
+	}
+
 }
