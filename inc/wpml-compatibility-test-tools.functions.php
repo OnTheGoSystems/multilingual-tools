@@ -360,6 +360,16 @@ function wpml_ctt_parse_entry( $entry ) {
 			echo ': ' . implode( ', ', $entry['attributes']['attribute'] );
 		}
 		echo '<br />';
+	} else if ( isset( $entry['attr']['name'] ) ) {
+		echo '<strong>' . $entry['attr']['name'] . '</strong>: ';
+		echo $entry['value'] . '<br />';
+		if ( ! empty( $entry['key'] ) ) {
+			echo '<blockquote style="margin: 0 1em">';
+			foreach ( $entry['key'] as $key ) {
+				wpml_ctt_parse_entry( $key );
+			}
+			echo '</blockquote>';
+		}
 	} else {
 		// This is for any other type of entry.
 		echo '<strong>' . $entry['value'] . '</strong>: ';
