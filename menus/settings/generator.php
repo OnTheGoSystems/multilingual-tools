@@ -9,7 +9,7 @@
                     <table class="widefat">
                         <thead>
                             <tr>
-                                <th colspan="3"><?php _e('Custom Post Types', 'wpml-compatibility-test-tools') ?></th>
+                                <th colspan="3"><h3><?php _e('Custom Post Types', 'wpml-compatibility-test-tools') ?></th></h3>
                             </tr>
                         </thead>
                         <tbody class="wctt">
@@ -54,7 +54,7 @@
                     <table class="widefat">
                         <thead>
                             <tr>
-                                <th colspan="3"><?php _e('Custom Taxonomies', 'wpml-compatibility-test-tools') ?></th>
+                                <th colspan="3"><h3><?php _e('Custom Taxonomies', 'wpml-compatibility-test-tools') ?></h3></th>
                             </tr>
                         </thead>
                         <tbody class="wctt">
@@ -101,7 +101,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <?php _e( 'Custom fields', 'wpml-compatibility-test-tools' );?>
+                                    <h3><?php _e( 'Custom fields', 'wpml-compatibility-test-tools' );?></h3>
                                 </th>
                                 <th>
                                     <?php _e( "Don't translate", 'wpml-compatibility-test-tools' )?>
@@ -194,7 +194,7 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <?php _e( 'Admin Texts', 'wpml-compatibility-test-tools' ) ?>
+                                    <h3><?php _e( 'Admin Texts', 'wpml-compatibility-test-tools' ) ?></h3>
                                 </th>
                                 <th class="column-desc"><?php _e( 'Options from <strong>wp_options</strong> table:', 'wpml-compatibility-test-tools' ); ?></th>
                                 <th id="dropdown-column">
@@ -237,7 +237,7 @@
                     <table id="mt-shortcodes" class="widefat">
                         <thead>
                         <tr>
-                            <th><?php _e( 'Shortcodes', 'wpml-compatibility-test-tools' ) ?></th>
+                            <th><h3><?php _e( 'Shortcodes', 'wpml-compatibility-test-tools' ) ?></h3></th>
                             <th>
                                 <a href="#" id="add-shortcode-button" class="button-secondary">
 					                <?php _e( 'Add shortcode', 'wpml-compatibility-test-tools' ) ?>

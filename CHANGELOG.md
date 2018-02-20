@@ -1,3 +1,9 @@
+# 2.0.0
+
+## Improvements
+
+* Add a Overview screen which displays loaded configuration and validation errors.
+
 # 1.4.0
 
 ## Improvements
