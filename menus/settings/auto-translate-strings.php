@@ -1,7 +1,7 @@
 <table id="wctt-settings" class="widefat general_options_table">
 	<thead>
 	<tr>
-		<th><?php _e( 'Auto generate strings translations', 'wpml-compatibility-test-tools' ) ?></th>
+		<th><h3><?php _e( 'Auto generate strings translations', 'wpml-compatibility-test-tools' ) ?></h3></th>
 	</tr>
 	</thead>
 	<tbody>

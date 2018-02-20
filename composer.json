@@ -3,7 +3,7 @@
     "type": "wordpress-plugin",
     "description": "Set of tools related to WPML plugin bundle. Created with tendency to ease WPML compatibility testing process.",
     "homepage": "https://wpml.org/documentation/related-projects/wpml-compatibility-test-tools-plugin/",
-    "license": "GPL-2",
+    "license": "GPL-2.0",
     "require": {
         "php": ">=5.2",
         "composer/installers": "^1.2"
