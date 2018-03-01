@@ -1,3 +1,8 @@
+h3 {
+    font-size: 1.1em;
+    margin: 0.3em 0.2em;
+}
+
 /* DROPDOWN */
 
 #dropdown dd, #dropdown dt {
