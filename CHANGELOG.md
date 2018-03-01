@@ -1,3 +1,9 @@
+# 1.4.1
+
+## Improvements
+
+* Add a Debug screen which displays loaded configuration and validation errors.
+
 # 1.4.0
 
 ## Improvements

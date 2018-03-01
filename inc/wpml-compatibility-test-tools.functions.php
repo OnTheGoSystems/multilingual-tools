@@ -343,3 +343,40 @@ function wpml_ctt_load_alloptions() {
 
     return $alloptions;
 }
+
+/**
+ * Display an entry from a wpml-config.xml file.
+ * 
+ * @param array $entry
+ */
+function wpml_ctt_parse_entry( $entry ) {
+	if ( isset( $entry['tag']['value'] ) ) {
+		// This is for items from the shortcodes section.
+		echo '<strong>' . $entry['tag']['value'] . '</strong>';
+		if ( ! empty( $entry['attributes']['attribute'] ) ) {
+			if ( isset( $entry['attributes']['attribute']['value'] ) ) {
+				$entry['attributes']['attribute'] = array( $entry['attributes']['attribute'] );
+			}
+			$attributes = wp_list_pluck($entry['attributes']['attribute'], 'value' );
+			echo ': ' . implode( ', ', $attributes );
+		}
+		echo '<br />';
+	} else if ( isset( $entry['attr']['name'] ) ) {
+		// This part if for admin-texts and language-switcher-settings.
+		echo '<strong>' . $entry['attr']['name'] . '</strong>: ';
+		echo $entry['value'] . '<br />';
+		if ( ! empty( $entry['key'] ) ) {
+			echo '<blockquote style="margin: 0 1em;">';
+			foreach ( $entry['key'] as $key ) {
+				wpml_ctt_parse_entry( $key );
+			}
+			echo '</blockquote>';
+		}
+	} else {
+		// This is for any other type of entry.
+		echo '<strong>' . $entry['value'] . '</strong>: ';
+		foreach ( $entry['attr'] as $key => $value ) {
+			echo $key . ' =&gt; ' . $value . '<br /> ';
+		}
+	}
+}
