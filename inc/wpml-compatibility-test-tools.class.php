@@ -560,9 +560,8 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$name = $file->admin_text_context;
 			$class = 'dashicons-admin-site';
 		} else {
-			$relative = str_replace( ABSPATH, '', $file );
-			$url = site_url( $relative );
-			$name = basename( dirname( $relative ) );
+			$url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+			$name = basename( dirname( $url ) );
 			$class = '';
 		}
 
