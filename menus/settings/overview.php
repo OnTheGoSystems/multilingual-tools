@@ -19,33 +19,10 @@
                 </table>
             </td>
         </tr>
-		<?php
-		global $wpml_config_debug;
 
-		$data = array();
-		if ( ! empty( $wpml_config_debug['wpml-config']['custom-types']['custom-type'] ) ) {
-			$data['Custom posts'] = $wpml_config_debug['wpml-config']['custom-types']['custom-type'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['taxonomies']['taxonomy'] ) ) {
-			$data['Custom taxonomies'] = $wpml_config_debug['wpml-config']['taxonomies']['taxonomy'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['custom-fields']['custom-field'] ) ) {
-			$data['Custom fields translation'] = $wpml_config_debug['wpml-config']['custom-fields']['custom-field'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['custom-term-fields']['custom-term-field'] ) ) {
-			$data['Custom Term Meta Translation'] = $wpml_config_debug['wpml-config']['custom-term-fields']['custom-term-field'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['shortcodes']['shortcode'] ) ) {
-			$data['Shortcodes'] = $wpml_config_debug['wpml-config']['shortcodes']['shortcode'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['admin-texts']['key'] ) ) {
-			$data['Admin Strings to Translate'] = $wpml_config_debug['wpml-config']['admin-texts']['key'];
-		}
-		if ( ! empty( $wpml_config_debug['wpml-config']['language-switcher-settings']['key'] ) ) {
-			$data['Language Switcher Settings'] = $wpml_config_debug['wpml-config']['language-switcher-settings']['key'];
-		}
-		?>
-		<?php foreach ( $data as $type => $config ) : ?>
+		<?php global $wpml_config_debug; ?>
+
+		<?php foreach ( $wpml_config_debug as $type => $config ) : ?>
 			<?php if ( ! empty( $config ) ) : ?>
                 <tr>
                     <td>

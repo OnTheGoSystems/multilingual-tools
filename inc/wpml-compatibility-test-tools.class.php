@@ -530,8 +530,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	/**
-	 * Save current configuration in a global variable to display debug
-	 * information later.
+	 * Save current configuration in a global variable to display later.
 	 *
 	 * @global array $wpml_config_debug
 	 * @param array $config
@@ -540,7 +539,29 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	function save_configuration_for_debug( $config ) {
 		global $wpml_config_debug;
 
-		$wpml_config_debug = $config;
+		// Check which sections have content and assign a title for each section.
+		$wpml_config_debug = array();
+		if ( ! empty( $config['wpml-config']['custom-types']['custom-type'] ) ) {
+			$wpml_config_debug['Custom posts'] = $config['wpml-config']['custom-types']['custom-type'];
+		}
+		if ( ! empty( $config['wpml-config']['taxonomies']['taxonomy'] ) ) {
+			$wpml_config_debug['Custom taxonomies'] = $config['wpml-config']['taxonomies']['taxonomy'];
+		}
+		if ( ! empty( $config['wpml-config']['custom-fields']['custom-field'] ) ) {
+			$wpml_config_debug['Custom fields translation'] = $config['wpml-config']['custom-fields']['custom-field'];
+		}
+		if ( ! empty( $config['wpml-config']['custom-term-fields']['custom-term-field'] ) ) {
+			$wpml_config_debug['Custom Term Meta Translation'] = $config['wpml-config']['custom-term-fields']['custom-term-field'];
+		}
+		if ( ! empty( $config['wpml-config']['shortcodes']['shortcode'] ) ) {
+			$wpml_config_debug['Shortcodes'] = $config['wpml-config']['shortcodes']['shortcode'];
+		}
+		if ( ! empty( $config['wpml-config']['admin-texts']['key'] ) ) {
+			$wpml_config_debug['Admin Strings to Translate'] = $config['wpml-config']['admin-texts']['key'];
+		}
+		if ( ! empty( $config['wpml-config']['language-switcher-settings']['key'] ) ) {
+			$wpml_config_debug['Language Switcher Settings'] = $config['wpml-config']['language-switcher-settings']['key'];
+		}
 
 		return $config;
 	}
