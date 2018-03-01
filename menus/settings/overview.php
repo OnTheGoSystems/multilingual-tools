@@ -20,10 +20,10 @@
             </td>
         </tr>
 
-		<?php global $wpml_config_debug; ?>
+        <?php global $wpml_config_debug; ?>
 
-		<?php foreach ( $wpml_config_debug as $type => $config ) : ?>
-			<?php if ( ! empty( $config ) ) : ?>
+        <?php foreach ( $wpml_config_debug as $type => $config ) : ?>
+           <?php if ( ! empty( $config ) ) : ?>
                 <tr>
                     <td>
                         <table class="widefat">
@@ -33,17 +33,17 @@
                             </tr>
                             </thead>
                             <tbody class="wctt">
-							<?php foreach ( $config as $entry ) : ?>
+                            <?php foreach ( $config as $entry ) : ?>
                                 <tr>
                                     <td><?php wpml_ctt_parse_entry( $entry ); ?></td>
                                 </tr>
-							<?php endforeach; ?>
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </td>
                 </tr>
-			<?php endif; ?>
-		<?php endforeach; ?>
+           <?php endif; ?>
+        <?php endforeach; ?>
         </tbody>
     </table>
 </div>
