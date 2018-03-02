@@ -231,12 +231,19 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Register settings page
 	 */
 	public function register_administration_page() {
-		add_menu_page( __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Multilingual Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt', array(
+		add_menu_page( __( 'Dashboard', 'wpml-compatibility-test-tools' ), __( 'Multilingual Tools', 'wpml-compatibility-test-tools' ), 'manage_options', 'mt', array(
 			$this,
 			'load_template'
 		), WPML_CTT_PLUGIN_URL . '/res/img/wctt-icon.png' );
-		add_submenu_page( 'wctt', __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt' );
-		add_submenu_page( 'wctt', __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', 'wctt-generator', array(
+		add_submenu_page( 'mt', __( 'Overview', 'wpml-compatibility-test-tools' ), __( 'Overview', 'wpml-compatibility-test-tools' ), 'manage_options', 'mt', array(
+			$this,
+			'load_template'
+		) );
+		add_submenu_page( 'mt', __( 'Settings', 'wpml-compatibility-test-tools' ), __( 'Settings', 'wpml-compatibility-test-tools' ), 'manage_options', 'mt-settings', array(
+			$this,
+			'load_template'
+		) );
+		add_submenu_page( 'mt', __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), __( 'Configuration Generator', 'wpml-compatibility-test-tools' ), 'manage_options', 'mt-generator', array(
 			$this,
 			'load_template'
 		) );
@@ -249,11 +256,18 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		$screen = get_current_screen();
 
 		switch ( $screen->id ) {
-			case 'toplevel_page_wctt' :
+			case 'toplevel_page_mt' :
+				add_filter( 'wpml_config_array', array( $this, 'save_configuration_for_debug' ) );
+				add_filter( 'wpml_parse_config_file', array( $this, 'display_configuration_for_debug' ) );
+
+				require WPML_CTT_ABS_PATH . 'menus/settings/overview.php';
+				break;
+
+			case 'multilingual-tools_page_mt-settings' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/settings.php';
 				break;
 
-			case 'multilingual-tools_page_wctt-generator' :
+			case 'multilingual-tools_page_mt-generator' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/generator.php';
 				break;
 		}
@@ -263,7 +277,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Add scripts only for plugin pages
 	 */
 	public function add_scripts( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_mt', 'multilingual-tools_page_mt-settings', 'multilingual-tools_page_mt-generator' ) ) ) {
 			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array( 'jquery' ), WPML_CTT_VERSION );
 			wp_localize_script( 'wctt-scripts', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
@@ -273,7 +287,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Add styles only for plugin pages
 	 */
 	public function add_styles( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_wctt', 'multilingual-tools_page_wctt-generator' ) ) ) {
+		if ( in_array( $hook, array( 'toplevel_page_mt', 'multilingual-tools_page_mt-settings', 'multilingual-tools_page_mt-generator' ) ) ) {
 			wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
 			wp_enqueue_style( 'wctt-generator-style' );
 		}
@@ -514,4 +528,84 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			}
 		}
 	}
+
+	/**
+	 * Save current configuration in a global variable to display later.
+	 *
+	 * @global array $wpml_config_debug
+	 * @param array $config
+	 * @return array
+	 */
+	function save_configuration_for_debug( $config ) {
+		global $wpml_config_debug;
+
+		// Check which sections have content and assign a title for each section.
+		$wpml_config_debug = array();
+		if ( ! empty( $config['wpml-config']['custom-types']['custom-type'] ) ) {
+			$wpml_config_debug['Custom posts'] = $config['wpml-config']['custom-types']['custom-type'];
+		}
+		if ( ! empty( $config['wpml-config']['taxonomies']['taxonomy'] ) ) {
+			$wpml_config_debug['Custom taxonomies'] = $config['wpml-config']['taxonomies']['taxonomy'];
+		}
+		if ( ! empty( $config['wpml-config']['custom-fields']['custom-field'] ) ) {
+			$wpml_config_debug['Custom fields translation'] = $config['wpml-config']['custom-fields']['custom-field'];
+		}
+		if ( ! empty( $config['wpml-config']['custom-term-fields']['custom-term-field'] ) ) {
+			$wpml_config_debug['Custom Term Meta Translation'] = $config['wpml-config']['custom-term-fields']['custom-term-field'];
+		}
+		if ( ! empty( $config['wpml-config']['shortcodes']['shortcode'] ) ) {
+			$wpml_config_debug['Shortcodes'] = $config['wpml-config']['shortcodes']['shortcode'];
+		}
+		if ( ! empty( $config['wpml-config']['admin-texts']['key'] ) ) {
+			$wpml_config_debug['Admin Strings to Translate'] = $config['wpml-config']['admin-texts']['key'];
+		}
+		if ( ! empty( $config['wpml-config']['language-switcher-settings']['key'] ) ) {
+			$wpml_config_debug['Language Switcher Settings'] = $config['wpml-config']['language-switcher-settings']['key'];
+		}
+
+		return $config;
+	}
+
+	/**
+	 * Intercept wpml-config.xml parsing to display loaded configuration files
+	 * for debugging purposes.
+	 *
+	 * @global object $sitepress
+	 * @param string $file
+	 * @return string
+	 */
+	function display_configuration_for_debug( $file ) {
+		// Get url and name.
+		if ( is_object( $file ) ) {
+			$url = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $file->admin_text_context . '/wpml-config.xml';
+			$name = $file->admin_text_context;
+			$class = 'dashicons-admin-site';
+		} else {
+			$url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+			$name = basename( dirname( $url ) );
+			$class = '';
+		}
+
+		// Display link to file.
+		echo '<a href="' . $url . '">' . $name . '</a>';
+		if ( ! empty( $class ) ) {
+			echo ' <span class="dashicons ' . $class . '"></span>';
+		}
+		echo '<br />';
+
+		// Display validation errors if any found.
+		if ( is_string( $file ) && file_exists( $file ) ) {
+			$validate  = new WPML_XML_Config_Validate( WPML_PLUGIN_PATH . '/res/xsd/wpml-config.xsd' );
+			$validate->from_file($file);
+			$errors = wp_list_pluck( $validate->get_errors(), 'message' );
+			if ( ! empty( $errors ) ) {
+				$errors = array_unique( $errors );
+				// TODO: add some style.
+				echo '<p>' . implode( '<br>', $errors ) . '</p>';
+			}
+		}
+
+		return $file;
+	}
+
 }
