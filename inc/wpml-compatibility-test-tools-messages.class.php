@@ -79,6 +79,10 @@ class WPML_Compatibility_Test_Tools_Messages {
 
 				echo '<div class="updated message fade"><p>' . $message . '</p></div>';
 				break;
+
+			case 'shortcode_debug_action_reset' :
+				echo '<div class="updated message fade"><p>' . __( 'Cleared shortcode debug data.', 'wpml-compatibility-test-tools' ) . '</p></div>';
+				break;
 		}
 	}
 }

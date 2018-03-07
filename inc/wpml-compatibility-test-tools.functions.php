@@ -380,3 +380,88 @@ function wpml_ctt_parse_entry( $entry ) {
 		}
 	}
 }
+
+function mltools_shortcode_helper_add_hooks() {
+
+	$debug_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_debug', false );
+
+	if ( $debug_enabled ) {
+
+		$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
+		$ignored_tags         = array_merge( $default_ignored_tags, array_map( 'trim',
+			explode( ',', WPML_Compatibility_Test_Tools::get_option( 'shortcode_ignored_tags', '' ) )
+		) );
+
+		$shortcode_attribute_filter = new MLTools_Shortcode_Attribute_Filter( $ignored_tags );
+		$shortcode_attribute_filter->add_hooks();
+
+		MLTools_Shortcode_WPML_Config_Parser::add_hooks();
+
+		if ( ! is_admin() ) {
+			add_action( 'shutdown', 'mltools_shortcode_helper_unregistered_print_xml', 20 );
+		}
+
+	}
+}
+
+function mltools_shortcode_helper_get_default_ignored_tags() {
+	$default = array(
+		'vc_row',
+		'vc_column',
+		'vc_row_inner',
+		'vc_column_inner',
+		'vc_basic_grid',
+		'vc_empty_space',
+		'vc_icon',
+		'audio',
+		'caption',
+		'embed',
+		'gallery',
+		'playlist',
+		'video',
+		'wp_caption',
+		'wpml-string',
+		'wpml_language_form_field',
+		'wpml_language_selector_footer',
+		'wpml_language_selector_widget',
+		'wpml_language_switcher',
+	);
+	sort( $default );
+
+	return $default;
+}
+
+function mltools_shortcode_helper_unregistered_print_xml() {
+
+	$output = mltools_shortcode_helper_unregistered_get_xml();
+
+	if ( $output ) {
+		echo '<pre style="padding:1em">' . htmlentities( $output ) . '</pre>';
+	}
+}
+
+function mltools_shortcode_helper_unregistered_get_xml() {
+
+	$xml_helper    = new MLTools_XML_Helper();
+	$captured_tags = mltools_shortcode_helper_get_unregistered_tags();
+
+	if ( ! empty( $captured_tags ) ) {
+		return $xml_helper->get_dom_shortcodes( $captured_tags );
+	}
+
+	return false;
+}
+
+function mltools_shortcode_helper_get_unregistered_tags() {
+
+	$wpml_config   = MLTools_Shortcode_WPML_Config_Parser::get_config();
+	$captured_tags = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME, array() );
+
+	foreach ( $captured_tags as $tag => $config ) {
+		if ( array_key_exists( $tag, $wpml_config ) ) {
+			unset( $captured_tags[ $tag ] );
+		}
+	}
+
+	return $captured_tags;
+}

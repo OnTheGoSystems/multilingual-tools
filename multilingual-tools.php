@@ -20,9 +20,16 @@ require WPML_CTT_PATH . '/inc/wpml-compatibility-test-tools-base.class.php';
 require WPML_CTT_PATH . '/inc/wpml-compatibility-test-tools.class.php';
 require WPML_CTT_PATH . '/inc/wpml-modify-duplicate-strings.class.php';
 
+require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-attribute-filter.php';
+require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-config.php';
+require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-wpml-config-parser.php';
+require_once WPML_CTT_PATH . '/inc/class-mltools-xml-helper.php';
+
 // Disable informations about ICanLocalize.
 if ( !defined( 'ICL_DONT_PROMOTE' ) ) {
 	define( 'ICL_DONT_PROMOTE', true );
 }
 
 $WPML_Compatibility_Test_Tools = new WPML_Compatibility_Test_Tools();
+
+add_action( 'mltools_loaded', 'mltools_shortcode_helper_add_hooks' );
