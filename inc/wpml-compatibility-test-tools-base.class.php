@@ -17,6 +17,8 @@ class WPML_Compatibility_Test_Tools_Base {
 		if ( get_option( self::OPTIONS_NAME ) === false ) {
 			$options[ 'string_auto_translate_template' ] = '[%language_name%] %original_string%';
 			$options[ 'duplicate_strings_template' ] 	 = '[%language_name%] %original_string%';
+			$options[ 'shortcode_enable_debug' ]         = false;
+			$options[ 'shortcode_ignored_tags' ]         = false;
 
 			add_option( self::OPTIONS_NAME, $options );
 		}

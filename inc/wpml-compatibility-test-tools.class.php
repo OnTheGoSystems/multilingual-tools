@@ -64,6 +64,8 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		// Change WPML behaviour based on selected settings
 		$this->modify_wpml_behaviour();
 
+		do_action( 'mltools_loaded' );
+
 		return true;
 	}
 
@@ -75,6 +77,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function process_request() {
 		$this->process_strings_auto_translate_action_translate();
 		$this->process_save_duplicate_strings_to_translate();
+		$this->process_save_shortcode_helper_settings();
 
 		return true;
 	}
@@ -205,6 +208,32 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		}
 
 		return true;
+	}
+
+	private function process_save_shortcode_helper_settings() {
+
+		if ( isset( $_POST['_mltools_shortcode_helper_nonce'] )
+		     && wp_verify_nonce( $_POST['_mltools_shortcode_helper_nonce'], 'mltools_shortcode_helper_settings_save' ) ) {
+
+			if ( isset( $_POST['shortcode_debug_action_save'] ) ) {
+				$enable = isset( $_POST['shortcode_enable_debug'] );
+				self::update_option( 'shortcode_enable_debug', $enable );
+				add_action( 'admin_notices', array( $this->messages, 'settings_updated_notice' ) );
+			}
+			if ( isset( $_POST['shortcode_debug_action_reset'] )
+			     && class_exists( 'MLTools_Shortcode_Attribute_Filter' ) ) {
+				delete_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME );
+				add_action( 'admin_notices', array( $this->messages, 'shortcode_debug_action_reset' ) );
+			}
+			if ( isset( $_POST['shortcode_ignored_tags'] ) ) {
+				self::update_option( 'shortcode_ignored_tags', sanitize_text_field( $_POST['shortcode_ignored_tags'] ) );
+			}
+
+			if ( isset( $_POST['_wp_http_referer'] ) ) {
+				wp_redirect( $_POST['_wp_http_referer'] );
+				die();
+			}
+		}
 	}
 
 	/**
