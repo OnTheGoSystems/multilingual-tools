@@ -26,7 +26,7 @@ class MLTools_Shortcode_WPML_Config_Parser {
 
 			foreach ( $wpml_xml_config['wpml-config']['shortcodes']['shortcode'] as $shortcode ) {
 
-				$tag = $shortcode['tag']['value'];
+				$tag    = $shortcode['tag']['value'];
 				$config = new MLTools_Shortcode_Config( $tag );
 
 				if ( isset( $shortcode['tag']['attr']['encoding'] ) ) {
@@ -77,7 +77,16 @@ class MLTools_Shortcode_WPML_Config_Parser {
 	public static function get_config() {
 
 		if ( self::$config === null ) {
-			WPML_Config::load_config_run();
+
+			// @todo Fix dependencies
+			$array_utility_file = WPML_PLUGIN_PATH . '/inc/utilities/xml2array.php';
+
+			if ( file_exists( $array_utility_file ) ) {
+				require_once $array_utility_file;
+				WPML_Config::load_config_run();
+			} else {
+				return false;
+			}
 		}
 
 		return self::$config;
