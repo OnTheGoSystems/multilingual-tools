@@ -385,7 +385,7 @@ function mltools_shortcode_helper_add_hooks() {
 
 	$debug_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_debug', false );
 
-	if ( $debug_enabled ) {
+	if ( $debug_enabled && is_user_logged_in() ) {
 
 		$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
 		$ignored_tags         = array_merge( $default_ignored_tags, array_map( 'trim',
@@ -413,6 +413,7 @@ function mltools_shortcode_helper_get_default_ignored_tags() {
 		'vc_basic_grid',
 		'vc_empty_space',
 		'vc_icon',
+		'vc_separator',
 		'audio',
 		'caption',
 		'embed',
@@ -433,28 +434,49 @@ function mltools_shortcode_helper_get_default_ignored_tags() {
 
 function mltools_shortcode_helper_unregistered_print_xml() {
 
-	$output = mltools_shortcode_helper_unregistered_get_xml();
+	$output = mltools_shortcode_helper_unregistered_get_xml_output();
 
-	if ( $output ) {
-		echo '<pre style="padding:1em">' . htmlentities( $output ) . '</pre>';
+	if ( $output === false ) {
+
+		user_error( 'MLTools shortcode helper: WPML_Config not loaded' );
+
+	} elseif ( is_string( $output ) && ! empty( $output ) ) {
+
+		echo '<pre style="padding:1em; background-color: #f8f8f8; color: #0a001f">'
+		     . htmlentities( $output ) . '</pre>';
 	}
 }
 
-function mltools_shortcode_helper_unregistered_get_xml() {
+/**
+ * @return bool|string
+ */
+function mltools_shortcode_helper_unregistered_get_xml_output() {
 
 	$xml_helper    = new MLTools_XML_Helper();
 	$captured_tags = mltools_shortcode_helper_get_unregistered_tags();
 
-	if ( ! empty( $captured_tags ) ) {
+	if ( $captured_tags === false ) {
+		return false;
+	}
+
+	if ( is_array( $captured_tags ) && ! empty( $captured_tags ) ) {
 		return $xml_helper->get_dom_shortcodes( $captured_tags );
 	}
 
-	return false;
+	return '';
 }
 
+/**
+ * @return bool|array
+ */
 function mltools_shortcode_helper_get_unregistered_tags() {
 
-	$wpml_config   = MLTools_Shortcode_WPML_Config_Parser::get_config();
+	$wpml_config = MLTools_Shortcode_WPML_Config_Parser::get_config();
+
+	if ( $wpml_config === false ) {
+		return false;
+	}
+
 	$captured_tags = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME, array() );
 
 	foreach ( $captured_tags as $tag => $config ) {

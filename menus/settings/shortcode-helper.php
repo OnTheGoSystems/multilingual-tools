@@ -4,9 +4,9 @@ $debug_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_de
 
 if ( $debug_enabled ) {
 	$ignored_tags         = WPML_Compatibility_Test_Tools::get_option( 'shortcode_ignored_tags', false );
-	$captured_tags        = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME, false );
+	$unregistered_tags    = mltools_shortcode_helper_get_unregistered_tags();
 	$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
-	$xml_output           = mltools_shortcode_helper_unregistered_get_xml();
+	$xml_output           = mltools_shortcode_helper_unregistered_get_xml_output();
 }
 
 ?>
@@ -31,12 +31,12 @@ if ( $debug_enabled ) {
 
 				<?php if ( $debug_enabled ) { ?>
 
-					<?php if ( $captured_tags ) { ?>
+					<?php if ( $unregistered_tags ) { ?>
                         <label><?php _e( 'Unregistered tags', 'wpml-compatibility-test-tools' ); ?></label>
                         <ul class="holder">
                             <li>
                                 <ol>
-                                    <li><?php echo implode( '</li><li>', array_keys( $captured_tags ) ); ?></li>
+                                    <li><?php echo implode( '</li><li>', array_keys( $unregistered_tags ) ); ?></li>
                                 </ol>
                             </li>
                         </ul>
@@ -45,7 +45,7 @@ if ( $debug_enabled ) {
                         <ul class="holder">
                             <li>
                             <textarea readonly="readonly"
-                                      style="min-width: 350px;min-height: 150px;"><?php echo htmlentities( $xml_output ); ?></textarea>
+                                      style="min-width: 450px;min-height: 150px;"><?php echo htmlentities( $xml_output ); ?></textarea>
                             </li>
                         </ul>
 					<?php } ?>
@@ -54,7 +54,7 @@ if ( $debug_enabled ) {
                     <ul class="holder">
                         <li>
                         <textarea name="shortcode_ignored_tags"
-                                  style="min-width: 350px;"><?php echo $ignored_tags ? $ignored_tags : ''; ?></textarea>
+                                  style="min-width: 450px;"><?php echo $ignored_tags ? $ignored_tags : ''; ?></textarea>
                         </li>
                     </ul>
 
@@ -75,7 +75,7 @@ if ( $debug_enabled ) {
                        value="<?php _e( 'Save settings', 'wpml-compatibility-test-tools' ); ?>"
                        class="button-secondary"/>
 
-				<?php if ( $debug_enabled && $captured_tags ) { ?>
+				<?php if ( $debug_enabled ) { ?>
                     <input type="submit" name="shortcode_debug_action_reset"
                            value="<?php _e( 'Reset debug data', 'wpml-compatibility-test-tools' ); ?>"
                            class="button-primary"/>
