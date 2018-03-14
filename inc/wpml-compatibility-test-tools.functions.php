@@ -501,10 +501,14 @@ function mltools_shortcode_helper_get_unregistered_tags() {
 		return false;
 	}
 
-	$captured_tags = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME, array() );
+	$captured_tags        = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME, array() );
+	$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
+	$ignored_tags         = array_merge( $default_ignored_tags, array_map( 'trim',
+		explode( ',', WPML_Compatibility_Test_Tools::get_option( 'shortcode_ignored_tags', '' ) )
+	) );
 
 	foreach ( $captured_tags as $tag => $config ) {
-		if ( array_key_exists( $tag, $wpml_config ) ) {
+		if ( array_key_exists( $tag, $wpml_config ) || in_array( $tag, $ignored_tags ) ) {
 			unset( $captured_tags[ $tag ] );
 		}
 	}
