@@ -3,6 +3,10 @@
 $debug_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_debug', false );
 
 if ( $debug_enabled ) {
+	$debug_value_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_debug_value', false );
+	if ( $debug_value_enabled ) {
+		$captured_values = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME_VALUES, array() );
+	}
 	$ignored_tags         = WPML_Compatibility_Test_Tools::get_option( 'shortcode_ignored_tags', false );
 	$unregistered_tags    = mltools_shortcode_helper_get_unregistered_tags();
 	$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
@@ -66,6 +70,30 @@ if ( $debug_enabled ) {
                                     <li><?php echo implode( '</li><li>', $default_ignored_tags ); ?></li>
                                 </ol>
                             </li>
+                        </ul>
+					<?php } ?>
+
+                    <label><?php _e( 'Display captured values', 'wpml-compatibility-test-tools' ); ?></label>
+                    <ul class="holder">
+                        <li>
+                            <input type="checkbox" name="shortcode_enable_debug_value"
+                                   value="1" <?php checked( $debug_value_enabled ); ?> />
+                        </li>
+                    </ul>
+
+					<?php if ( $debug_value_enabled && $captured_values ) { ?>
+                        <label><?php _e( 'Captured values', 'wpml-compatibility-test-tools' ); ?></label>
+                        <ul class="holder">
+                            <li><?php foreach ( $captured_values
+
+								as $tag => $values ) { ?>
+								<?php if ( array_key_exists( $tag, $unregistered_tags ) ) { ?>
+                                    <strong><?php echo $tag; ?></strong>
+                                    <ul><?php foreach ( $values['attributes'] as $attr_name => $attr_value ) { ?>
+                                            <li style="padding-left: 2em"><?php echo "{$attr_name}: <span style=\"background-color: #000000; color: #FFFFFF; padding-left: 1em; padding-right: 1em;\">{$attr_value}</span>"; ?></li><?php } ?>
+                                    </ul>
+								<?php } ?></li>
+							<?php } ?></li>
                         </ul>
 					<?php } ?>
 

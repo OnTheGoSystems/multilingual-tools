@@ -387,6 +387,7 @@ function mltools_shortcode_helper_add_hooks() {
 
 	if ( $debug_enabled && is_user_logged_in() ) {
 
+		$debug_values_enabled = WPML_Compatibility_Test_Tools::get_option( 'shortcode_enable_debug_value', false );
 		$default_ignored_tags = mltools_shortcode_helper_get_default_ignored_tags();
 		$ignored_tags         = array_merge( $default_ignored_tags, array_map( 'trim',
 			explode( ',', WPML_Compatibility_Test_Tools::get_option( 'shortcode_ignored_tags', '' ) )
@@ -399,6 +400,9 @@ function mltools_shortcode_helper_add_hooks() {
 
 		if ( ! is_admin() ) {
 			add_action( 'shutdown', 'mltools_shortcode_helper_unregistered_print_xml', 20 );
+			if ( $debug_values_enabled ) {
+				add_action( 'shutdown', 'mltools_shortcode_helper_unregistered_print_captured_values', 30 );
+			}
 		}
 
 	}
@@ -445,6 +449,26 @@ function mltools_shortcode_helper_unregistered_print_xml() {
 		echo '<pre style="padding:1em; background-color: #f8f8f8; color: #0a001f">'
 		     . htmlentities( $output ) . '</pre>';
 	}
+}
+
+function mltools_shortcode_helper_unregistered_print_captured_values(){
+
+		$unregistered_tags = mltools_shortcode_helper_get_unregistered_tags();
+		$captured_values = get_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME_VALUES, array() );
+
+		foreach ( $captured_values as $tag => $values ) {
+
+			if ( array_key_exists( $tag, $unregistered_tags )) {
+
+				echo '<pre style="padding:1em; background-color: #f8f8f8; color: #0a001f">' . $tag . '<ul>';
+
+				foreach ( $values['attributes'] as $attr_name => $attr_value ) {
+					echo "<li>{$attr_name}: <span style=\"background-color: #000000; color: #FFFFFF; padding-left: 1em; padding-right: 1em;\">{$attr_value}</span></li>";
+				}
+
+				echo '</ul></pre>';
+			}
+		}
 }
 
 /**

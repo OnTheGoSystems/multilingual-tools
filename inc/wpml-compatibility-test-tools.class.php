@@ -216,13 +216,21 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		     && wp_verify_nonce( $_POST['_mltools_shortcode_helper_nonce'], 'mltools_shortcode_helper_settings_save' ) ) {
 
 			if ( isset( $_POST['shortcode_debug_action_save'] ) ) {
+
 				$enable = isset( $_POST['shortcode_enable_debug'] );
 				self::update_option( 'shortcode_enable_debug', $enable );
+
+				$enable_debug_value = isset( $_POST['shortcode_enable_debug_value'] );
+				self::update_option( 'shortcode_enable_debug_value', $enable_debug_value );
+
 				add_action( 'admin_notices', array( $this->messages, 'settings_updated_notice' ) );
 			}
 			if ( isset( $_POST['shortcode_debug_action_reset'] )
 			     && class_exists( 'MLTools_Shortcode_Attribute_Filter' ) ) {
+
 				delete_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME );
+				delete_option( MLTools_Shortcode_Attribute_Filter::OPTION_NAME_VALUES );
+
 				add_action( 'admin_notices', array( $this->messages, 'shortcode_debug_action_reset' ) );
 			}
 			if ( isset( $_POST['shortcode_ignored_tags'] ) ) {

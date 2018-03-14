@@ -3,13 +3,16 @@
 class MLTools_Shortcode_Attribute_Filter {
 
 	CONST OPTION_NAME = '_mltools_shortcode_helper_captured_tags';
+	CONST OPTION_NAME_VALUES = '_mltools_shortcode_helper_captured_values';
 
 	private $captured_tags = array();
+	private $captured_values = array();
 	private $ignored_tags = array();
 
 	function __construct( array $ignored_tags ) {
-		$this->captured_tags = get_option( self::OPTION_NAME, array() );
-		$this->ignored_tags  = $ignored_tags;
+		$this->captured_tags   = get_option( self::OPTION_NAME, array() );
+		$this->captured_values = get_option( SELF::OPTION_NAME_VALUES, array() );
+		$this->ignored_tags    = $ignored_tags;
 	}
 
 	public function add_hooks() {
@@ -43,52 +46,49 @@ class MLTools_Shortcode_Attribute_Filter {
 	 * @param string $out Output.
 	 * @param array $pairs Default attributes.
 	 * @param array $atts Shortcode attributes.
-	 * @param string $shortcode Shortcode tag.
+	 * @param string $tag Shortcode tag.
 	 *
 	 * @return mixed
 	 */
-	public function shortcode_atts_filter( $out, $pairs, $atts, $shortcode ) {
+	public function shortcode_atts_filter( $out, $pairs, $atts, $tag ) {
 
-		$all_attributes = array_merge( $pairs, $atts );
-
-		$props = array();
-		if ( isset( $this->captured_tags[ $shortcode ] ) ) {
-			$props = $this->captured_tags[ $shortcode ];
+		if ( is_array( $pairs ) && is_array( $atts ) ) {
+			$all_attributes = array_merge( $pairs, $atts );
+			$this->add_tag( $tag, $all_attributes );
 		}
-
-		$config = new MLTools_Shortcode_Config( $shortcode, $props );
-		foreach ( $all_attributes as $attr_name => $attr_value ) {
-			$config->add_attribute( $attr_name );
-		}
-
-		$this->captured_tags[ $shortcode ] = $config->get_props();
 
 		return $out;
 	}
 
 	public function do_shortcode_tag_filter( $output, $tag, $attr ) {
 
-		if ( ! in_array( $tag, $this->ignored_tags ) ) {
-
-			$props = array();
-			if ( isset( $this->captured_tags[ $tag ] ) ) {
-				$props = $this->captured_tags[ $tag ];
-			}
-
-			$config = new MLTools_Shortcode_Config( $tag, $props );
-			if ( is_array( $attr ) ) {
-				foreach ( $attr as $attr_name => $attr_value ) {
-					$config->add_attribute( $attr_name );
-				}
-				$this->captured_tags[ $tag ] = $config->get_props();
-			}
+		if ( ! in_array( $tag, $this->ignored_tags ) && is_array( $attr ) ) {
+			$this->add_tag( $tag, $attr );
 		}
 
 		return $output;
 	}
 
+	private function add_tag( $tag, $attributes ) {
+
+		$props = array();
+		if ( isset( $this->captured_tags[ $tag ] ) ) {
+			$props = $this->captured_tags[ $tag ];
+		}
+
+		$config = new MLTools_Shortcode_Config( $tag, $props );
+
+		foreach ( $attributes as $attr_name => $attr_value ) {
+			$config->add_attribute( $attr_name );
+			$this->captured_values[ $tag ]['attributes'][ $attr_name ] = $attr_value;
+		}
+
+		$this->captured_tags[ $tag ] = $config->get_props();
+	}
+
 	public function save_tags() {
 		update_option( self::OPTION_NAME, $this->get_tags() );
+		update_option( self::OPTION_NAME_VALUES, $this->get_captured_values() );
 	}
 
 	private function get_tags() {
@@ -100,6 +100,17 @@ class MLTools_Shortcode_Attribute_Filter {
 		ksort( $this->captured_tags );
 
 		return $this->captured_tags;
+	}
+
+	private function get_captured_values() {
+
+		foreach ( $this->ignored_tags as $tag ) {
+			unset( $this->captured_values[ $tag ] );
+		}
+
+		ksort( $this->captured_values );
+
+		return $this->captured_values;
 	}
 
 }

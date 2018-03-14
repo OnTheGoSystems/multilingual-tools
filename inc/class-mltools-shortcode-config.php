@@ -4,8 +4,6 @@ class MLTools_Shortcode_Config {
 
 	protected $props = array(
 		'tag'        => false,
-		'encoding'   => '',
-		'type'       => '',
 		'attributes' => array(),
 	);
 
@@ -38,10 +36,7 @@ class MLTools_Shortcode_Config {
 
 	public function add_attribute( $attr_name ) {
 		if ( ! isset( $this->props['attributes'][ $attr_name ] ) ) {
-			$this->props['attributes'][ $attr_name ] = array(
-				'encoding' => '',
-				'type'     => '',
-			);
+			$this->props['attributes'][ $attr_name ] = array();
 		}
 	}
 
