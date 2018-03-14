@@ -31,12 +31,16 @@ class MLTools_XML_Helper {
 		$xml_shortcode = $xml->createElement( 'shortcode' );
 		$xml_tag       = $xml->createElement( 'tag', $config['tag'] );
 		$xml_shortcode->appendChild( $xml_tag );
-		$attributes = array_keys( $config['attributes'] );
+
+		$attributes = $config['attributes'];
 
 		if ( ! empty( $attributes ) ) {
 			$xml_attributes = $xml->createElement( 'attributes' );
-			foreach ( $attributes as $attr_name ) {
+			foreach ( $attributes as $attr_name => $props ) {
 				$xml_attribute = $xml->createElement( 'attribute', $attr_name );
+				foreach ( $props as $prop_name => $prop_value ) {
+					$xml_attribute->setAttribute( $prop_name, $prop_value );
+				}
 				$xml_attributes->appendChild( $xml_attribute );
 			}
 			$xml_shortcode->appendChild( $xml_attributes );
