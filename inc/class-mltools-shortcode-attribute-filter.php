@@ -83,7 +83,12 @@ class MLTools_Shortcode_Attribute_Filter {
 			$this->captured_values[ $tag ]['attributes'][ $attr_name ] = $attr_value;
 		}
 
-		$this->captured_tags[ $tag ] = $config->get_props();
+		ksort( $this->captured_values[ $tag ]['attributes'] );
+
+		$props = $config->get_props();
+		ksort( $props['attributes'] );
+
+		$this->captured_tags[ $tag ] = $props;
 	}
 
 	public function save_tags() {
