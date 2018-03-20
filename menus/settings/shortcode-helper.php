@@ -35,16 +35,20 @@ if ( $debug_enabled ) {
 
 				<?php if ( $debug_enabled ) { ?>
 
-					<?php if ( $unregistered_tags ) { ?>
-                        <label><?php _e( 'Unregistered tags', 'wpml-compatibility-test-tools' ); ?></label>
-                        <ul class="holder">
-                            <li>
+                    <label><?php _e( 'Unregistered tags', 'wpml-compatibility-test-tools' ); ?></label>
+                    <ul class="holder">
+                        <li>
+							<?php if ( $unregistered_tags ) { ?>
                                 <ol>
                                     <li><?php echo implode( '</li><li>', array_keys( $unregistered_tags ) ); ?></li>
                                 </ol>
-                            </li>
-                        </ul>
+							<?php } else { ?>
+								<?php _e( 'No unregistered tags captured', 'wpml-compatibility-test-tools' ); ?>
+							<?php } ?>
+                        </li>
+                    </ul>
 
+					<?php if ( $unregistered_tags ) { ?>
                         <label><?php _e( 'XML output', 'wpml-compatibility-test-tools' ); ?></label>
                         <ul class="holder">
                             <li>
