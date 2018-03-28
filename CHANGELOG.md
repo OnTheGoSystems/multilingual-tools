@@ -1,3 +1,9 @@
+# 2.1.0
+
+## Features
+
+* Add shortcode helper
+
 # 2.0.0
 
 ## Improvements
