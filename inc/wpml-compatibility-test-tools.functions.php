@@ -12,6 +12,10 @@
 function wpml_ctt_prepare_string( $template, $string, $lang ) {
 	global $sitepress;
 
+	if ( empty( $string ) ) {
+		return $string;
+	}
+
 	$template = str_replace( '%original_string%', $string, $template );
 
 	$language_details = $sitepress->get_language_details( $lang );
