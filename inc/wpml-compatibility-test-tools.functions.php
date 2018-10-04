@@ -106,7 +106,7 @@ function wpml_ctt_options_list_ajax() {
     foreach ( $options as $option ) {
         // Dealing with unwanted.
         if ( ! array_key_exists( $option, $safe_options ) ) {
-            $data = ["{$option}" => 'No way Jose!'];
+            $data = array( $option => 'No way Jose!' );
             break;
         }
 

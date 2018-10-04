@@ -11,7 +11,7 @@ class MLTools_Shortcode_Attribute_Filter {
 
 	function __construct( array $ignored_tags ) {
 		$this->captured_tags   = get_option( self::OPTION_NAME, array() );
-		$this->captured_values = get_option( SELF::OPTION_NAME_VALUES, array() );
+		$this->captured_values = get_option( self::OPTION_NAME_VALUES, array() );
 		$this->ignored_tags    = $ignored_tags;
 	}
 
