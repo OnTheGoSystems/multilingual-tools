@@ -25,6 +25,14 @@ require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-config.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-wpml-config-parser.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-xml-helper.php';
 
+if ( defined( 'WP_CLI' ) ) {
+	require_once WPML_CTT_PATH . '/inc/class-mltools-cli.php';
+	add_action( 'wpml_loaded', function ( $sitepress ) {
+		$mltools_cli = new MLTools_CLI( $sitepress );
+		WP_CLI::add_command( 'mltools', $mltools_cli );
+	} );
+}
+
 // Disable informations about ICanLocalize.
 if ( !defined( 'ICL_DONT_PROMOTE' ) ) {
 	define( 'ICL_DONT_PROMOTE', true );
