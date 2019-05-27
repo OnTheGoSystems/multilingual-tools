@@ -2,10 +2,11 @@
 
 class MLTools_CLI {
 
-	private $sitepress;
+	private $sitepress, $cct;
 
-	function __construct( SitePress $sitepress ) {
+	function __construct( SitePress $sitepress, WPML_Compatibility_Test_Tools $cct ) {
 		$this->sitepress = $sitepress;
+		$this->cct       = $cct;
 	}
 
 	/*public function __invoke( $args ) {
@@ -17,43 +18,24 @@ class MLTools_CLI {
 	/**
 	 * Duplicates posts.
 	 *
-	 * ## OPTIONS
-	 *
-	 * #<language>
-	 * #: Target language.
-	 *
-	 * [--prefix=<string>]
-	 * : Translated string prefix.
-	 * ---
-	 * default: success
-	 * options:
-	 *   - success
-	 *   - error
-	 * ---
-	 *
 	 * ## EXAMPLES
 	 *
 	 *     wp mltools duplicate
 	 *
 	 * @when after_wp_load
 	 */
-	public function duplicate( $args, $assoc_args ) {
+	public function duplicate() {
 
 		$settings = maybe_unserialize( $this->settings );
 		// Fix missing tables
 		WPML_Package_Translation_Schema::run_update();
 		update_option( 'wpml_ctt_settings', $settings );
 
-		$modify = new Modify_Duplicate_Strings(
-			$settings['duplicate_strings'],
-			$settings['duplicate_strings_template']
-		);
-
 		$default_language = $this->sitepress->get_default_language();
 		$languages        = array_keys( $this->sitepress->get_active_languages() );
 		$post_type        = array_keys( $this->sitepress->get_translatable_documents() );
 
-		do_action( 'wpml_switch_language', $default_language );
+		$this->sitepress->switch_lang( $default_language );
 		$post_ids = get_posts( array(
 			'post_type'        => $post_type,
 			'post_status'      => 'all',
@@ -63,23 +45,76 @@ class MLTools_CLI {
 		) );
 
 		WP_CLI::log( 'Duplicating ' . implode( ', ', $post_type ) );
-		$count = 0;
 
-		foreach ( $languages as $language ) {
-			if ( $language == $default_language ) {
-				continue;
-			}
-			WP_CLI::log( "Language {$language}" );
-			foreach ( $post_ids as $post_id ) {
-				// Exits script if already duplicated
-				$existing = array_keys( $this->sitepress->get_duplicates( $post_id ) );
-				if ( ! in_array( $language, $existing ) ) {
+		$count = 0;
+		foreach ( $post_ids as $post_id ) {
+
+			$duplicates    = array_keys( $this->sitepress->get_duplicates( $post_id ) );
+			$duplicated_to = array();
+
+			foreach ( $languages as $language ) {
+				if ( $language == $default_language ) {
+					continue;
+				}
+				if ( ! in_array( $language, $duplicates ) ) {
 					$this->sitepress->make_duplicate( intval( $post_id ), $language );
-					WP_CLI::log( "--post_ID: {$post_id}" );
+					$duplicated_to[] = $language;
 					$count ++;
 				}
+				// @todo Translate page-builder strings
+			}
+
+			if ( ! empty( $duplicated_to ) ) {
+				WP_CLI::log( "-- post_ID: {$post_id} [" . implode( ',', $duplicated_to ) . "]" );
+			} else {
+				WP_CLI::error( 'no posts for duplication' );
 			}
 		}
+
 		WP_CLI::success( "duplicated {$count} post(s)" );
+	}
+
+	/**
+	 * Translates strings.
+	 *
+	 * ## OPTIONS
+	 *
+	 * <type>
+	 * : Type of content to translate.
+	 *
+	 * [--<field>=<value>]
+	 * : Use context name.
+	 * ---
+	 * default: success
+	 * options:
+	 *   - success
+	 *   - error
+	 * ---
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp mltools translate strings --context=all_contexts
+	 *
+	 * @when after_wp_load
+	 */
+	public function translate( $type, $assoc_args ) {
+
+		$context  = array_key_exists( 'context', $assoc_args ) ? $assoc_args['context'] : 'all_contexts';
+		$settings = maybe_unserialize( $this->settings );
+
+		WP_CLI::log( "Context: {$context}" );
+
+		switch ( $type ) {
+			case 'string':
+			case 'strings':
+			default:
+				$this->cct->translate_strings_in_context(
+					$context,
+					array_keys( $this->sitepress->get_active_languages() ),
+					$settings['string_auto_translate_template']
+				);
+		}
+
+		WP_CLI::success( "strings translated" );
 	}
 }

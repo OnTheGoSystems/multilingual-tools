@@ -177,6 +177,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		}
 	}
 
+	public function translate_strings_in_context( $context, $languages, $template ) {
+		$this->translate_strings( $context, $languages, $template );
+	}
+
 	/**
 	 * Process action save_duplicate_strings_to_translate
 	 */

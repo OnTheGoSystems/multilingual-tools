@@ -28,7 +28,9 @@ require_once WPML_CTT_PATH . '/inc/class-mltools-xml-helper.php';
 if ( defined( 'WP_CLI' ) ) {
 	require_once WPML_CTT_PATH . '/inc/class-mltools-cli.php';
 	add_action( 'wpml_loaded', function ( $sitepress ) {
-		$mltools_cli = new MLTools_CLI( $sitepress );
+		$cct = new WPML_Compatibility_Test_Tools();
+		remove_action( 'init', array( $cct, 'init' ) );
+		$mltools_cli = new MLTools_CLI( $sitepress, $cct );
 		WP_CLI::add_command( 'mltools', $mltools_cli );
 	} );
 }
