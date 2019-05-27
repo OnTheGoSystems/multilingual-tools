@@ -36,6 +36,12 @@ class MLTools_CLI {
 		$default_language = $this->sitepress->get_default_language();
 		$languages        = array_keys( $this->sitepress->get_active_languages() );
 		$post_type        = array_keys( $this->sitepress->get_translatable_documents() );
+		$settings         = maybe_unserialize( $this->settings );
+
+		$modify = new Modify_Duplicate_Strings(
+			$settings['duplicate_strings'],
+			$settings['duplicate_strings_template']
+		);
 
 		$this->sitepress->switch_lang( $default_language );
 		$post_ids = get_posts( array(
@@ -64,6 +70,7 @@ class MLTools_CLI {
 					$count ++;
 				}
 				// @todo Translate page-builder strings
+
 			}
 
 			if ( empty( $duplicated_to ) ) {
