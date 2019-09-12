@@ -216,3 +216,15 @@ h3 {
 #mt-shortcodes .wctt .td-right {
     padding: 15px 15px 15px 7px;
 }
+.status {
+    position: absolute;
+    padding: 5px 5px 5px 10px;
+}
+.spinner {
+    position: relative;
+    float: right;
+    background: url('../img/spinner.gif') no-repeat left;
+    height: 16px;
+    width: 16px;
+    margin-top: 2px;
+}

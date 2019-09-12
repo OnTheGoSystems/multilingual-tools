@@ -40,10 +40,6 @@ class WPML_Compatibility_Test_Tools_Messages {
 				echo '<div class="message error"><p>' . __( 'Template is required.', 'wpml-compatibility-test-tools' ) . '</p></div>';
 				break;
 
-			case 'strings_translated_notice' :
-				echo '<div class="updated message fade"><p>' . __( 'Strings translated.', 'wpml-compatibility-test-tools' ) . '</p></div>';
-				break;
-
 			case 'settings_updated_notice' :
 				echo '<div class="updated message fade"><p>' . __( 'Settings updated.', 'wpml-compatibility-test-tools' ) . '</p></div>';
 				break;

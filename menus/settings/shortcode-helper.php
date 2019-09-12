@@ -105,12 +105,12 @@ if ( $debug_enabled ) {
 
                 <input type="submit" name="shortcode_debug_action_save"
                        value="<?php _e( 'Save settings', 'wpml-compatibility-test-tools' ); ?>"
-                       class="button-secondary"/>
+                       class="button-secondary button"/>
 
 				<?php if ( $debug_enabled ) { ?>
                     <input type="submit" name="shortcode_debug_action_reset"
                            value="<?php _e( 'Reset debug data', 'wpml-compatibility-test-tools' ); ?>"
-                           class="button-primary"/>
+                           class="button-primary button"/>
 				<?php } ?>
 
 				<?php wp_nonce_field( 'mltools_shortcode_helper_settings_save', '_mltools_shortcode_helper_nonce' ); ?>

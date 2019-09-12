@@ -27,7 +27,7 @@
                             <ul>
                                 <?php foreach ( $stt_context as $v ) : ?>
                                     <li>
-                                        <input type="checkbox" id="strings_auto_translate_context" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>"
+                                        <input type="checkbox" id="strings_auto_translate_context" class="strings_auto_translate_context" name="strings_auto_translate_context[]" value="<?php echo htmlspecialchars( $v->context ); ?>"
                                             <?php echo ! empty( $string_auto_translate_context ) ? checked( is_array( $string_auto_translate_context ), in_array( htmlspecialchars( $v->context ), $string_auto_translate_context ), false ) : 'checked'; ?>>
                                         <?php echo $v->context . ' ('. $v->c .')'; ?>
                                     </li>
@@ -62,8 +62,9 @@
 					<small>You can use following, special tags: %original_string%, %language_name%, %language_code%, %language_native_name%</small>
 				</div>
 
-				<input type="submit" id="strings_auto_translate_action_translate" name="strings_auto_translate_action_translate" value="<?php _e( 'Generate strings translations', 'wpml-compatibility-test-tools' ); ?>" class="button-primary" />
-				<input type="submit" id="strings_auto_translate_action_save" name="strings_auto_translate_action_save" value="<?php _e( 'Save settings', 'wpml-compatibility-test-tools' ); ?>" class="button-secondary" />
+				<input id="strings_auto_translate_action_translate" name="strings_auto_translate_action_translate" value="<?php _e( 'Generate strings translations', 'wpml-compatibility-test-tools' ); ?>" class="button-primary button" />
+				<input type="submit" id="strings_auto_translate_action_save" name="strings_auto_translate_action_save" value="<?php _e( 'Save settings', 'wpml-compatibility-test-tools' ); ?>" class="button-secondary button" />
+                <span class="status"><span class="progress"></span><span class="spinner"></span></span><?php wp_nonce_field( "mt_generate_strings_translations","_mt_mighty_nonce" ); ?>
 			</form>
 		</td>
 	</tr>
