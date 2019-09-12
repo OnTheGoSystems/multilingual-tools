@@ -45,7 +45,7 @@
 					<small>You can use following, special tags: %original_string%, %language_name%, %language_code%, %language_native_name%</small>
 				</div>
 
-				<input type="submit" name="save_duplicate_strings_to_translate" value="<?php _e( 'Save', 'wpml-compatibility-test-tools' ); ?>" class="button-secondary" />
+				<input type="submit" name="save_duplicate_strings_to_translate" value="<?php _e( 'Save', 'wpml-compatibility-test-tools' ); ?>" class="button-secondary button" />
 			</form>
 		</td>
 	</tr>

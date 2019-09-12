@@ -57,6 +57,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		add_action( 'admin_menu', array( $this, 'register_administration_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'add_styles' ) );
+		add_action( 'wp_ajax_generate_strings_translations_action', array( $this, 'generate_strings_translations' ) );
 
 		// Handle admin settings page
 		$this->process_request();
@@ -88,10 +89,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @return bool
 	 */
 	private function process_strings_auto_translate_action_translate() {
-
-		// Warning: set_time_limit(): Cannot set time limit in safe mode
-		set_time_limit( 0 );
-
 		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] ) ) {
 
 			$error = false;
@@ -115,36 +112,27 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			add_action( 'admin_notices', array( $this->messages, 'settings_updated_notice' ) );
 
-			if ( isset( $_POST['strings_auto_translate_action_translate'] ) ) {
+			$contexts  = self::get_option( 'string_auto_translate_context' );
+			$languages = self::get_option( 'string_auto_translate_languages' );
+			$template  = self::get_option( 'string_auto_translate_template' );
 
-				$contexts  = self::get_option( 'string_auto_translate_context' );
-				$languages = self::get_option( 'string_auto_translate_languages' );
-				$template  = self::get_option( 'string_auto_translate_template' );
+			if ( empty( $languages ) ) {
+				add_action( 'admin_notices', array( $this->messages, 'no_selected_language_notice' ) );
+				$error = true;
+			}
 
+			if ( empty( $template ) ) {
+				add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
+				$error = true;
+			}
 
-				if ( empty( $languages ) ) {
-					add_action( 'admin_notices', array( $this->messages, 'no_selected_language_notice' ) );
-					$error = true;
-				}
+			if ( empty( $contexts ) ) {
+				add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
+				$error = true;
+			}
 
-				if ( empty( $template ) ) {
-					add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
-					$error = true;
-				}
-
-				if ( empty( $contexts ) ) {
-					add_action( 'admin_notices', array( $this->messages, 'no_context_notice' ) );
-					$error = true;
-				}
-
-				if ( $error ) {
-					return false;
-				}
-
-				foreach ( $contexts as $context ) {
-					$this->translate_strings( $context, $languages, $template );
-					add_action( 'admin_notices', array( $this->messages, 'strings_translated_notice' ) );
-				}
+			if ( $error ) {
+				return false;
 			}
 		}
 
@@ -158,16 +146,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @param $languages
 	 * @param $template
 	 */
-	private function translate_strings( $context, $languages, $template ) {
-		global $wpdb;
-
-		// Get all not translated strings (status <> 1)
-		if ( 0 === strcmp( $context, 'all_contexts' ) ) {
-			$strings = $wpdb->get_results( "SELECT id, language, context, value FROM {$wpdb->prefix}icl_strings" );
-		} else {
-			$strings = $wpdb->get_results( $wpdb->prepare( "SELECT id, language, context, value FROM {$wpdb->prefix}icl_strings WHERE context=%s", $context ) );
-		}
-
+	private function translate_strings( $strings, $languages, $template ) {
 		// For each string add information
 		foreach ( $strings as $v ) {
 			foreach ( $languages as $lang ) {
@@ -175,6 +154,65 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				icl_update_string_status( $v->id );
 			}
 		}
+	}
+
+	public function generate_strings_translations() {
+		check_ajax_referer( 'mt_generate_strings_translations', '_mt_mighty_nonce' );
+
+		$contexts  = isset( $_POST['contexts'] ) ? (array) $_POST['contexts'] : false;
+		$languages = isset( $_POST['languages'] ) ? $_POST['languages'] : false;
+		$template  = isset( $_POST['template'] ) ? $_POST['template'] : false;
+		$count     = isset( $_POST['count'] ) ? $_POST['count'] : false;
+		$offset    = isset( $_POST['offset'] ) ? $_POST['offset'] : 0;
+
+		if ( ! $contexts || ! $languages || ! $template ) {
+			echo 0;
+			wp_die();
+		}
+
+		// Strings batch threshold
+		$limit = 50;
+
+		global $wpdb;
+
+		$esc_contexts = array_map( function ( $context ) {
+			return "'" . esc_sql( $context ) . "'";
+		}, $contexts );
+		$esc_contexts = implode( ",", $esc_contexts );
+
+		// Skip count if process started.
+		if ( $count === false ) {
+			$count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}icl_strings WHERE context IN ({$esc_contexts})" );
+
+			// Update settings only on first run.
+			self::update_option( 'string_auto_translate_context', $contexts );
+			self::update_option( 'string_auto_translate_languages', $languages );
+			self::update_option( 'string_auto_translate_template', $template );
+		}
+
+		if ( $offset <= $count ) {
+			$strings = $wpdb->get_results( "SELECT id, language, context, value FROM {$wpdb->prefix}icl_strings WHERE context IN ({$esc_contexts}) LIMIT {$offset}, {$limit}" );
+			$this->translate_strings( $strings, $languages, $template );
+
+			// Update offset.
+			$offset += $limit;
+
+			// Calculate progress percentage.
+			$strings_left_count = max( $count - $offset, 0 );
+			$progress           = floor( 100 - $strings_left_count * 100 / $count );
+
+			// Response.
+			echo json_encode(
+				array(
+					'offset'   => $offset,
+					'count'    => $count,
+					'progress' => $progress
+				)
+			);
+		} else {
+			echo 1;
+		}
+		wp_die();
 	}
 
 	/**
@@ -310,13 +348,30 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		}
 	}
 
+	public function js_labels() {
+		return array(
+			'question'                    => __( "All existing strings translations will be replaced with new values.\n Are you sure you want to do this?", 'multilingual-tools' ),
+			'no_context_notice'           => __( "* Please select the context.", 'multilingual-tools' ),
+			'no_selected_language_notice' => __( "* At least one language should be selected in order to translate strings.", 'multilingual-tools' ),
+			'no_template_notice'          => __( "* Template is required.", 'multilingual-tools' )
+		);
+	}
+
 	/**
 	 * Add scripts only for plugin pages
 	 */
 	public function add_scripts( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_mt', 'multilingual-tools_page_mt-settings', 'multilingual-tools_page_mt-generator' ) ) ) {
-			wp_enqueue_script( 'wctt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/wctt-script.js', array( 'jquery' ), WPML_CTT_VERSION );
-			wp_localize_script( 'wctt-scripts', 'ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		if ( in_array( $hook, array(
+			'toplevel_page_mt',
+			'multilingual-tools_page_mt-settings',
+			'multilingual-tools_page_mt-generator'
+		) ) ) {
+			wp_enqueue_script( 'mt-scripts', WPML_CTT_PLUGIN_URL . '/res/js/mt-script.js', array( 'jquery' ), WPML_CTT_VERSION );
+			wp_localize_script( 'mt-scripts', 'mt_data', array(
+				'ajax_url' => admin_url( 'admin-ajax.php' ),
+				'labels'   => $this->js_labels()
+			) );
+
 		}
 	}
 
@@ -324,7 +379,11 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Add styles only for plugin pages
 	 */
 	public function add_styles( $hook ) {
-		if ( in_array( $hook, array( 'toplevel_page_mt', 'multilingual-tools_page_mt-settings', 'multilingual-tools_page_mt-generator' ) ) ) {
+		if ( in_array( $hook, array(
+			'toplevel_page_mt',
+			'multilingual-tools_page_mt-settings',
+			'multilingual-tools_page_mt-generator'
+		) ) ) {
 			wp_register_style( 'wctt-generator-style', WPML_CTT_PLUGIN_URL . '/res/css/wctt-style.css', WPML_CTT_VERSION );
 			wp_enqueue_style( 'wctt-generator-style' );
 		}
@@ -432,11 +491,12 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	/**
 	 * Generate XML from option array
 	 *
-	 * @since 1.3.0
-	 *
 	 * @param $options
 	 * @param $node
 	 * @param $dom
+	 *
+	 * @since 1.3.0
+	 *
 	 */
 	public function option2xml( $options, $node, $dom ) {
 		if ( is_array( $options ) ) {
@@ -463,8 +523,6 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 *
 	 * Basic content types in this case are: custom post types, taxonomies, custom fields.
 	 *
-	 * @since 1.3.0
-	 *
 	 * @param $dom
 	 * @param $root
 	 * @param $content
@@ -473,6 +531,9 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * @param $parent
 	 * @param $child
 	 * @param $attribute
+	 *
+	 * @since 1.3.0
+	 *
 	 */
 	public function generate_basic_content_types( $dom, $root, $content, $checkbox, $radio, $parent, $child, $attribute ) {
 		$parent_node = $dom->createElement( $parent );
@@ -497,10 +558,11 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	/**
 	 * Generate DOM nodes for admin texts
 	 *
-	 * @since 1.3.0
-	 *
 	 * @param $dom
 	 * @param $root
+	 *
+	 * @since 1.3.0
+	 *
 	 */
 	public function generate_admin_texts( $dom, $root ) {
 		$ats = $dom->createElement( 'admin-texts' );
@@ -518,10 +580,11 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	/**
 	 * Generate DOM nodes for shortcodes
 	 *
-	 * @since 1.3.0
-	 *
 	 * @param $dom
 	 * @param $root
+	 *
+	 * @since 1.3.0
+	 *
 	 */
 	public function generate_shortcodes( $dom, $root ) {
 		$shortcodes     = array_unique( $_POST['shc'] );
@@ -569,9 +632,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	/**
 	 * Save current configuration in a global variable to display later.
 	 *
-	 * @global array $wpml_config_debug
 	 * @param array $config
+	 *
 	 * @return array
+	 * @global array $wpml_config_debug
 	 */
 	function save_configuration_for_debug( $config ) {
 		global $wpml_config_debug;
@@ -607,19 +671,20 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	 * Intercept wpml-config.xml parsing to display loaded configuration files
 	 * for debugging purposes.
 	 *
-	 * @global object $sitepress
 	 * @param string $file
+	 *
 	 * @return string
+	 * @global object $sitepress
 	 */
 	function display_configuration_for_debug( $file ) {
 		// Get url and name.
 		if ( is_object( $file ) ) {
-			$url = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $file->admin_text_context . '/wpml-config.xml';
-			$name = $file->admin_text_context;
+			$url   = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $file->admin_text_context . '/wpml-config.xml';
+			$name  = $file->admin_text_context;
 			$class = 'dashicons-admin-site';
 		} else {
-			$url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
-			$name = basename( dirname( $url ) );
+			$url   = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
+			$name  = basename( dirname( $url ) );
 			$class = '';
 		}
 
@@ -632,8 +697,8 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 		// Display validation errors if any found.
 		if ( is_string( $file ) && file_exists( $file ) ) {
-			$validate  = new WPML_XML_Config_Validate( WPML_PLUGIN_PATH . '/res/xsd/wpml-config.xsd' );
-			$validate->from_file($file);
+			$validate = new WPML_XML_Config_Validate( WPML_PLUGIN_PATH . '/res/xsd/wpml-config.xsd' );
+			$validate->from_file( $file );
 			$errors = wp_list_pluck( $validate->get_errors(), 'message' );
 			if ( ! empty( $errors ) ) {
 				$errors = array_unique( $errors );

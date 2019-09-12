@@ -68,7 +68,7 @@ function wpml_ctt_active_languages_output( $selected_languages = array() ) {
                                 . '" alt="' . $active_langs[$lang]['translated_name']
                                 . '" width="18" height="12"> ';
 
-        $theme_lang_inputs .= ' <li><input type="checkbox" ' . $checked . ' id="active_languages" name="active_languages[]" value="' . $lang .'" />'
+        $theme_lang_inputs .= ' <li><input type="checkbox" ' . $checked . ' id="active_languages" class="active_languages" name="active_languages[]" value="' . $lang .'" />'
                                                          . $icon . $active_langs[$lang]['translated_name'] . '</li>';
     }
 

@@ -1,3 +1,9 @@
+# 2.2.0
+
+## Bugfix
+
+* Fixed auto translate strings issue with large number of strings. 
+
 # 2.1.0
 
 ## Features
@@ -84,7 +90,7 @@
 ## Bugfix
 
 * WP Options with 'autoload' set as 'no' were not listed on configuration generator screen.
-* Escaped special characters in wctt-script.js
+* Escaped special characters in mt-script.js
 * Remove notice, checked strings inputs are remembered.
 
 # 1.1.1
