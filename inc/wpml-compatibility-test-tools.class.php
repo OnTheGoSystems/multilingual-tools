@@ -165,13 +165,13 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		$count     = isset( $_POST['count'] ) ? $_POST['count'] : false;
 		$offset    = isset( $_POST['offset'] ) ? $_POST['offset'] : 0;
 
+		// Check in case JS fail.
 		if ( ! $contexts || ! $languages || ! $template ) {
-			echo 0;
-			wp_die();
+			wp_send_json( 0 );
 		}
 
 		// Strings batch threshold
-		$limit = 50;
+		$limit = 100;
 
 		global $wpdb;
 
