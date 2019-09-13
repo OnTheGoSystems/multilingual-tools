@@ -201,18 +201,14 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$strings_left_count = max( $count - $offset, 0 );
 			$progress           = floor( 100 - $strings_left_count * 100 / $count );
 
-			// Response.
-			echo json_encode(
-				array(
-					'offset'   => $offset,
-					'count'    => $count,
-					'progress' => $progress
-				)
-			);
+			wp_send_json( array(
+				'offset'   => $offset,
+				'count'    => $count,
+				'progress' => $progress
+			) );
 		} else {
-			echo 1;
+			wp_send_json( 1 );
 		}
-		wp_die();
 	}
 
 	/**
