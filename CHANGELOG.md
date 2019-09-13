@@ -1,5 +1,9 @@
 # 2.2.0
 
+## Improvements
+
+* Add order options by name.
+
 ## Bugfix
 
 * Fixed auto translate strings issue with large number of strings. 
@@ -8,7 +12,7 @@
 
 ## Features
 
-* Add shortcode helper
+* Add shortcode helper.
 
 # 2.0.0
 
