@@ -237,25 +237,15 @@ jQuery(document).ready(function () {
      * STRINGS AUTO TRANSLATE
      */
     submitAutoTranslate.on('click', function () {
-        console.log('strings_auto_translate_action_translate clicked');
-
         const formData = loadData();
 
         if (checkData(formData, mt_data.labels) && confirm(mt_data.labels.question)) {
-
-            console.log('Going post...')
             buttons.attr('disabled', true);
-
             generateStringTranslations(formData);
-
-        } else {
-            console.log('Abort')
         }
     });
 
     function generateStringTranslations(formData, responseData) {
-        console.log(formData);
-
         let data = Object.assign({
             'action': 'generate_strings_translations_action',
             'contexts': formData.contexts,
@@ -265,16 +255,14 @@ jQuery(document).ready(function () {
         }, responseData);
 
         jQuery.post(mt_data.ajax_url, data, function (response) {
-            const responseData = jQuery.parseJSON(response);
-
-            progress.text(responseData.progress + '%');
+            progress.text(response.progress + '%');
             spinner.css('visibility', 'visible');
 
-            if (responseData === 0) {
+            if (response === 0) {
                 responseMsg('Response error.')
                 return;
-            } else if (responseData !== 1) {
-                generateStringTranslations(formData, responseData);
+            } else if (response !== 1) {
+                generateStringTranslations(formData, response);
             } else {
                 responseMsg('Done.')
             }
@@ -287,8 +275,6 @@ jQuery(document).ready(function () {
                     progress.text('')
                 }, 5000);
             }
-
-            console.log('Got this from the server: ' + response);
         });
     }
 
