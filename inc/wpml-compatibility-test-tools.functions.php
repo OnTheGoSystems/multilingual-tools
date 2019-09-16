@@ -293,22 +293,28 @@ function wpml_ctt_options_list() {
  * @return mixed
  */
 function wpml_ctt_validate_radio( $value ) {
-    $allowed = array(
-        'translate',
-	    'copy-once',
-        'ignore',
-        'copy',
-        'file',
-        'dir',
-        '1',
-        '0'
-    );
+	$allowed = array(
+		'translate',
+		'copy-once',
+		'ignore',
+		'copy',
+		'file',
+		'dir',
+		'2',
+		'1',
+		'0'
+	);
 
-    if ( in_array( $value, $allowed, true ) ) {
-        return $value;
-    }
+	if ( in_array( $value, $allowed, true ) ) {
+		// When set to display as translated.
+		if ( $value === '2' ) {
+			return '1';
+		}
 
-    return '';
+		return $value;
+	}
+
+	return '';
 }
 
 /**

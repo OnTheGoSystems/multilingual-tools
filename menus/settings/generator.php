@@ -9,7 +9,18 @@
                     <table class="widefat">
                         <thead>
                             <tr>
-                                <th colspan="3"><h3><?php _e('Custom Post Types', 'wpml-compatibility-test-tools') ?></th></h3>
+                                <th>
+                                    <h3><?php _e('Custom Post Types', 'wpml-compatibility-test-tools') ?></h3>
+                                </th>
+                                <th>
+		                            <?php _e( "Do nothing", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Translatable - only show translated items", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Translatable - use translation if available or fallback to default language", 'wpml-compatibility-test-tools' )?>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="wctt">
@@ -24,11 +35,14 @@
                                     <td>
                                         <label><input id="cpt" type="checkbox" name="_cpt[<?php echo $post_type; ?>]" value="1" <?php checked( isset( $_POST['_cpt'][$post_type] ) ) ?>><?php echo $post_type; ?></label>
                                     </td>
-                                    <td align="right">
-                                        <label><input id="cpt_0" type="radio" name="cpt[<?php echo $post_type; ?>]" value="0" <?php checked( ! isset( $_POST['_cpt'][$post_type] ) || $_POST['cpt'][$post_type] == '0' ) ?>/>Do nothing</label>
+                                    <td>
+                                        <input id="cpt_0" type="radio" name="cpt[<?php echo $post_type; ?>]" value="0" <?php checked( ! isset( $_POST['_cpt'][$post_type] ) || $_POST['cpt'][$post_type] === '0' ) ?>/>
                                     </td>
                                     <td>
-                                        <label><input id="cpt_1" type="radio" name="cpt[<?php echo $post_type; ?>]" value="1" <?php checked( isset( $_POST['_cpt'][$post_type] ) && $_POST['cpt'][$post_type] ) ?>/>Translate</label>
+                                        <input id="cpt_1" type="radio" name="cpt[<?php echo $post_type; ?>]" value="1" <?php checked( isset( $_POST['_cpt'][$post_type] ) && $_POST['cpt'][$post_type] && $_POST['cpt'][$post_type] === '1' ) ?>/>
+                                    </td>
+                                    <td>
+                                        <input id="cpt_2" type="radio" name="cpt[<?php echo $post_type; ?>]" value="2" <?php checked( isset( $_POST['_cpt'][$post_type] ) && $_POST['cpt'][$post_type] && $_POST['cpt'][$post_type] === '2' ) ?>/>
                                     </td>
                                 </tr>
                         <?php endforeach; ?>
@@ -36,8 +50,9 @@
                         <tfoot>
                             <tr>
                                 <th><a id="cpt" class="toggle" href="#">Toggle all</a></th>
-                                <th style="padding-left: 22px"><a id="cpt_0" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="cpt_0" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="cpt_1" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="cpt_2" class="toggle" href="#">Toggle all</a></th>
                             </tr>
                         </tfoot>
                         <?php else : ?>
@@ -54,7 +69,18 @@
                     <table class="widefat">
                         <thead>
                             <tr>
-                                <th colspan="3"><h3><?php _e('Custom Taxonomies', 'wpml-compatibility-test-tools') ?></h3></th>
+                                <th>
+                                    <h3><?php _e('Custom Taxonomies', 'wpml-compatibility-test-tools') ?></h3>
+                                </th>
+                                <th>
+		                            <?php _e( "Do nothing", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Translatable - only show translated items", 'wpml-compatibility-test-tools' )?>
+                                </th>
+                                <th>
+		                            <?php _e( "Translatable - use translation if available or fallback to default language", 'wpml-compatibility-test-tools' )?>
+                                </th>
                             </tr>
                         </thead>
                         <tbody class="wctt">
@@ -67,11 +93,14 @@
                                     <td>
                                         <label><input id="tax" type="checkbox" name="_tax[<?php echo $taxonomy; ?>]" value="1" <?php checked( isset( $_POST['_tax'][$taxonomy] ) ) ?>><?php echo $taxonomy; ?></label>
                                     </td>
-                                    <td align="right">
-                                        <label><input id="tax_0" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="0" <?php checked( ! isset( $_POST['_tax'][$taxonomy] ) || $_POST['tax'][$taxonomy] == '0' ) ?>/>Do nothing</label>
+                                    <td>
+                                        <input id="tax_0" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="0" <?php checked( ! isset( $_POST['_tax'][$taxonomy] ) || $_POST['tax'][$taxonomy] === '0' ) ?>/>
                                     </td>
                                     <td>
-                                        <label><input id="tax_1" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php checked( isset( $_POST['_tax'][$taxonomy] ) && $_POST['tax'][$taxonomy] ) ?>/>Translate</label>
+                                        <input id="tax_1" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="1" <?php checked( isset( $_POST['_tax'][$taxonomy] ) && $_POST['tax'][$taxonomy] && $_POST['tax'][$taxonomy] === '1') ?>/>
+                                    </td>
+                                    <td>
+                                        <input id="tax_2" type="radio" name="tax[<?php echo $taxonomy; ?>]" value="2" <?php checked( isset( $_POST['_tax'][$taxonomy] ) && $_POST['tax'][$taxonomy] && $_POST['tax'][$taxonomy] === '2') ?>/>
                                     </td>
                                 </tr>
                         <?php endforeach; ?>
@@ -79,8 +108,9 @@
                         <tfoot>
                             <tr>
                                 <th><a id="tax" class="toggle" href="#">Toggle all</a></th>
-                                <th style="padding-left: 22px"><a id="tax_0" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="tax_0" class="toggle" href="#">Toggle all</a></th>
                                 <th><a id="tax_1" class="toggle" href="#">Toggle all</a></th>
+                                <th><a id="tax_2" class="toggle" href="#">Toggle all</a></th>
                             </tr>
                         </tfoot>
                         <?php else : ?>
