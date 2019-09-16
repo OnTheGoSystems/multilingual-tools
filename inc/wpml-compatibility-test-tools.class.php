@@ -547,6 +547,13 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				$child_node_attr        = $dom->createAttribute( $attribute );
 				$child_node_attr->value = wpml_ctt_validate_radio( $radio[ $c ] );
 				$child_node->appendChild( $child_node_attr );
+
+				// When set to display as translated.
+				if ( $radio[ $c ] === '2' ) {
+					$child_node_attr        = $dom->createAttribute( 'display-as-translated' );
+					$child_node_attr->value = '1';
+					$child_node->appendChild( $child_node_attr );
+				}
 			}
 		}
 	}
