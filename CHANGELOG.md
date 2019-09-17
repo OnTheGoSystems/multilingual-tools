@@ -2,7 +2,8 @@
 
 ## Improvements
 
-* Add order options by name.
+* Added order options by name.
+* Added support for "display-as-translated"
 
 ## Bugfix
 
