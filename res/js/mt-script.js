@@ -154,17 +154,36 @@ jQuery(document).ready(function () {
             $nonemptyTextFields.length === 0);
     }
 
-    // Count selected options from dropdown.
+    // Count selected strings and options from dropdown.
     function optionCount() {
-        var selectedCount = dropdown.find('[type="checkbox"]:checked').length,
-            placeholder = jQuery('.placeholder');
+        var selectedContexts = dropdown.find('[type="checkbox"]:checked'),
+            placeholder = jQuery('.placeholder'),
+            stringsCount = 0,
+            labels = {
+                string: 'string',
+                context: 'context'
+            };
 
-        if (selectedCount > 0) {
-            placeholder.text('- Select options (' + selectedCount + ') -');
+        selectedContexts.each(function (_, i) {
+            stringsCount += parseInt(jQuery(i).parent().text().match(/\((.*)\)/).pop());
+        });
+
+        if (selectedContexts.length > 0) {
+            placeholder.text('- ' + returnCount(stringsCount, labels.string) + ' selected in ' + returnCount(selectedContexts.length, labels.context) + ' -');
         } else {
-            placeholder.text('- Select options -');
+            placeholder.text('- Select -');
+        }
+
+        function returnCount(total, string) {
+            if (total > 1) {
+                string += 's';
+            }
+
+            return total + ' ' + string;
         }
     }
+
+
 
     /*
      * SHORTCODES
