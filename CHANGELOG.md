@@ -1,3 +1,9 @@
+# 2.2.1
+
+## Improvements
+
+* Added strings and contexts count.
+
 # 2.2.0
 
 ## Improvements

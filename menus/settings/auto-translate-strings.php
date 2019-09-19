@@ -21,7 +21,7 @@
                     <label><?php _e( 'Select strings within context to translate:', 'wpml-compatibility-test-tools' ); ?></label>
                     <dl id="dropdown" class="holder">
                         <dt>
-                            <span class="placeholder"><?php _e( '- Select options -', 'wpml-compatibility-test-tools' ); ?></span>
+                            <span class="placeholder"><?php _e( '- Select -', 'wpml-compatibility-test-tools' ); ?></span>
                         </dt>
                         <dd>
                             <ul>
