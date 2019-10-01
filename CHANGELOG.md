@@ -1,3 +1,9 @@
+# 2.2.2
+
+## Improvements
+
+* Update deprecated filter.
+
 # 2.2.1
 
 ## Improvements

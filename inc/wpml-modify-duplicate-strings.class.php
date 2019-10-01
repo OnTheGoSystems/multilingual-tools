@@ -3,7 +3,7 @@
 /**
  * Class Modify_Duplicate_Strings
  *
- * Example how to use filter icl_duplicate_generic_string
+ * Example how to use filter wpml_duplicate_generic_string
  * to modify strings (title, content, terms, custom fields) for duplicates
  *
  */
@@ -15,7 +15,7 @@ class Modify_Duplicate_Strings {
 	public function __construct( $filter = array(), $template = '[%language_name%] %original_string%' ) {
 		$this->filter   = $filter;
 		$this->template = $template;
-		add_filter( 'icl_duplicate_generic_string', array( $this, 'duplicate_generic_string' ), 10, 3 );
+		add_filter( 'wpml_duplicate_generic_string', array( $this, 'duplicate_generic_string' ), 10, 3 );
 	}
 
 	/**
