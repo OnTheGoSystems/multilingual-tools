@@ -1,6 +1,6 @@
 # Multilingual Tools
 
-![Latest Stable Version](https://img.shields.io/badge/stable-2.2.1-green.svg?style=flat-squar)
+![Latest Stable Version](https://img.shields.io/badge/stable-2.2.2-green.svg?style=flat-squar)
 ![License](https://img.shields.io/badge/license-GPLv2-red.svg?style=flat-squar)
 
 Multilingual Tools are set of tools related to [WPML](https://wpml.org) plugin bundle. Created with tendency to ease multilingual testing process, and help out WordPress developers who applied to [GoGlobal Program](https://wpml.org/documentation/theme-compatibility/go-global-program/).
