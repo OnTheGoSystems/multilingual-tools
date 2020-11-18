@@ -1,4 +1,4 @@
-jQuery(document).ready(function () {
+jQuery(function () {
 
     var option = [],
         result = jQuery('#result'),
@@ -62,7 +62,7 @@ jQuery(document).ready(function () {
             };
 
             jQuery.post(mt_data.ajax_url, data, function (response) {
-                var output, data = jQuery.parseJSON(response);
+                var output, data = JSON.parse(response);
 
                 output = '<ul id="tree">';
                 jQuery.each(data, generateList);
