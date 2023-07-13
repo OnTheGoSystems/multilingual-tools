@@ -10,6 +10,7 @@ Multilingual Tools are set of tools related to [WPML](https://wpml.org) plugin b
 -   Auto generate strings for translations
 -   Add language information to post duplicate
 -   Generate WPML config file ( wpml-config.xml )
+-   Assist with Custom Fields translation preferences
 
 ## Requirements
 
@@ -17,7 +18,6 @@ For this plugin to work you will need:
 
 -   WPML Multilingual CMS
 -   WPML String Translation
--   WPML Translation Management
 
 All plugins can be downloaded from [WPML.org](https://wpml.org)
 

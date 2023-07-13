@@ -24,6 +24,7 @@ require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-attribute-filter.php'
 require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-config.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-wpml-config-parser.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-xml-helper.php';
+require_once WPML_CTT_PATH . '/inc/class-mltools-custom-fields-translation.php';
 
 // Disable informations about ICanLocalize.
 if (!defined('ICL_DONT_PROMOTE')) {
