@@ -6,7 +6,7 @@ $translation_preferences      = $mt_custom_fields_translation->determine_transla
 ?>
 <div class="wrap">
 
-	<h2><?php _e( 'Custom Fields Translation Helper', 'wpml-compatibility-test-tools' ); ?></h2>
+	<h2><?php _e( 'Custom Field Settings Helper', 'wpml-compatibility-test-tools' ); ?></h2>
 
 	<div class="description">
 		<p><?php echo sprintf( __( 'The following table shows the custom fields with no translation preferences and suggests a translation preference for each field. You can review them and generate the XML. Once the XML is generated, you can copy it and paste it in the <a href="%s">Custom XML Configuration</a> tab in WPML.', 'wpml-compatibility-test-tools' ), esc_url( admin_url( 'admin.php?page=tm%2Fmenu%2Fsettings&sm=custom-xml-config' ) ) ); ?></p>
@@ -62,7 +62,7 @@ $translation_preferences      = $mt_custom_fields_translation->determine_transla
 
 						// If the value length is greater than the defined maximum length,
 						// cut it down and append '...' to indicate that it's truncated
-						if ( strlen( $value ) > $maxLength ) {
+						if ( $value && strlen( $value ) > $maxLength ) {
 							$value = substr( $value, 0, $maxLength ) . "...";
 						} elseif ( empty( $value ) ) {
 							$value = 'N/A';

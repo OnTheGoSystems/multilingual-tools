@@ -78,14 +78,16 @@ class MLTools_Custom_Fields_Translation {
 
 			// Check if value is numeric, a date string, or specific strings
 
-			$date        = DateTime::createFromFormat( 'd-m-Y', $value );
-			$date_errors = DateTime::getLastErrors();
+			if ( $value ) {
+				$date        = DateTime::createFromFormat( 'd-m-Y', $value );
+				$date_errors = DateTime::getLastErrors();
+			}
 
 			// These values should be copied to translations
 			$copy_values = [ 'yes', 'no', 'on', 'off', 'true', 'false', 'default' ];
 
 			// Is it a hash-like string? Something like ffd4rf34d should be set to copy
-			$isHashString = strlen( $value ) > 5 && preg_match( '/\d/', $value ) && preg_match( '/[a-zA-Z]/', $value ) && strpos( $value, ' ' ) === false;
+			$isHashString = $value && strlen( $value ) > 5 && preg_match( '/\d/', $value ) && preg_match( '/[a-zA-Z]/', $value ) && strpos( $value, ' ' ) === false;
 
 
 			if ( is_numeric( $value ) ||

@@ -322,7 +322,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$this,
 			'load_template'
 		) );
-		add_submenu_page( 'mt', __( 'Custom Fields Translation', 'wpml-compatibility-test-tools' ), __( 'Custom Fields Translation', 'wpml-compatibility-test-tools' ), 'manage_options', 'cf-translations', array(
+		add_submenu_page( 'mt', __( 'Custom Field Settings Helper', 'wpml-compatibility-test-tools' ), __( 'Custom Field Settings Helper', 'wpml-compatibility-test-tools' ), 'manage_options', 'cf-translations', array(
 			$this,
 			'load_template'
 		) );
