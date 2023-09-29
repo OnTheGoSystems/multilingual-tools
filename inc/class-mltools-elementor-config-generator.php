@@ -4,6 +4,10 @@ class MLTools_Elementor_Config_Generator
 {
 
     public function __construct() {
+        if ( ! function_exists( 'is_plugin_active' ) ) {
+            include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
         if ( class_exists( 'Sitepress' ) && is_plugin_active( 'elementor/elementor.php' ) ) {
             add_action( 'add_meta_boxes', array( $this, 'register_meta_box' ) );
         }
