@@ -10,6 +10,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 	public function init() {
 
+		if (class_exists('MLTools_Custom_Fields_Translation')) {
+			new MLTools_Custom_Fields_Translation();
+		}
+
 		// Generate XML
 		if ( isset( $_POST['wctt-generator-submit'] ) && check_admin_referer( 'wctt-generate', '_wctt_mighty_nonce' ) ) {
 			add_action( 'wp_loaded', array( $this, 'generate_xml' ) );
@@ -318,6 +322,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			$this,
 			'load_template'
 		) );
+		add_submenu_page( 'mt', __( 'Custom Field Settings Helper', 'wpml-compatibility-test-tools' ), __( 'Custom Field Settings Helper', 'wpml-compatibility-test-tools' ), 'manage_options', 'cf-translations', array(
+			$this,
+			'load_template'
+		) );
 	}
 
 	/**
@@ -340,6 +348,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 
 			case 'multilingual-tools_page_mt-generator' :
 				require WPML_CTT_ABS_PATH . 'menus/settings/generator.php';
+				break;
+
+			case 'multilingual-tools_page_cf-translations' :
+				require WPML_CTT_ABS_PATH . 'menus/settings/custom-fields-translation.php';
 				break;
 		}
 	}
@@ -367,6 +379,26 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'labels'   => $this->js_labels()
 			) );
+
+		}
+
+		elseif ($hook == 'multilingual-tools_page_cf-translations') {
+
+			wp_enqueue_script(
+				'wpml_custom_fields_helper_script',
+				WPML_CTT_PLUGIN_URL . '/res/js/mt-script.js',
+				array( 'jquery' ),
+				false,
+				true
+			);
+
+			wp_localize_script(
+				'wpml_custom_fields_helper_script',
+				'wpmlData',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+				)
+			);
 
 		}
 	}
