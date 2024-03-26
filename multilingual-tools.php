@@ -8,7 +8,7 @@ Author URI: https://www.onthegosystems.com/
 Version: 2.2.5
 */
 
-define('WPML_CTT_VERSION', '2.2.4');
+define('WPML_CTT_VERSION', '2.2.5');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_ABS_PATH', plugin_dir_path(__FILE__));
 define('WPML_CTT_FOLDER', basename(WPML_CTT_PATH));
