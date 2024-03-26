@@ -61,7 +61,7 @@ class MLTools_Elementor_Config_Generator
 
         foreach ( $elements as $element ) {
             if ( $element->elType === 'widget' && isset( $element->settings ) && is_object( $element->settings ) ) {
-                $widgetType                   = $element->widgetType;
+                $widgetType = $element->widgetType;
 
                 $settings = $element->settings;
 
