@@ -1,3 +1,15 @@
+# 2.2.5
+
+## Bugfix
+
+-   Fixed fatal error when Elementor widget settings are empty 
+
+# 2.2.4
+
+## Improvements
+
+-   Added XML config generator for Elementor
+
 # 2.2.3
 
 ## Improvements

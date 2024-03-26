@@ -5,7 +5,7 @@ Plugin URI: https://wpml.org/download/multilingual-tools/
 Description: Set of tools to test themes and plugins multilingual compatibility.
 Author: OnTheGoSystems
 Author URI: https://www.onthegosystems.com/
-Version: 2.2.4
+Version: 2.2.5
 */
 
 define('WPML_CTT_VERSION', '2.2.4');
