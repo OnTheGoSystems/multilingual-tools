@@ -60,9 +60,14 @@ class MLTools_Elementor_Config_Generator
         $widgets = array();
 
         foreach ( $elements as $element ) {
-            if ( $element->elType === 'widget' && isset( $element->settings ) && is_object( $element->settings ) )  {
-                $widgetType                    = $element->widgetType;
-                $settings                      = (array) get_object_vars( $element->settings );
+            if ( $element->elType === 'widget' && isset( $element->settings ) && is_object( $element->settings ) ) {
+                $widgetType = $element->widgetType;
+
+                $settings = $element->settings;
+
+                if ( is_object( $settings ) ) {
+                    $settings = (array) get_object_vars( $settings );
+                }
 
                 foreach ( $settings as $field_key => $field_value ) {
                     $settings[ $field_key ]   = $this->get_field_from_widget( $field_key, $field_value, $widgetType );
