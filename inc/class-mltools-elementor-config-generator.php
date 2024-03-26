@@ -66,7 +66,7 @@ class MLTools_Elementor_Config_Generator
                 $settings = $element->settings;
 
                 if ( is_object( $settings ) ) {
-                    $settings                 = (array) get_object_vars( $settings );
+                    $settings = (array) get_object_vars( $settings );
                 }
 
                 foreach ( $settings as $field_key => $field_value ) {
