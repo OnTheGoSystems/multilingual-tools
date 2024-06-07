@@ -69,7 +69,7 @@
                         %language_native_name%</small>
                 </div>
 
-                <input id="strings_auto_translate_action_translate" name="strings_auto_translate_action_translate"
+                <input type="submit" id="strings_auto_translate_action_translate" name="strings_auto_translate_action_translate"
                        value="<?php _e( 'Generate strings translations', 'wpml-compatibility-test-tools' ); ?>"
                        class="button-primary button"/>
                 <input type="submit" id="strings_auto_translate_action_save" name="strings_auto_translate_action_save"
