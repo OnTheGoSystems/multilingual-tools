@@ -1,3 +1,10 @@
+# 2.2.6
+
+## Improvements
+
+-   Added XML config generator for Gutenberg
+
+
 # 2.2.5
 
 ## Bugfix

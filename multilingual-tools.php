@@ -5,10 +5,10 @@ Plugin URI: https://wpml.org/download/multilingual-tools/
 Description: Set of tools to test themes and plugins multilingual compatibility.
 Author: OnTheGoSystems
 Author URI: https://www.onthegosystems.com/
-Version: 2.2.5
+Version: 2.2.6
 */
 
-define('WPML_CTT_VERSION', '2.2.5');
+define('WPML_CTT_VERSION', '2.2.6');
 define('WPML_CTT_PATH', dirname(__FILE__));
 define('WPML_CTT_ABS_PATH', plugin_dir_path(__FILE__));
 define('WPML_CTT_FOLDER', basename(WPML_CTT_PATH));
@@ -26,6 +26,7 @@ require_once WPML_CTT_PATH . '/inc/class-mltools-shortcode-wpml-config-parser.ph
 require_once WPML_CTT_PATH . '/inc/class-mltools-xml-helper.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-custom-fields-translation.php';
 require_once WPML_CTT_PATH . '/inc/class-mltools-elementor-config-generator.php';
+require_once WPML_CTT_PATH . '/inc/class-mltools-gutenberg-config-generator.php';
 
 // Disable informations about ICanLocalize.
 if (!defined('ICL_DONT_PROMOTE')) {
