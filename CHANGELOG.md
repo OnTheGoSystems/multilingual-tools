@@ -1,3 +1,9 @@
+# 2.3.0
+
+## Bugfix
+
+-   Fixed Configuration Generator ignoring capitalization in custom field names, shortcode tags, and shortcode attributes
+
 # 2.2.6
 
 ## Improvements

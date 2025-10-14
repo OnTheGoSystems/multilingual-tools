@@ -574,7 +574,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 			}
 
 			if ( isset( $checkbox[ $c ] ) ) {
-				$child_node             = $dom->createElement( $child, sanitize_key( $c ) );
+				$child_node             = $dom->createElement( $child, sanitize_text_field( $c ) );
 				$child_node             = $parent_node->appendChild( $child_node );
 				$child_node_attr        = $dom->createAttribute( $attribute );
 				$child_node_attr->value = wpml_ctt_validate_radio( $radio[ $c ] );
@@ -632,7 +632,7 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 		foreach ( $shortcodes as $shortcode ) {
 
 			$shortcode_index = array_search( $shortcode, $shortcodes, true );
-			$shortcode       = str_replace( ' ', '', sanitize_html_class( $shortcode, "Invalid_shortcode" ) );
+			$shortcode       = sanitize_text_field( str_replace( ' ', '', $shortcode ) );
 
 			$shortcode_node = $dom->createElement( 'shortcode' );
 			$shortcode_node = $shortcodes_node->appendChild( $shortcode_node );
@@ -652,12 +652,12 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 				if ( ! empty( $attributes_array ) ) {
 
 					foreach ( $attributes_array as $a ) {
-						$attribute_node = $dom->createElement( 'attribute', sanitize_html_class( $a, "Invalid_attribute" ) );
+						$attribute_node = $dom->createElement( 'attribute', sanitize_text_field( $a ) );
 						$attributes_node->appendChild( $attribute_node );
 					}
 
 				} else {
-					$attribute_node = $dom->createElement( 'attribute', sanitize_html_class( $attribute, "Invalid_attribute" ) );
+					$attribute_node = $dom->createElement( 'attribute', sanitize_text_field( $attribute ) );
 					$attributes_node->appendChild( $attribute_node );
 				}
 			}
