@@ -703,6 +703,99 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	/**
+	 * Get plugin or theme name from directory slug.
+	 *
+	 * @param string $slug Directory name (e.g., 'bb-plugin', 'avada')
+	 *
+	 * @return string|false Plugin/theme name or false if not found
+	 */
+	function get_plugin_or_theme_name_from_slug( $slug ) {
+		static $cache = array();
+		
+		// Return cached result if available
+		if ( isset( $cache[ $slug ] ) ) {
+			return $cache[ $slug ];
+		}
+		
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		
+		$all_plugins = get_plugins();
+		
+		foreach ( $all_plugins as $plugin_path => $plugin_data ) {
+			// Plugin path format: "plugin-folder/plugin-file.php"
+			$plugin_folder = dirname( $plugin_path );
+			
+			if ( $plugin_folder === $slug ) {
+				$cache[ $slug ] = $plugin_data['Name'];
+				return $plugin_data['Name'];
+			}
+		}
+		
+		$theme = wp_get_theme( $slug );
+		if ( $theme->exists() ) {
+			$theme_name = $theme->get( 'Name' );
+			$cache[ $slug ] = $theme_name;
+			return $theme_name;
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Get the correct folder ID from wpml_config_index based on admin_text_context.
+	 *
+	 * @param string $admin_text_context
+	 *
+	 * @return string
+	 */
+	function get_remote_config_folder_id( $admin_text_context ) {
+		static $cache = array();
+		
+		if ( isset( $cache[ $admin_text_context ] ) ) {
+			return $cache[ $admin_text_context ];
+		}
+		
+		$config_index = get_option( 'wpml_config_index', array() );
+		
+		if ( empty( $config_index ) ) {
+			$result = strtolower( $admin_text_context );
+			$cache[ $admin_text_context ] = $result;
+			return $result;
+		}
+		
+		$plugin_or_theme_name = $this->get_plugin_or_theme_name_from_slug( $admin_text_context );
+		
+		$sections = array( 'global', 'plugins', 'themes' );
+		
+		foreach ( $sections as $section ) {
+			if ( ! isset( $config_index->$section ) || ! is_array( $config_index->$section ) ) {
+				continue;
+			}
+			
+			foreach ( $config_index->$section as $config_item ) {
+				if ( ! isset( $config_item->path ) || ! isset( $config_item->name ) ) {
+					continue;
+				}
+				
+				if ( $plugin_or_theme_name && $config_item->name === $plugin_or_theme_name ) {
+					$path_parts = explode( '/', $config_item->path );
+					if ( isset( $path_parts[1] ) && ! empty( $path_parts[1] ) ) {
+						$result = $path_parts[1];
+						$cache[ $admin_text_context ] = $result;
+						return $result;
+					}
+				}
+			}
+		}
+
+		$result = strtolower( $admin_text_context );
+		$cache[ $admin_text_context ] = $result;
+		return $result;
+	}
+
+	/**
 	 * Intercept wpml-config.xml parsing to display loaded configuration files
 	 * for debugging purposes.
 	 *
@@ -714,9 +807,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	function display_configuration_for_debug( $file ) {
 		// Get url and name.
 		if ( is_object( $file ) ) {
-			$url   = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $file->admin_text_context . '/wpml-config.xml';
-			$name  = $file->admin_text_context;
-			$class = 'dashicons-admin-site';
+			$folder_id = $this->get_remote_config_folder_id( $file->admin_text_context );
+			$url       = ICL_REMOTE_WPML_CONFIG_FILES_INDEX . 'wpml-config/' . $folder_id . '/wpml-config.xml';
+			$name      = $file->admin_text_context;
+			$class     = 'dashicons-admin-site';
 		} else {
 			$url   = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $file );
 			$name  = basename( dirname( $url ) );

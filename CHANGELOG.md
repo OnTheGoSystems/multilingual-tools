@@ -3,6 +3,7 @@
 ## Bugfix
 
 -   Fixed Configuration Generator ignoring capitalization in custom field names, shortcode tags, and shortcode attributes
+-   Fixed remote XML configuration file links returning 404 errors in Overview page
 
 # 2.2.6
 
