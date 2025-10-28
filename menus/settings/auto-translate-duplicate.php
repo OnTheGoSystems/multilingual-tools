@@ -7,7 +7,7 @@
 	<tbody>
 	<tr>
 		<td>
-			<p><?php printf( __( "Select which elements in posts to auto-translate. Once you've saved your selection, go to the %s and duplicate the site's content.", 'wpml-compatibility-test-tools' ), "<a href=\"" . admin_url( 'admin.php?page=' . basename( WPML_TM_PATH ) . '/menu/main.php' ) . "\">" . __( 'Translation Dashboard', 'wpml-compatibility-test-tools' ) . "</a>"  ); ?></p>
+			<p><?php printf( __( "Select which elements in posts to auto-translate. Once you've saved your selection, go to the %s and duplicate the site's content.", 'wpml-compatibility-test-tools' ), "<a href=\"" . admin_url( 'admin.php?page=tm%2Fmenu%2Fmain.php' ) . "\">" . __( 'Translation Dashboard', 'wpml-compatibility-test-tools' ) . "</a>"  ); ?></p>
 		</td>
 	</tr>
 	<tr>
