@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Multilingual Tools
-Plugin URI: https://wpml.org/download/multilingual-tools/
+Plugin URI: https://wpml.org/documentation/support/multilingual-tools/
 Description: Set of tools to test themes and plugins multilingual compatibility.
 Author: OnTheGoSystems
 Author URI: https://www.onthegosystems.com/
