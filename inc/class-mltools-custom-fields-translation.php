@@ -78,9 +78,17 @@ class MLTools_Custom_Fields_Translation {
 
 			// Check if value is numeric, a date string, or specific strings
 
+			$date        = false;
+			$date_errors = array( 'warning_count' => 0, 'error_count' => 0 );
+
 			if ( $value ) {
-				$date        = DateTime::createFromFormat( 'd-m-Y', $value );
-				$date_errors = DateTime::getLastErrors();
+				$date   = DateTime::createFromFormat( 'd-m-Y', $value );
+				$errors = DateTime::getLastErrors();
+
+				// As of PHP 8.2, DateTime::getLastErrors() returns false when there are no warnings or errors.
+				if ( is_array( $errors ) ) {
+					$date_errors = $errors;
+				}
 			}
 
 			// These values should be copied to translations
@@ -94,7 +102,6 @@ class MLTools_Custom_Fields_Translation {
 			     ( $date && $date_errors['warning_count'] == 0 && $date_errors['error_count'] == 0 ) ||
 			     in_array( $value, $copy_values ) ||
 			     is_serialized( $value ) ||
-			     null ||
 			     empty( $value ) ||
 			     // Check if the value is an email or a URL.
 			     filter_var( $value, FILTER_VALIDATE_EMAIL ) ||
