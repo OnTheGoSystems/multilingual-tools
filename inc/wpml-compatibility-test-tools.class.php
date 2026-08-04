@@ -163,11 +163,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	public function generate_strings_translations() {
 		check_ajax_referer( 'mt_generate_strings_translations', '_mt_mighty_nonce' );
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( 'forbidden', 403 );
+		}
+
 		$contexts  = isset( $_POST['contexts'] ) ? (array) $_POST['contexts'] : false;
 		$languages = isset( $_POST['languages'] ) ? $_POST['languages'] : false;
 		$template  = isset( $_POST['template'] ) ? $_POST['template'] : false;
-		$count     = isset( $_POST['count'] ) ? $_POST['count'] : false;
-		$offset    = isset( $_POST['offset'] ) ? $_POST['offset'] : 0;
+		$count     = isset( $_POST['count'] ) ? absint( $_POST['count'] ) : false;
+		$offset    = isset( $_POST['offset'] ) ? absint( $_POST['offset'] ) : 0;
 
 		// Check in case JS fail.
 		if ( ! $contexts || ! $languages || ! $template ) {
