@@ -23,7 +23,7 @@ if ( $debug_enabled ) {
     <tbody>
     <tr>
         <td>
-            <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <form method="post" action="<?php echo esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ); ?>">
 
                 <label><?php _e( 'Enable debug output', 'wpml-compatibility-test-tools' ); ?></label>
                 <ul class="holder">

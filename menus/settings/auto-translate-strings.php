@@ -12,7 +12,7 @@
     </tr>
     <tr>
         <td>
-            <form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <form method="post" action="<?php echo esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ); ?>">
 				<?php
 				$stt_context                   = wpml_ctt_st_contexts();
 				$string_auto_translate_context = (array) WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_context' );
