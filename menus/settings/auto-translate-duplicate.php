@@ -29,7 +29,7 @@
 				<label><?php _e( 'Template:', 'wpml-compatibility-test-tools' ); ?></label>
 				<div class="holder">
 					<div class="template-left">
-						<input class="full-width" type="text" id="duplicate_strings_template" name="duplicate_strings_template" value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings_template' ); ?>" />
+						<input class="full-width" type="text" id="duplicate_strings_template" name="duplicate_strings_template" value="<?php echo esc_attr( WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings_template' ) ); ?>" />
 					</div>
 					<div class="template-right">
 						<select class="full-width" id="duplicate_strings_predefined_templates" name="duplicate_strings_predefined_templates">
@@ -45,6 +45,7 @@
 					<small>You can use following, special tags: %original_string%, %language_name%, %language_code%, %language_native_name%</small>
 				</div>
 
+				<?php wp_nonce_field( 'mt_save_duplicate_strings', '_mt_duplicate_nonce' ); ?>
 				<input type="submit" name="save_duplicate_strings_to_translate" value="<?php _e( 'Save', 'wpml-compatibility-test-tools' ); ?>" class="button-secondary button" />
 			</form>
 		</td>

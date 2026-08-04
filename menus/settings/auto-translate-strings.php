@@ -51,7 +51,7 @@
                     <div class="template-left">
                         <input class="full-width" id="strings_auto_translate_template"
                                name="strings_auto_translate_template"
-                               value="<?php echo WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_template' ); ?>"/>
+                               value="<?php echo esc_attr( WPML_Compatibility_Test_Tools::get_option( 'string_auto_translate_template' ) ); ?>"/>
                     </div>
                     <div class="template-right">
                         <select class="full-width" id="string_auto_translate_predefined_templates"
