@@ -95,11 +95,16 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	private function process_strings_auto_translate_action_translate() {
 		if ( isset( $_POST['strings_auto_translate_action_save'] ) || isset( $_POST['strings_auto_translate_action_translate'] ) ) {
 
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return false;
+			}
+			check_admin_referer( 'mt_generate_strings_translations', '_mt_mighty_nonce' );
+
 			$error = false;
 
-			$contexts  = ( isset( $_POST['strings_auto_translate_context'] ) ) ? $_POST['strings_auto_translate_context'] : '';
-			$languages = ( isset( $_POST['active_languages'] ) ) ? $_POST['active_languages'] : array();
-			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? $_POST['strings_auto_translate_template'] : '';
+			$contexts  = ( isset( $_POST['strings_auto_translate_context'] ) ) ? map_deep( wp_unslash( $_POST['strings_auto_translate_context'] ), 'sanitize_text_field' ) : '';
+			$languages = ( isset( $_POST['active_languages'] ) ) ? map_deep( wp_unslash( $_POST['active_languages'] ), 'sanitize_text_field' ) : array();
+			$template  = ( isset( $_POST['strings_auto_translate_template'] ) ) ? sanitize_text_field( wp_unslash( $_POST['strings_auto_translate_template'] ) ) : '';
 
 			if ( empty( $template ) ) {
 				add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
@@ -225,10 +230,15 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	private function process_save_duplicate_strings_to_translate() {
 		if ( isset( $_POST['save_duplicate_strings_to_translate'] ) ) {
 
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return false;
+			}
+			check_admin_referer( 'mt_save_duplicate_strings', '_mt_duplicate_nonce' );
+
 			$error = false;
 
-			$strings  = ( isset( $_POST['duplicate_strings_to_translate'] ) ) ? $_POST['duplicate_strings_to_translate'] : array();
-			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? $_POST['duplicate_strings_template'] : '';
+			$strings  = ( isset( $_POST['duplicate_strings_to_translate'] ) && is_array( $_POST['duplicate_strings_to_translate'] ) ) ? map_deep( wp_unslash( $_POST['duplicate_strings_to_translate'] ), 'sanitize_text_field' ) : array();
+			$template = ( isset( $_POST['duplicate_strings_template'] ) ) ? sanitize_text_field( wp_unslash( $_POST['duplicate_strings_template'] ) ) : '';
 
 			if ( empty( $template ) ) {
 				add_action( 'admin_notices', array( $this->messages, 'no_template_notice' ) );
@@ -253,6 +263,10 @@ class WPML_Compatibility_Test_Tools extends WPML_Compatibility_Test_Tools_Base {
 	}
 
 	private function process_save_shortcode_helper_settings() {
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
 
 		if ( isset( $_POST['_mltools_shortcode_helper_nonce'] )
 		     && wp_verify_nonce( $_POST['_mltools_shortcode_helper_nonce'], 'mltools_shortcode_helper_settings_save' ) ) {
