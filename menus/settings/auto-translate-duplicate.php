@@ -12,7 +12,7 @@
 	</tr>
 	<tr>
 		<td>
-			<form method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+			<form method="post" action="<?php echo esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ); ?>">
 				<?php $duplicate_strings = WPML_Compatibility_Test_Tools::get_option( 'duplicate_strings', array() );?>
 
 				<label><?php _e( 'Select options:', 'wpml-compatibility-test-tools' ); ?></label>
