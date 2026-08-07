@@ -1,3 +1,17 @@
+# 2.3.2
+
+## Bugfix
+
+-   Fix warning message reading custom-field-preferences.
+-   Read custom-field-preferences through WPML 5 resolver.
+
+# 2.3.1
+
+## Bugfix
+
+-   Updated the links to the TM Dashboard.
+-   Updated the plugin's URI.
+
 # 2.3.0
 
 ## Bugfix
