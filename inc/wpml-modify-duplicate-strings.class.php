@@ -111,25 +111,39 @@ class Modify_Duplicate_Strings {
 	 */
 	private function add_language_name_to_custom_field( $string, $lang, $context ) {
 
-		// Get settings - $this->settings is not set when creating duplicate (not updating)
-		global $sitepress_settings;
-		$settings =& $sitepress_settings['translation-management'];
-
-		// Check for custom fields to translate
-		if ( isset( $settings['custom_fields_translation'] ) ) {
-			// Get information about custom fields to translate
-			$custom_fields_translation = $settings['custom_fields_translation'];
-
-			if ( isset( $custom_fields_translation[$context['key']] ) ) {
-
-				// If custom field is set to translate (id = 2)
-				if ( $custom_fields_translation[$context['key']] == 2 ) {
-					// Add language information
-					return wpml_ctt_prepare_string( $this->template, $string, $lang );
-				}
-			}
+		// If custom field is set to translate (id = 2)
+		if ( 2 === $this->get_custom_field_translation_preference( $context['key'] ) ) {
+			// Add language information
+			return wpml_ctt_prepare_string( $this->template, $string, $lang );
 		}
 
 		return $string;
+	}
+
+	/**
+	 * WPML 5.0 moves the custom-field preferences out of the icl_sitepress_settings
+	 * blob into a per-key store that WPML reads through PreferenceResolver. Older
+	 * WPML versions only have the blob, so both sources are checked.
+	 *
+	 * @param string $field_key
+	 *
+	 * @return int 0 when the field has no preference.
+	 */
+	private function get_custom_field_translation_preference( $field_key ) {
+		if ( class_exists( '\WPML\TM\Settings\PreferenceResolver' ) ) {
+			return (int) \WPML\TM\Settings\PreferenceResolver::mode(
+				\WPML\Core\Component\CustomFieldPreferences\Domain\ElementType::POST,
+				$field_key
+			);
+		}
+
+		// Get settings - $this->settings is not set when creating duplicate (not updating)
+		global $sitepress_settings;
+
+		if ( isset( $sitepress_settings['translation-management']['custom_fields_translation'][ $field_key ] ) ) {
+			return (int) $sitepress_settings['translation-management']['custom_fields_translation'][ $field_key ];
+		}
+
+		return 0;
 	}
 }
